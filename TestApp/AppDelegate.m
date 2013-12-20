@@ -22,23 +22,15 @@ static inline TestResults runTest(NSInteger loop, NSInteger callLoop);
     self.window.rootViewController = [[UIViewController alloc] init];
     [self.window makeKeyAndVisible];
 
-//    NSInteger loop = 100000;
-//
-//    for (NSInteger callLoop = 1; callLoop <= 1; callLoop++) {
-//        TestResults results = runTest(loop, callLoop);
-//        NSLog(@"%lld", results.lazyTime);
-//        NSLog(@"%lld", results.associatedTime);
-//        NSLog(@"%lld", results.ivarTime);
-//        NSLog(@"%f %f", results.lazyToAssociatedRatio, results.lazyToIvarRatio);
-//    }
+    NSInteger loop = 100000;
 
-    NSLog(@"%@", [[[[Test alloc] init] lazyObject] class]);
-    NSLog(@"%@", [[[[Test alloc] init] lazyObject] class]);
-    [[LMContext defaultContext] setInitializer:^id {
-        return [NSSet set];
-    } forClass:[NSObject class]];
-    NSLog(@"%@", [[[[Test alloc] init] lazyObject] class]);
-
+    for (NSInteger callLoop = 1; callLoop <= 1; callLoop++) {
+        TestResults results = runTest(loop, callLoop);
+        NSLog(@"%lld", results.lazyTime);
+        NSLog(@"%lld", results.associatedTime);
+        NSLog(@"%lld", results.ivarTime);
+        NSLog(@"%f %f", results.lazyToAssociatedRatio, results.lazyToIvarRatio);
+    }
 
     NSLog(@"Done");
     return YES;
@@ -46,7 +38,7 @@ static inline TestResults runTest(NSInteger loop, NSInteger callLoop);
 
 @end
 
-__attribute__((constructor(1000))) void setInitializers(void) {
+__attribute__((constructor(1000))) void __unused setInitializers(void) {
     [[LMContext defaultContext] setInitializer:^id {
         return [NSArray array];
     } forClass:[NSObject class]];

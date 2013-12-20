@@ -2,8 +2,6 @@
 #import "LMProperty.h"
 #import "LMContext.h"
 
-//#define INJECTIVE_RUNTIME
-
 @implementation LMProperty {
     Class _clazz;
     SEL _getter;
@@ -19,23 +17,15 @@
     return self;
 }
 
-- (Class)clazz {
-    return _clazz;
-}
-
 - (SEL)getter {
     return _getter;
 }
 
 - (id (^)(void))initializer {
-#ifdef INJECTIVE_RUNTIME
-    return [[LMContext defaultContext] initializerForClass:_clazz];
-#else
     return _initializer;
-#endif
 }
 
-- (BOOL)isDynamic {
+- (BOOL)isInjectable {
     return _dynamic;
 }
 
@@ -50,11 +40,9 @@
     if (!_getter) {
         _getter = sel_getUid(property_getName(_property));
     }
-#ifndef INJECTIVE_RUNTIME
     if (_dynamic) {
         _initializer = [[LMContext defaultContext] initializerForClass:_clazz];
     }
-#endif
 }
 
 - (void)parsePropertyAttribute:(objc_property_attribute_t)attribute {

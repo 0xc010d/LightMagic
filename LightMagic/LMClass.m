@@ -4,7 +4,7 @@
 
 @interface LMClass ()
 
-@property (nonatomic, strong) NSSet *dynamicProperties;
+@property (nonatomic, strong) NSSet *injectableProperties;
 
 @end
 
@@ -18,25 +18,25 @@
     return self;
 }
 
-- (NSSet *)dynamicProperties {
-    if (!_dynamicProperties) {
-        self.dynamicProperties = ({
-            NSMutableSet *dynamicProperties = [NSMutableSet set];
+- (NSSet *)injectableProperties {
+    if (!_injectableProperties) {
+        self.injectableProperties = ({
+            NSMutableSet *injectableProperties = [NSMutableSet set];
             uint propertiesCount;
             objc_property_t *properties = class_copyPropertyList(_clazz, &propertiesCount);
 
             for (uint i = 0; i < propertiesCount; i++) {
                 LMProperty *property = [[LMProperty alloc] initWithProperty:properties[i]];
-                if (property.dynamic) {
-                    [dynamicProperties addObject:property];
+                if (property.injectable) {
+                    [injectableProperties addObject:property];
                 }
             }
             free(properties);
 
-            [NSSet setWithSet:dynamicProperties];
+            [NSSet setWithSet:injectableProperties];
         });
     }
-    return _dynamicProperties;
+    return _injectableProperties;
 }
 
 static id _getter(id self, SEL _cmd) {
@@ -52,7 +52,7 @@ static id _getter(id self, SEL _cmd) {
 }
 
 - (void)injectGetters {
-    NSSet *dynamicProperties = self.dynamicProperties;
+    NSSet *dynamicProperties = self.injectableProperties;
     for (LMProperty *property in dynamicProperties) {
         SEL getter = property.getter;
         BOOL inject = !class_respondsToSelector(_clazz, getter);
