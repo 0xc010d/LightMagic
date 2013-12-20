@@ -1,5 +1,3 @@
-#import <dlfcn.h>
-#import <mach-o/ldsyms.h>
 #import <objc/runtime.h>
 #import "LMCollector.h"
 #import "LMClass.h"
@@ -9,11 +7,9 @@
 + (NSSet *)classesForProtocol:(Protocol *)protocol {
     NSMutableSet *result = [NSMutableSet set];
 
-    Dl_info info;
-    dladdr(&_mh_execute_header, &info);
-
     uint classesCount;
-    const char **classNames = objc_copyClassNamesForImage(info.dli_fname, &classesCount);
+    char const *imageName = class_getImageName(object_getClass(self));
+    const char **classNames = objc_copyClassNamesForImage(imageName, &classesCount);
 
     for (uint index = 0; index < classesCount; index++) {
         Class nextClass = objc_getClass(classNames[index]);
