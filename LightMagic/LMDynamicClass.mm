@@ -3,7 +3,6 @@
 #import "LMDynamicClass.h"
 #import "LMProperty.h"
 #import "LMCache.h"
-#import "LMImplementation.h"
 
 static const char *kRootClassName = "NSObject";
 static Class kRootClass;
@@ -12,7 +11,19 @@ static size_t kSuffixLength;
 
 static void class_swizzleClassMethodWithImplementation(Class clazz, SEL originalSelector, SEL newSelector, IMP implementation);
 static void class_swizzleInstanceMethodWithImplementation(Class clazz, SEL originalSelector, SEL newSelector, IMP implementation);
-static void dynamic_object_dealloc(id self, SEL  __unused _cmd);
+
+static id swizzledAllocWithZone(Class self, SEL __unused _cmd, NSZone *zone);
+static id dynamicGetter(id self, SEL _cmd);
+static id forwardingGetter(id self, SEL _cmd);
+static void dynamicDealloc(id self, SEL  __unused _cmd);
+static void swizzledDealloc(id self, SEL __unused _cmd);
+
+@interface NSObject (LMSelector)
+
++ (instancetype)allocWithZone_:(NSZone *)zone;
+- (void)dealloc_;
+
+@end
 
 @implementation LMDynamicClass {
     Class _counterpart;
@@ -59,16 +70,15 @@ static void dynamic_object_dealloc(id self, SEL  __unused _cmd);
 }
 
 - (void)swizzleAlloc {
-    //TODO: invent something to deal with custom +alloc and +new
-    class_swizzleClassMethodWithImplementation(_counterpart, @selector(allocWithZone:), LMSelectorAllocWithZone, imp(LMSelectorAllocWithZone));
+    class_swizzleClassMethodWithImplementation(_counterpart, @selector(allocWithZone:), @selector(allocWithZone_:), (IMP)swizzledAllocWithZone);
 }
 
 - (void)swizzleDealloc {
-    class_swizzleInstanceMethodWithImplementation(_counterpart, @selector(dealloc), LMSelectorDealloc, imp(LMSelectorDealloc));
+    class_swizzleInstanceMethodWithImplementation(_counterpart, @selector(dealloc), @selector(dealloc_), (IMP)swizzledDealloc);
 }
 
 - (void)addDealloc {
-    class_addMethod(_clazz, @selector(dealloc), (IMP)dynamic_object_dealloc, "v@:");
+    class_addMethod(_clazz, @selector(dealloc), (IMP)dynamicDealloc, "v@:");
 }
 
 - (void)addPropertyWithClass:(Class)clazz getter:(SEL)selector {
@@ -84,11 +94,11 @@ static void dynamic_object_dealloc(id self, SEL  __unused _cmd);
     objc_property_attribute_t attributes[] = {"T", type};
     class_addProperty(_clazz, name, attributes, 1);
 
-    class_addMethod(_clazz, selector, getter(NO), "@@:");
+    class_addMethod(_clazz, selector, (IMP)dynamicGetter, "@@:");
 }
 
 - (void)forwardGetter:(SEL)selector {
-    class_addMethod(_counterpart, selector, getter(YES), "@@:");
+    class_addMethod(_counterpart, selector, (IMP)forwardingGetter, "@@:");
 }
 
 @end
@@ -126,7 +136,7 @@ void static class_swizzleInstanceMethodWithImplementation(Class clazz, SEL origi
     }
 }
 
-void static dynamic_object_dealloc(id self, SEL _cmd) {
+void static dynamicDealloc(id self, SEL _cmd) {
     //release ivars
     uint ivarsCount;
     Class clazz = object_getClass(self);
@@ -144,3 +154,39 @@ void static dynamic_object_dealloc(id self, SEL _cmd) {
     };
     objc_msgSendSuper(&super, _cmd);
 }
+
+id static forwardingGetter(id self, SEL _cmd) {
+    return objc_msgSend(LMCache::getInstance().dynamicObjects[self], _cmd);
+}
+
+id static dynamicGetter(id self, SEL _cmd) {
+    id result;
+    const char *name = sel_getName(_cmd);
+    object_getInstanceVariable(self, name, (void **)&result);
+    if (!result) {
+        objc_property_t property = class_getProperty(object_getClass(self), name);
+        const char *attributes = property_getAttributes(property);
+        size_t len = strlen(attributes) - 4;
+        char buffer[len + 1];
+        memcpy(buffer, attributes + 3, len);
+        buffer[len] = '\0';
+        Class clazz = objc_getClass(buffer);
+        LMInitializer initializer = LMCache::getInstance().initializer(clazz);
+        result = initializer ? objc_msgSend(initializer(), @selector(retain)) : objc_msgSend(clazz, @selector(new));
+        object_setInstanceVariable(self, name, result);
+    }
+    return result;
+}
+
+void static swizzledDealloc(id self, SEL __unused _cmd) {
+    [LMCache::getInstance().dynamicObjects[self] release];
+    LMCache::getInstance().dynamicObjects.erase(self);
+    [self dealloc_];
+}
+
+id static swizzledAllocWithZone(Class self, SEL __unused _cmd, NSZone *zone) {
+    id object = objc_msgSend(self, @selector(allocWithZone_:), zone);
+    LMCache::getInstance().dynamicObjects[object] = [LMCache::getInstance().dynamicClasses[self] new];
+    return object;
+}
+
