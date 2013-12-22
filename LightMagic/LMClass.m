@@ -11,31 +11,38 @@
 
 @implementation LMClass {
     Class _clazz;
+    Protocol *_protocol;
 }
 
-- (instancetype)initWithClass:(Class)clazz {
+- (instancetype)initWithClass:(Class)clazz protocol:(Protocol *)protocol {
     self = [super init];
     _clazz = clazz;
+    _protocol = protocol;
     return self;
 }
 
 - (NSSet *)injectableProperties {
     if (!_injectableProperties) {
         self.injectableProperties = ({
-            NSMutableSet *injectableProperties = [NSMutableSet set];
-            uint propertiesCount;
-            objc_property_t *properties = class_copyPropertyList(_clazz, &propertiesCount);
+            NSMutableSet *properties = [NSMutableSet set];
+            Class clazz = _clazz;
 
-            for (uint i = 0; i < propertiesCount; i++) {
-                LMProperty *property = [[LMProperty alloc] initWithProperty:properties[i]];
-                [property parse];
-                if (property.injectable) {
-                    [injectableProperties addObject:property];
+            do {
+                uint propertiesCount;
+                objc_property_t *propertyList = class_copyPropertyList(clazz, &propertiesCount);
+
+                for (uint i = 0; i < propertiesCount; i++) {
+                    LMProperty *property = [[LMProperty alloc] initWithProperty:propertyList[i]];
+                    [property parse];
+                    if (property.injectable) {
+                        [properties addObject:property];
+                    }
                 }
-            }
-            free(properties);
+                free(propertyList);
+                clazz = class_getSuperclass(clazz);
+            } while (class_conformsToProtocol(clazz, _protocol));
 
-            [NSSet setWithSet:injectableProperties];
+            [NSSet setWithSet:properties];
         });
     }
     return _injectableProperties;

@@ -1,6 +1,6 @@
 #import "LMContext.h"
 
-#define LM_REGISTER_INITIALIZERS(group, block) __attribute__((constructor)) static void __unused group(void) { \
+#define LM_CONTEXT(group, block) __attribute__((constructor)) static void __unused group(void) { \
     @autoreleasepool { \
         block; \
     } \

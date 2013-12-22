@@ -2,7 +2,7 @@
 
 @interface LMClass : NSObject
 
-- (instancetype)initWithClass:(Class)clazz;
+- (instancetype)initWithClass:(Class)clazz protocol:(Protocol *)protocol;
 - (void)injectGetters;
 
 @end

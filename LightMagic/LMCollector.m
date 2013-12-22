@@ -14,7 +14,7 @@
     for (uint index = 0; index < classesCount; index++) {
         Class nextClass = objc_getClass(classNames[index]);
         if (class_conformsToProtocol(nextClass, protocol)) {
-            LMClass *clazz = [[LMClass alloc] initWithClass:nextClass];
+            LMClass *clazz = [[LMClass alloc] initWithClass:nextClass protocol:protocol];
             [result addObject:clazz];
         }
     }

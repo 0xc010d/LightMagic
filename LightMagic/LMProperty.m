@@ -64,4 +64,12 @@
     }
 }
 
+- (BOOL)isEqual:(id)object {
+    return [object isKindOfClass:[self class]] && [object getter] == _getter;
+}
+
+- (NSUInteger)hash {
+    return (NSUInteger)(void *)_getter;
+}
+
 @end

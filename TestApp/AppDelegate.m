@@ -35,8 +35,8 @@ static inline TestResults runTest(NSInteger loop, NSInteger callLoop);
     NSLog(@"Done");
 
     Test *test = [[Test alloc] init];
-    NSLog(@"%@", [test lazyObject]);
-    NSLog(@"%@", [test lazyObject]);
+    NSLog(@"%@", [[test lazyObject] class]);
+    NSLog(@"%@", [[test lazyObject] class]);
 
     LM_REGISTER_INITIALIZER(NSObject, ^id {
         return [NSSet setWithObject:[NSObject new]];
@@ -48,7 +48,7 @@ static inline TestResults runTest(NSInteger loop, NSInteger callLoop);
         NSLog(@"%@", [test lazyObject]);
     }
 
-    dispatch_after(1, dispatch_get_main_queue(), ^{
+    dispatch_after(10, dispatch_get_main_queue(), ^{
         NSLog(@"%@", [test lazyObject]);
     });
 
@@ -63,11 +63,11 @@ static inline TestResults runTest(NSInteger loop, NSInteger callLoop);
 
 @end
 
-//__attribute__((constructor(1000))) void __unused setInitializers(void) {
-//    [[LMContext defaultContext] setInitializer:^id {
-//        return [NSArray array];
-//    } forClass:[NSObject class]];
-//}
+LM_CONTEXT(initializers,
+LM_REGISTER_INITIALIZER(NSObject, ^id {
+    return [NSArray array];
+});
+)
 
 static TestResults runTest(NSInteger loop, NSInteger callLoop) {
     TestResults results;
