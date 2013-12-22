@@ -1,10 +1,10 @@
 #import <Foundation/Foundation.h>
+#import "LMDefinitions.h"
 
 @interface LMContext : NSObject
 
-+ (instancetype)defaultContext;
++ (void)registerInitializer:(LMInitializer)initializer forClass:(Class)clazz;
 
-- (void)setInitializer:(id (^)(void))initializer forClass:(Class)clazz;
-- (id (^)(void))initializerForClass:(Class)clazz;
++ (void)removeInitializerForClass:(Class)clazz;
 
 @end

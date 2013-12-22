@@ -1,32 +1,17 @@
 #import <objc/runtime.h>
 #import "LMProperty.h"
-#import "LMContext.h"
 
 @implementation LMProperty {
     Class _clazz;
     SEL _getter;
     BOOL _dynamic;
-    id (^_initializer)(void);
     objc_property_t _property;
 }
 
 - (instancetype)initWithProperty:(objc_property_t)property {
     self = [super init];
     _property = property;
-    [self parse];
     return self;
-}
-
-- (SEL)getter {
-    return _getter;
-}
-
-- (id (^)(void))initializer {
-    return _initializer;
-}
-
-- (BOOL)isInjectable {
-    return _dynamic;
 }
 
 - (void)parse {
@@ -40,10 +25,21 @@
     if (!_getter) {
         _getter = sel_getUid(property_getName(_property));
     }
-    if (_dynamic) {
-        _initializer = [[LMContext defaultContext] initializerForClass:_clazz];
-    }
 }
+
+- (Class)clazz {
+    return _clazz;
+}
+
+- (SEL)getter {
+    return _getter;
+}
+
+- (BOOL)isInjectable {
+    return _dynamic;
+}
+
+#pragma mark - Private
 
 - (void)parsePropertyAttribute:(objc_property_attribute_t)attribute {
     switch (attribute.name[0]) {

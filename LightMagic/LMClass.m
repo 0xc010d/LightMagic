@@ -1,6 +1,7 @@
 #import <objc/runtime.h>
 #import "LMClass.h"
 #import "LMProperty.h"
+#import "LMDynamicClass.h"
 
 @interface LMClass ()
 
@@ -27,6 +28,7 @@
 
             for (uint i = 0; i < propertiesCount; i++) {
                 LMProperty *property = [[LMProperty alloc] initWithProperty:properties[i]];
+                [property parse];
                 if (property.injectable) {
                     [injectableProperties addObject:property];
                 }
@@ -39,30 +41,10 @@
     return _injectableProperties;
 }
 
-static id _getter(id self, SEL _cmd) {
-    char const *key = sel_getName(_cmd);
-    id object = objc_getAssociatedObject(self, key);
-    if (!object) {
-        Class clazz = object_getClass(self);
-        //run initializer
-        object = ((id (^)(void))objc_getAssociatedObject(clazz, key))();
-        objc_setAssociatedObject(self, key, object, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    }
-    return object;
-}
-
 - (void)injectGetters {
-    NSSet *dynamicProperties = self.injectableProperties;
-    for (LMProperty *property in dynamicProperties) {
-        SEL getter = property.getter;
-        BOOL inject = !class_respondsToSelector(_clazz, getter);
-        if (inject) {
-            id (^initializer)(void) = property.initializer;
-            char const *key = sel_getName(getter);
-            objc_setAssociatedObject(_clazz, key, initializer, OBJC_ASSOCIATION_COPY);
-            class_addMethod(_clazz, getter, (IMP)_getter, "@@:");
-        }
-    }
+    LMDynamicClass *injectedClass = [[LMDynamicClass alloc] initForClass:_clazz
+                                                              properties:self.injectableProperties];
+    [injectedClass createAndInject];
 }
 
 @end
