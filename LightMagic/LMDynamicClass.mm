@@ -1,84 +1,43 @@
 #import <objc/runtime.h>
 #import <objc/message.h>
 #import "LMDynamicClass.h"
-#import "LMProperty.h"
 #import "LMCache.h"
 
-static const char *kRootClassName = "NSObject";
 static Class kRootClass;
 static const char *kSuffix = "_LMInjectedClass";
 static size_t kSuffixLength;
 
-static void class_swizzleClassMethodWithImplementation(Class clazz, SEL originalSelector, SEL newSelector, IMP implementation);
-static void class_swizzleInstanceMethodWithImplementation(Class clazz, SEL originalSelector, SEL newSelector, IMP implementation);
-
-static id swizzledAllocWithZone(Class self, SEL __unused _cmd, NSZone *zone);
 static id dynamicGetter(id self, SEL _cmd);
-static id forwardingGetter(id self, SEL _cmd);
 static void dynamicDealloc(id self, SEL  __unused _cmd);
-static void swizzledDealloc(id self, SEL __unused _cmd);
-
-@interface NSObject (LMSelector)
-
-+ (instancetype)allocWithZone_:(NSZone *)zone;
-- (void)dealloc_;
-
-@end
 
 @implementation LMDynamicClass {
-    Class _counterpart;
-    NSSet *_properties;
     Class _clazz;
 }
 
 + (void)initialize {
-    kRootClass = objc_getClass(kRootClassName);
+    kRootClass = [NSObject class];
     kSuffixLength = strlen(kSuffix);
 }
 
-- (instancetype)initForClass:(Class)clazz properties:(NSSet *)properties {
+- (instancetype)initWithBaseName:(const char *)baseName {
     self = [super init];
-    _counterpart = clazz;
-    _properties = properties;
+
+    size_t nameLength = strlen(baseName) + kSuffixLength;
+    char name[nameLength + 1];
+    sprintf(name, "%s%s", baseName, kSuffix);
+
+    _clazz = objc_allocateClassPair(kRootClass, (const char *)name, 0);
+    class_addMethod(_clazz, @selector(dealloc), (IMP)dynamicDealloc, "v@:");
+
     return self;
 }
 
-- (void)createAndInject {
-    const char *prefix = class_getName(_counterpart);
-    size_t nameLength = strlen(prefix);
-    size_t classNameLength = nameLength + kSuffixLength;
-    char name[classNameLength + 1];
-    sprintf(name, "%s%s", prefix, kSuffix);
-    _clazz = objc_allocateClassPair(kRootClass, (const char *)name, 0);
+- (Class)clazz {
+    return _clazz;
+}
 
-    [self addAndInjectProperties];
+- (void)register {
     objc_registerClassPair(_clazz);
-
-    [self swizzleAlloc];
-    [self swizzleDealloc];
-
-    [self addDealloc];
-
-    LMCache::getInstance().dynamicClasses[_counterpart] = _clazz;
-}
-
-- (void)addAndInjectProperties {
-    for (LMProperty *property in _properties) {
-        [self addPropertyWithClass:property.clazz getter:property.getter];
-        [self forwardGetter:property.getter];
-    }
-}
-
-- (void)swizzleAlloc {
-    class_swizzleClassMethodWithImplementation(_counterpart, @selector(allocWithZone:), @selector(allocWithZone_:), (IMP)swizzledAllocWithZone);
-}
-
-- (void)swizzleDealloc {
-    class_swizzleInstanceMethodWithImplementation(_counterpart, @selector(dealloc), @selector(dealloc_), (IMP)swizzledDealloc);
-}
-
-- (void)addDealloc {
-    class_addMethod(_clazz, @selector(dealloc), (IMP)dynamicDealloc, "v@:");
 }
 
 - (void)addPropertyWithClass:(Class)clazz getter:(SEL)selector {
@@ -95,44 +54,7 @@ static void swizzledDealloc(id self, SEL __unused _cmd);
     class_addMethod(_clazz, selector, (IMP)dynamicGetter, "@@:");
 }
 
-- (void)forwardGetter:(SEL)selector {
-    class_addMethod(_counterpart, selector, (IMP)forwardingGetter, "@@:");
-}
-
 @end
-
-void static class_swizzleClassMethodWithImplementation(Class clazz, SEL originalSelector, SEL newSelector, IMP implementation) {
-    Class metaClazz = object_getClass(clazz);
-    Method originalMethod = class_getClassMethod(clazz, originalSelector);
-    const char *types = method_getTypeEncoding(originalMethod);
-
-    class_addMethod(metaClazz, newSelector, implementation, types);
-    Method newMethod = class_getClassMethod(clazz, newSelector);
-
-    if (class_addMethod(metaClazz, originalSelector, implementation, types)) {
-        class_replaceMethod(metaClazz, newSelector, method_getImplementation(originalMethod), types);
-    }
-    else {
-        method_exchangeImplementations(originalMethod, newMethod);
-    }
-
-    method_exchangeImplementations(originalMethod, newMethod);
-}
-
-void static class_swizzleInstanceMethodWithImplementation(Class clazz, SEL originalSelector, SEL newSelector, IMP implementation) {
-    Method originalMethod = class_getInstanceMethod(clazz, originalSelector);
-    const char *types = method_getTypeEncoding(originalMethod);
-
-    class_addMethod(clazz, newSelector, implementation, types);
-    Method newMethod = class_getInstanceMethod(clazz, newSelector);
-
-    if (class_addMethod(clazz, originalSelector, implementation, types)) {
-        class_replaceMethod(clazz, newSelector, method_getImplementation(originalMethod), types);
-    }
-    else {
-        method_exchangeImplementations(originalMethod, newMethod);
-    }
-}
 
 void static dynamicDealloc(id self, SEL _cmd) {
     //release ivars
@@ -151,10 +73,6 @@ void static dynamicDealloc(id self, SEL _cmd) {
             .super_class = class_getSuperclass(clazz)
     };
     objc_msgSendSuper(&super, _cmd);
-}
-
-id static forwardingGetter(id self, SEL _cmd) {
-    return objc_msgSend(LMCache::getInstance().dynamicObjects[self], _cmd);
 }
 
 id static dynamicGetter(id self, SEL _cmd) {
@@ -177,20 +95,3 @@ id static dynamicGetter(id self, SEL _cmd) {
     }
     return result;
 }
-
-void static swizzledDealloc(id self, SEL __unused _cmd) {
-    id dynamicObject = LMCache::getInstance().dynamicObjects[self];
-    LMCache::getInstance().dynamicObjects.erase(self);
-    LMCache::getInstance().reversedObjects.erase(dynamicObject);
-    [dynamicObject release];
-    [self dealloc_];
-}
-
-id static swizzledAllocWithZone(Class self, SEL __unused _cmd, NSZone *zone) {
-    id object = objc_msgSend(self, @selector(allocWithZone_:), zone);
-    id dynamicObject = [LMCache::getInstance().dynamicClasses[self] new];
-    LMCache::getInstance().dynamicObjects[object] = dynamicObject;
-    LMCache::getInstance().reversedObjects[dynamicObject] = object;
-    return object;
-}
-

@@ -3,8 +3,12 @@
 
 @interface LMDynamicClass : NSObject
 
-- (instancetype)initForClass:(Class)clazz properties:(NSSet *)properties; //NSSet of LMProperty
+@property (nonatomic, readonly) Class clazz;
 
-- (void)createAndInject;
+- (instancetype)initWithBaseName:(const char *)baseName;
+
+- (void)addPropertyWithClass:(Class)clazz getter:(SEL)selector;
+
+- (void)register;
 
 @end

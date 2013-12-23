@@ -2,7 +2,7 @@
 
 @interface LMClass : NSObject
 
-@property (nonatomic) BOOL shouldInjectGetters;
+@property (nonatomic, readonly) BOOL shouldInjectGetters;
 
 - (instancetype)initWithClass:(Class)clazz properties:(NSSet *)properties;
 - (void)injectGetters;
