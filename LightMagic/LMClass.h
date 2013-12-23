@@ -2,7 +2,9 @@
 
 @interface LMClass : NSObject
 
-- (instancetype)initWithClass:(Class)clazz protocol:(Protocol *)protocol;
+@property (nonatomic) BOOL shouldInjectGetters;
+
+- (instancetype)initWithClass:(Class)clazz properties:(NSSet *)properties;
 - (void)injectGetters;
 
 @end

@@ -3,11 +3,12 @@
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "OCUnusedMacroInspection"
 
-#define LM_CONTEXT(group, block) __attribute__((constructor)) static void __unused group(void) { \
-    @autoreleasepool { \
-        block; \
-    } \
-}
+#define LM_CONTEXT(group, block) \
+    __attribute__((constructor)) static void __unused group(void) { \
+        @autoreleasepool { \
+            block; \
+        } \
+    }
 
 #define LM_REGISTER_INITIALIZER(clazz, block) [LMContext registerInitializer:block forClass:[clazz class]]
 

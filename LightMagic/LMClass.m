@@ -2,55 +2,28 @@
 #import "LMClass.h"
 #import "LMProperty.h"
 #import "LMDynamicClass.h"
-
-@interface LMClass ()
-
-@property (nonatomic, strong) NSSet *injectableProperties;
-
-@end
+#import "LMCollector.h"
 
 @implementation LMClass {
     Class _clazz;
     Protocol *_protocol;
+    NSSet *_injectableProperties;
 }
 
-- (instancetype)initWithClass:(Class)clazz protocol:(Protocol *)protocol {
+- (instancetype)initWithClass:(Class)clazz properties:(NSSet *)properties {
     self = [super init];
     _clazz = clazz;
-    _protocol = protocol;
+    _injectableProperties = properties;
     return self;
 }
 
-- (NSSet *)injectableProperties {
-    if (!_injectableProperties) {
-        self.injectableProperties = ({
-            NSMutableSet *properties = [NSMutableSet set];
-            Class clazz = _clazz;
-
-            do {
-                uint propertiesCount;
-                objc_property_t *propertyList = class_copyPropertyList(clazz, &propertiesCount);
-
-                for (uint i = 0; i < propertiesCount; i++) {
-                    LMProperty *property = [[LMProperty alloc] initWithProperty:propertyList[i]];
-                    [property parse];
-                    if (property.injectable) {
-                        [properties addObject:property];
-                    }
-                }
-                free(propertyList);
-                clazz = class_getSuperclass(clazz);
-            } while (class_conformsToProtocol(clazz, _protocol));
-
-            [NSSet setWithSet:properties];
-        });
-    }
-    return _injectableProperties;
+- (BOOL)shouldInjectGetters {
+    return [_injectableProperties count] > 0;
 }
 
 - (void)injectGetters {
     LMDynamicClass *injectedClass = [[LMDynamicClass alloc] initForClass:_clazz
-                                                              properties:self.injectableProperties];
+                                                              properties:_injectableProperties];
     [injectedClass createAndInject];
 }
 

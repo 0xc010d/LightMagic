@@ -5,6 +5,8 @@
 __attribute__((constructor)) static void __unused initialize(void) {
     NSSet *classes = [LMCollector classesForProtocol:@protocol(LightMagic)];
     for (LMClass *clazz in classes) {
-        [clazz injectGetters];
+        if (clazz.shouldInjectGetters) {
+            [clazz injectGetters];
+        }
     }
 }
