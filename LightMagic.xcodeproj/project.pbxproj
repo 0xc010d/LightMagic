@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		46E8F25D186893AF00AA6EC9 /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 46E8F25C186893AF00AA6EC9 /* ViewController.xib */; };
+		46E8F261186896D500AA6EC9 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 46E8F25F1868943800AA6EC9 /* ViewController.m */; };
 		CAE104DDE43C22FCF8EF662D /* LMContext.mm in Sources */ = {isa = PBXBuildFile; fileRef = CAE4D587E2B071857B89313B /* LMContext.mm */; };
 		CAE239CC7A4E3B9C97B0DCD8 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CAE5961BA743276E1841F861 /* XCTest.framework */; };
 		CAE27BF307F31CF598A309BE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CAE7121D23B3EF5F58030D9B /* CoreGraphics.framework */; };
@@ -38,6 +40,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		46E8F25C186893AF00AA6EC9 /* ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewController.xib; sourceTree = "<group>"; };
+		46E8F25E1868943800AA6EC9 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		46E8F25F1868943800AA6EC9 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		CAE1331572278A0937494D4F /* LightMagicTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LightMagicTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CAE157FA9FF3866D3328F2B0 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		CAE18CB08DC238008BD8920B /* LMCache.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LMCache.mm; sourceTree = "<group>"; };
@@ -115,6 +120,9 @@
 				CAE157FA9FF3866D3328F2B0 /* AppDelegate.m */,
 				CAEC603ADE564F12BB787678 /* Test.m */,
 				CAE81C65FD40A7DF7723ABC7 /* Test.h */,
+				46E8F25C186893AF00AA6EC9 /* ViewController.xib */,
+				46E8F25E1868943800AA6EC9 /* ViewController.h */,
+				46E8F25F1868943800AA6EC9 /* ViewController.m */,
 			);
 			path = TestApp;
 			sourceTree = "<group>";
@@ -247,6 +255,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				46E8F25D186893AF00AA6EC9 /* ViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -262,6 +271,7 @@
 				CAEB6E352278017ADA8B485E /* LightMagic.m in Sources */,
 				CAE7B50271B56447D14EA079 /* LMClass.m in Sources */,
 				CAE67DC3D2114487A5AFCF76 /* LMCollector.m in Sources */,
+				46E8F261186896D500AA6EC9 /* ViewController.m in Sources */,
 				CAE3C6E87B21E5698556DF04 /* LMProperty.m in Sources */,
 				CAE104DDE43C22FCF8EF662D /* LMContext.mm in Sources */,
 				CAE2F9EC262F58D819101B67 /* Test.m in Sources */,

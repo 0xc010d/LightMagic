@@ -2,6 +2,7 @@
 #include <mach/mach_time.h>
 #import "Test.h"
 #import "LightMagic.h"
+#import "ViewController.h"
 
 typedef struct TestResults {
     int64_t lazyTime;
@@ -19,18 +20,24 @@ static inline TestResults runTest(NSInteger loop, NSInteger callLoop);
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
-    self.window.rootViewController = [[UIViewController alloc] init];
+    ViewController *rootViewController = [[ViewController alloc] init];
+    self.window.rootViewController = rootViewController;
     [self.window makeKeyAndVisible];
 
-    NSInteger loop = 1000000;
+    NSInteger loop = 100000;
+    NSInteger callLoop = 100;
 
-    for (NSInteger callLoop = 10; callLoop <= 10; callLoop++) {
-        TestResults results = runTest(loop, callLoop);
-        NSLog(@"%lld", results.lazyTime);
-        NSLog(@"%lld", results.associatedTime);
-        NSLog(@"%lld", results.ivarTime);
-        NSLog(@"%f %f", results.lazyToAssociatedRatio, results.lazyToIvarRatio);
-    }
+    TestResults results = runTest(loop, callLoop);
+
+    rootViewController.lazyLabel.text = [NSString stringWithFormat:@"%lld", results.lazyTime];
+    rootViewController.associatedLabel.text = [NSString stringWithFormat:@"%lld", results.associatedTime];
+    rootViewController.ivarLabel.text = [NSString stringWithFormat:@"%lld", results.ivarTime];
+    rootViewController.ratioLabel.text = [NSString stringWithFormat:@"%f %f", results.lazyToAssociatedRatio, results.lazyToIvarRatio];
+    
+    NSLog(@"%lld", results.lazyTime);
+    NSLog(@"%lld", results.associatedTime);
+    NSLog(@"%lld", results.ivarTime);
+    NSLog(@"%f %f", results.lazyToAssociatedRatio, results.lazyToIvarRatio);
 
     NSLog(@"Done");
 
