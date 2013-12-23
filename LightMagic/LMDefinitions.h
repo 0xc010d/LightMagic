@@ -1,4 +1,4 @@
 #import <Foundation/Foundation.h>
 
-typedef id (^LMInitializer)(void);
+typedef id (^LMInitializer)(id sender);
 @protocol LightMagic @end;

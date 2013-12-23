@@ -10,6 +10,7 @@ class LMCache {
 public:
     std::map<Class, Class> dynamicClasses;
     std::map<id, id> dynamicObjects;
+    std::map<id, id> reversedObjects;
 
     static LMCache& getInstance();
 

@@ -172,21 +172,31 @@ id static dynamicGetter(id self, SEL _cmd) {
         buffer[len] = '\0';
         Class clazz = objc_getClass(buffer);
         LMInitializer initializer = LMCache::getInstance().initializer(clazz);
-        result = initializer ? objc_msgSend(initializer(), @selector(retain)) : objc_msgSend(clazz, @selector(new));
+        if (initializer) {
+            id sender = LMCache::getInstance().reversedObjects[self];
+            result = objc_msgSend(initializer(sender), @selector(retain));
+        }
+        else {
+            result = objc_msgSend(clazz, @selector(new));
+        }
         object_setInstanceVariable(self, name, result);
     }
     return result;
 }
 
 void static swizzledDealloc(id self, SEL __unused _cmd) {
-    [LMCache::getInstance().dynamicObjects[self] release];
+    id dynamicObject = LMCache::getInstance().dynamicObjects[self];
     LMCache::getInstance().dynamicObjects.erase(self);
+    LMCache::getInstance().reversedObjects.erase(dynamicObject);
+    [dynamicObject release];
     [self dealloc_];
 }
 
 id static swizzledAllocWithZone(Class self, SEL __unused _cmd, NSZone *zone) {
     id object = objc_msgSend(self, @selector(allocWithZone_:), zone);
-    LMCache::getInstance().dynamicObjects[object] = [LMCache::getInstance().dynamicClasses[self] new];
+    id dynamicObject = [LMCache::getInstance().dynamicClasses[self] new];
+    LMCache::getInstance().dynamicObjects[object] = dynamicObject;
+    LMCache::getInstance().reversedObjects[dynamicObject] = object;
     return object;
 }
 
