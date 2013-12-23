@@ -36,7 +36,6 @@ static inline TestResults runTest(NSInteger loop, NSInteger callLoop);
 
     Test *test = [[Test alloc] init];
     NSLog(@"%@", [[test lazyObject] class]);
-    NSLog(@"%@", [[test lazyObject] class]);
 
     LM_REGISTER_INITIALIZER(NSObject, ^id (id sender) {
         return [NSSet setWithObject:[NSObject new]];
@@ -54,6 +53,7 @@ static inline TestResults runTest(NSInteger loop, NSInteger callLoop);
 
     LM_UNREGISTER_INITIALIZER(NSObject);
     test = [[Test alloc] init];
+    NSLog(@"%@", [test lazyObject]);
     NSLog(@"%@", [test lazyObject]);
 
     NSLog(@"Done");

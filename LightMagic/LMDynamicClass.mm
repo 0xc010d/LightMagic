@@ -89,9 +89,7 @@ static void swizzledDealloc(id self, SEL __unused _cmd);
     class_addIvar(_clazz, name, size, (uint8_t)align, encoding);
 
     const char *className = class_getName(clazz);
-    char type[strlen(className + 4)];
-    sprintf(type, "@\"%s\"", className);
-    objc_property_attribute_t attributes[] = {"T", type};
+    objc_property_attribute_t attributes[] = {"T", className};
     class_addProperty(_clazz, name, attributes, 1);
 
     class_addMethod(_clazz, selector, (IMP)dynamicGetter, "@@:");
@@ -165,12 +163,8 @@ id static dynamicGetter(id self, SEL _cmd) {
     object_getInstanceVariable(self, name, (void **)&result);
     if (!result) {
         objc_property_t property = class_getProperty(object_getClass(self), name);
-        const char *attributes = property_getAttributes(property);
-        size_t len = strlen(attributes) - 4;
-        char buffer[len + 1];
-        memcpy(buffer, attributes + 3, len);
-        buffer[len] = '\0';
-        Class clazz = objc_getClass(buffer);
+        const char *className = property_getAttributes(property) + 1;
+        Class clazz = objc_getClass(className);
         LMInitializer initializer = LMCache::getInstance().initializer(clazz);
         if (initializer) {
             id sender = LMCache::getInstance().reversedObjects[self];
