@@ -20,6 +20,7 @@
 		CAE513713F14BCAB2F14CF81 /* LMDynamicClass.mm in Sources */ = {isa = PBXBuildFile; fileRef = CAEF2D215CF6DA542AD72E4D /* LMDynamicClass.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		CAE67DC3D2114487A5AFCF76 /* LMCollector.m in Sources */ = {isa = PBXBuildFile; fileRef = CAEBF08A822831747B09DE66 /* LMCollector.m */; };
 		CAE785C832E9A3CD63E26D7C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE51D023F458C3ABA8A862A /* main.m */; };
+		CAE7A29D93DF60F2E6CE954A /* LMTemplateClass.mm in Sources */ = {isa = PBXBuildFile; fileRef = CAE6451B959913FF11A2302C /* LMTemplateClass.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		CAE7B50271B56447D14EA079 /* LMClass.mm in Sources */ = {isa = PBXBuildFile; fileRef = CAEE2552266334BF99148925 /* LMClass.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		CAEA61E887FC065118D9D94A /* LMCache.mm in Sources */ = {isa = PBXBuildFile; fileRef = CAE18CB08DC238008BD8920B /* LMCache.mm */; };
 		CAEA7C6C3528F9761A955C4A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CAE6F979ECF497D1170AFF12 /* Foundation.framework */; };
@@ -56,8 +57,10 @@
 		CAE4D587E2B071857B89313B /* LMContext.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LMContext.mm; sourceTree = "<group>"; };
 		CAE4F2D8B61AFC41EEFCDEE6 /* LMContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMContext.h; sourceTree = "<group>"; };
 		CAE51D023F458C3ABA8A862A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		CAE546667346E8BC2294B541 /* LMTemplateClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMTemplateClass.h; sourceTree = "<group>"; };
 		CAE5961BA743276E1841F861 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		CAE5E5B6D847E496BD8F7DDF /* LMDynamicClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMDynamicClass.h; sourceTree = "<group>"; };
+		CAE6451B959913FF11A2302C /* LMTemplateClass.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LMTemplateClass.mm; sourceTree = "<group>"; };
 		CAE6D7451DAFED11149BE96E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		CAE6F979ECF497D1170AFF12 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		CAE7121D23B3EF5F58030D9B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -159,6 +162,8 @@
 				CAE1CBA502B2CAE2C1AEF7C7 /* LMDefinitions.h */,
 				CAE18CB08DC238008BD8920B /* LMCache.mm */,
 				CAE4582E6BE4470CA991FAE6 /* LMCache.h */,
+				CAE6451B959913FF11A2302C /* LMTemplateClass.mm */,
+				CAE546667346E8BC2294B541 /* LMTemplateClass.h */,
 			);
 			path = LightMagic;
 			sourceTree = "<group>";
@@ -318,6 +323,7 @@
 				CAE2F9EC262F58D819101B67 /* Test.m in Sources */,
 				CAE513713F14BCAB2F14CF81 /* LMDynamicClass.mm in Sources */,
 				CAEA61E887FC065118D9D94A /* LMCache.mm in Sources */,
+				CAE7A29D93DF60F2E6CE954A /* LMTemplateClass.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
