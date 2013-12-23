@@ -1,6 +1,7 @@
 #import "Test.h"
 #import "LightMagic.h"
 #import <objc/runtime.h>
+#import <BloodMagic/BMLazy.h>
 
 @interface Test () <LightMagic>
 @end
