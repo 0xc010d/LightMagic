@@ -4,7 +4,10 @@
 #import "LMDefinitions.h"
 #import "LMCache.h"
 
-@implementation LMTemplateClass
+@implementation LMTemplateClass {
+    @public
+    std::map<SEL, id> values;
+}
 
 - (void)dealloc {
     for (std::map<SEL, id>::iterator iterator = values.begin(); iterator != values.end(); iterator++) {
@@ -33,4 +36,11 @@ id lm_dynamicGetter(LMTemplateClass *self, SEL _cmd) {
         self->values[_cmd] = result;
     }
     return result;
+}
+
+objc_property_attribute_t *lm_propertyAttributesForClass(Class clazz, uint *count) {
+    const char *className = class_getName(clazz);
+    static objc_property_attribute_t attributes[] = {"T", className};
+    *count = 1;
+    return attributes;
 }
