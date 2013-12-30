@@ -14,7 +14,7 @@
 
     for (uint index = 0; index < classesCount; index++) {
         Class nextClass = objc_getClass(classNames[index]);
-        if (class_conformsToProtocol(nextClass, protocol)) {
+        if ([nextClass conformsToProtocol:protocol]) {
             NSSet *properties = [self injectablePropertiesForClass:nextClass protocol:protocol];
             LMClass *clazz = [[LMClass alloc] initWithClass:nextClass properties:properties];
             [result addObject:clazz];
@@ -26,24 +26,26 @@
     return [NSSet setWithSet:result];
 }
 
-+ (NSSet *)injectablePropertiesForClass:(Class)_clazz protocol:(Protocol *)protocol {
++ (NSSet *)injectablePropertiesForClass:(Class)clazz protocol:(Protocol *)protocol {
     NSMutableSet *properties = [NSMutableSet set];
-    Class clazz = _clazz;
+    Class nextClass = clazz;
     
     do {
-        uint propertiesCount;
-        objc_property_t *propertyList = class_copyPropertyList(clazz, &propertiesCount);
-        
-        for (uint i = 0; i < propertiesCount; i++) {
-            LMProperty *property = [[LMProperty alloc] initWithProperty:propertyList[i]];
-            [property parse];
-            if (property.injectable) {
-                [properties addObject:property];
+        if (class_conformsToProtocol(nextClass, protocol)) {
+            uint propertiesCount;
+            objc_property_t *propertyList = class_copyPropertyList(nextClass, &propertiesCount);
+
+            for (uint i = 0; i < propertiesCount; i++) {
+                LMProperty *property = [[LMProperty alloc] initWithProperty:propertyList[i]];
+                [property parse];
+                if (property.injectable) {
+                    [properties addObject:property];
+                }
             }
+            free(propertyList);
         }
-        free(propertyList);
-        clazz = class_getSuperclass(clazz);
-    } while (class_conformsToProtocol(clazz, protocol));
+        nextClass = class_getSuperclass(nextClass);
+    } while ([nextClass conformsToProtocol:protocol]);
     
     return [NSSet setWithSet:properties];
 }
