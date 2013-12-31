@@ -25,7 +25,6 @@
 		46D863171872310400172036 /* LMTemplateClass.mm in Sources */ = {isa = PBXBuildFile; fileRef = CAE6451B959913FF11A2302C /* LMTemplateClass.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		46E8F25D186893AF00AA6EC9 /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 46E8F25C186893AF00AA6EC9 /* ViewController.xib */; };
 		46E8F261186896D500AA6EC9 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 46E8F25F1868943800AA6EC9 /* ViewController.m */; };
-		5AF7C8DD8BDF4C2BB3431DF6 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E67170A095F45E1A8285466 /* libPods.a */; };
 		89BBF49EB8D4423AAED38EAE /* libPods-Example.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FE7D203011774F3DA6370AC9 /* libPods-Example.a */; };
 		CAE27BF307F31CF598A309BE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CAE7121D23B3EF5F58030D9B /* CoreGraphics.framework */; };
 		CAE2F9EC262F58D819101B67 /* Test.m in Sources */ = {isa = PBXBuildFile; fileRef = CAEC603ADE564F12BB787678 /* Test.m */; };
@@ -142,7 +141,6 @@
 				CAEA7C6C3528F9761A955C4A /* Foundation.framework in Frameworks */,
 				CAE27BF307F31CF598A309BE /* CoreGraphics.framework in Frameworks */,
 				CAEE8E33460AF494A492D9B4 /* UIKit.framework in Frameworks */,
-				5AF7C8DD8BDF4C2BB3431DF6 /* libPods.a in Frameworks */,
 				89BBF49EB8D4423AAED38EAE /* libPods-Example.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
