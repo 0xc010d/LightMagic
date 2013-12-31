@@ -17,3 +17,9 @@ LMInitializer LMCache::initializer(Class clazz) {
     return initializers[clazz];
 }
 
+void LMCache::clear() {
+    dynamicClasses.clear();
+    dynamicObjects.clear();
+    reversedObjects.clear();
+    initializers.clear();
+}

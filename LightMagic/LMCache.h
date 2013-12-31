@@ -18,6 +18,8 @@ public:
     void removeInitializer(Class);
     LMInitializer initializer(Class);
 
+    void clear();
+
 private:
     std::map<Class, LMInitializer> initializers;
 };
