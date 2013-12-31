@@ -36,11 +36,7 @@ static size_t kSuffixLength;
 }
 
 - (void)addPropertyWithClass:(Class)clazz getter:(SEL)selector {
-    const char *name = sel_getName(selector);
-    uint attributesCount;
-    objc_property_attribute_t *attributes = lm_propertyAttributesForClass(clazz, &attributesCount);
-    class_addProperty(_clazz, name, attributes, attributesCount);
-    class_addMethod(_clazz, selector, (IMP)lm_dynamicGetter, "@@:");
+    lm_class_addProperty(_clazz, clazz, selector);
 }
 
 @end

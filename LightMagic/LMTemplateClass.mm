@@ -4,6 +4,8 @@
 #import "LMDefinitions.h"
 #import "LMCache.h"
 
+static Class lm_property_getClass(objc_property_t property);
+
 @implementation LMTemplateClass {
     @public
     std::map<SEL, id> values;
@@ -23,8 +25,7 @@ id lm_dynamicGetter(LMTemplateClass *self, SEL _cmd) {
     if (!result) {
         const char *name = sel_getName(_cmd);
         objc_property_t property = class_getProperty(object_getClass(self), name);
-        const char *className = property_getAttributes(property) + 1;
-        Class clazz = objc_getClass(className);
+        Class clazz = lm_property_getClass(property);
         LMInitializer initializer = LMCache::getInstance().initializer(clazz);
         if (initializer) {
             id sender = LMCache::getInstance().reversedObjects[self];
@@ -38,9 +39,15 @@ id lm_dynamicGetter(LMTemplateClass *self, SEL _cmd) {
     return result;
 }
 
-objc_property_attribute_t *lm_propertyAttributesForClass(Class clazz, uint *count) {
-    const char *className = class_getName(clazz);
-    static objc_property_attribute_t attributes[] = {"T", className};
-    *count = 1;
-    return attributes;
+void lm_class_addProperty(Class clazz, Class propertyClass, SEL getter) {
+    const char *name = sel_getName(getter);
+    const char *className = class_getName(propertyClass);
+    objc_property_attribute_t attributes[] = {"T", className};
+    class_addProperty(clazz, name, attributes, 1);
+    class_addMethod(clazz, getter, (IMP)lm_dynamicGetter, "@@:");
+}
+
+Class static lm_property_getClass(objc_property_t property) {
+    const char *className = property_getAttributes(property) + 1;
+    return objc_getClass(className);
 }
