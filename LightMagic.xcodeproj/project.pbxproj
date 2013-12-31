@@ -74,7 +74,6 @@
 		46E8F25F1868943800AA6EC9 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		4B0AEC639DA549C5B18FB2D7 /* Pods-Example.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example.xcconfig"; path = "Pods/Pods-Example.xcconfig"; sourceTree = "<group>"; };
 		5121594D64434C65857A09B3 /* Pods-Tests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.xcconfig"; path = "Pods/Pods-Tests.xcconfig"; sourceTree = "<group>"; };
-		6E67170A095F45E1A8285466 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD6E6678283747B4A42FE296 /* libPods-Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CAE157FA9FF3866D3328F2B0 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		CAE18CB08DC238008BD8920B /* LMCache.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LMCache.mm; sourceTree = "<group>"; };
@@ -108,7 +107,6 @@
 		CAEE2552266334BF99148925 /* LMClass.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LMClass.mm; sourceTree = "<group>"; };
 		CAEF04C77877084A0F56911C /* LightMagic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LightMagic.h; sourceTree = "<group>"; };
 		CAEF2D215CF6DA542AD72E4D /* LMDynamicClass.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LMDynamicClass.mm; sourceTree = "<group>"; };
-		CBD5862ED93A4F9F87C3A0C9 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		FE7D203011774F3DA6370AC9 /* libPods-Example.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Example.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -155,7 +153,6 @@
 				CAE7121D23B3EF5F58030D9B /* CoreGraphics.framework */,
 				CAE6D7451DAFED11149BE96E /* UIKit.framework */,
 				CAE5961BA743276E1841F861 /* XCTest.framework */,
-				6E67170A095F45E1A8285466 /* libPods.a */,
 				FE7D203011774F3DA6370AC9 /* libPods-Example.a */,
 				BD6E6678283747B4A42FE296 /* libPods-Tests.a */,
 			);
@@ -233,7 +230,6 @@
 				CAE8844ED7F1EA3C6788817A /* LightMagic */,
 				CAE420A9C9A07BBEAB80984B /* Example */,
 				CAE4D6D7C981CC6E93ADC359 /* Tests */,
-				CBD5862ED93A4F9F87C3A0C9 /* Pods.xcconfig */,
 				4B0AEC639DA549C5B18FB2D7 /* Pods-Example.xcconfig */,
 				5121594D64434C65857A09B3 /* Pods-Tests.xcconfig */,
 			);
