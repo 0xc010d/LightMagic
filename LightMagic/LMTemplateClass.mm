@@ -1,10 +1,12 @@
+#import <map>
 #import <objc/runtime.h>
 #import <objc/message.h>
 #import "LMTemplateClass.h"
 #import "LMDefinitions.h"
 #import "LMCache.h"
 
-static Class lm_property_getClass(objc_property_t property);
+id static lm_dynamicGetter(LMTemplateClass *self, SEL _cmd);
+Class static lm_property_getClass(objc_property_t property);
 
 @implementation LMTemplateClass {
     @public
@@ -20,7 +22,17 @@ static Class lm_property_getClass(objc_property_t property);
 
 @end
 
-id lm_dynamicGetter(LMTemplateClass *self, SEL _cmd) {
+void lm_class_addProperty(Class clazz, Class propertyClass, SEL getter) {
+    const char *name = sel_getName(getter);
+    const char *className = class_getName(propertyClass);
+    objc_property_attribute_t attributes[] = {"T", className};
+    class_addProperty(clazz, name, attributes, 1);
+    class_addMethod(clazz, getter, (IMP)lm_dynamicGetter, "@@:");
+}
+
+#pragma mark - Private
+
+id static lm_dynamicGetter(LMTemplateClass *self, SEL _cmd) {
     id result = self->values[_cmd];
     if (!result) {
         const char *name = sel_getName(_cmd);
@@ -37,14 +49,6 @@ id lm_dynamicGetter(LMTemplateClass *self, SEL _cmd) {
         self->values[_cmd] = result;
     }
     return result;
-}
-
-void lm_class_addProperty(Class clazz, Class propertyClass, SEL getter) {
-    const char *name = sel_getName(getter);
-    const char *className = class_getName(propertyClass);
-    objc_property_attribute_t attributes[] = {"T", className};
-    class_addProperty(clazz, name, attributes, 1);
-    class_addMethod(clazz, getter, (IMP)lm_dynamicGetter, "@@:");
 }
 
 Class static lm_property_getClass(objc_property_t property) {
