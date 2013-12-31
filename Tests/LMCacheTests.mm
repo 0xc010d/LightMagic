@@ -1,34 +1,68 @@
+#import <Kiwi.h>
 #import "LMCache.h"
 
-@interface LMCacheTests : XCTestCase
-@end
-
-@implementation LMCacheTests {
-    LMCache *_cache;
-}
-
-- (void)setUp {
-    _cache = new LMCache();
-}
-
-- (void)tearDown {
-    delete _cache;
-}
-
-- (void)testDataClearing {
-    _cache->setInitializer([NSObject class], ^id(id sender) {
-        return nil;
-    });
-    _cache->dynamicClasses[[NSObject class]] = [NSArray class];
-    _cache->dynamicObjects[[[NSObject alloc] init]] = [[NSObject alloc] init];
-    _cache->reversedObjects[[[NSObject alloc] init]] = [[NSObject alloc] init];
-
-    _cache->clear();
-
-    XCTAssert(_cache->dynamicClasses.size() == 0, @"Dynamic classes should be removed from cache");
-    XCTAssert(_cache->dynamicObjects.size() == 0, @"Dynamic objects should be removed from cache");
-    XCTAssert(_cache->reversedObjects.size() == 0, @"Reversed objects should be removed from cache");
-    XCTAssertNil(_cache->initializer([NSObject class]), @"Initializer should not be retrievable");
-}
-
-@end
+SPEC_BEGIN(LMCacheTests)
+        describe(@"Cache consistency", ^{
+            context(@"Data clearing", ^{
+                __block LMCache *cache;
+                beforeEach(^{
+                    cache = new LMCache();
+                });
+                afterEach(^{
+                    delete cache;
+                });
+                it(@"Initializer should not be retrievable", ^{
+                    cache->setInitializer([NSObject class], ^id(id sender) { return nil; });
+                    cache->clear();
+                    [[cache->initializer([NSObject class]) should] beNil];
+                });
+                it(@"Dynamic classes should be removed from cache", ^{
+                    cache->dynamicClasses[[NSObject class]] = [NSArray class];
+                    cache->clear();
+                    [[theValue(cache->dynamicClasses.size()) should] equal:theValue(0)];
+                });
+                it(@"Dynamic objects should be removed from cache", ^{
+                    cache->dynamicObjects[[[NSObject alloc] init]] = [[NSObject alloc] init];
+                    cache->clear();
+                    [[theValue(cache->dynamicObjects.size()) should] equal:theValue(0)];
+                });
+                it(@"Reversed objects should be removed from cache", ^{
+                    cache->reversedObjects[[[NSObject alloc] init]] = [[NSObject alloc] init];
+                    cache->clear();
+                    [[theValue(cache->reversedObjects.size()) should] equal:theValue(0)];
+                });
+            });
+            context(@"Initializers", ^{
+                __block LMCache *cache;
+                beforeEach(^{
+                    cache = new LMCache();
+                    cache->setInitializer([NSObject class], ^id(id sender) { return nil; });
+                });
+                afterEach(^{
+                    delete cache;
+                });
+                it(@"Initializer should not be retrievable after removing", ^{
+                    cache->removeInitializer([NSObject class]);
+                    [[cache->initializer([NSObject class]) should] beNil];
+                });
+                it(@"Initializer should be runnable", ^{
+                    [[cache->initializer([NSObject class])(nil) should] beNil];
+                });
+                it(@"Initializer should be rewritable", ^{
+                    [[cache->initializer([NSObject class])(nil) should] beNil];
+                    cache->setInitializer([NSObject class], ^id(id sender) {
+                        return [NSArray array];
+                    });
+                    [[cache->initializer([NSObject class])(nil) shouldNot] beNil];
+                });
+                it(@"Initializer parameter should be accessable", ^{
+                    cache->setInitializer([NSObject class], ^id(id sender) {
+                        return [NSArray arrayWithObject:sender];
+                    });
+                    NSObject *object = [NSObject new];
+                    [[theValue([cache->initializer([NSObject class])(object) count]) should] equal:theValue(1)];
+                    [[cache->initializer([NSObject class])(object)[0] should] equal:object];
+                });
+            });
+        });
+SPEC_END
