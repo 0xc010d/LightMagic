@@ -2,6 +2,7 @@
 #import <map>
 
 #import "LMDefinitions.h"
+#import "LMInitializerCache.h"
 
 #ifndef __LMCache_H_
 #define __LMCache_H_
@@ -18,8 +19,10 @@ public:
     void removeInitializer(Class);
     LMInitializer initializer(Class);
 
+    ~LMCache();
+
 private:
-    std::map<Class, LMInitializer> initializers;
+    LMInitializerCache *classInitializers = new LMInitializerCache;
 };
 
 #endif

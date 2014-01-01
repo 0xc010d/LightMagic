@@ -6,13 +6,17 @@ LMCache& LMCache::getInstance() {
 }
 
 void LMCache::setInitializer(Class clazz, LMInitializer initializer) {
-    initializers[clazz] = [initializer copy];
+    classInitializers->setInitializer(clazz, nil, initializer);
 }
 
 void LMCache::removeInitializer(Class clazz) {
-    initializers.erase(clazz);
+    classInitializers->removeInitializer(clazz, nil);
 }
 
 LMInitializer LMCache::initializer(Class clazz) {
-    return initializers[clazz];
+    return classInitializers->initializer(clazz, nil);
+}
+
+LMCache::~LMCache() {
+    delete classInitializers;
 }

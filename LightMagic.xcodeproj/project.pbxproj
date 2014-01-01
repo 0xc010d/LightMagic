@@ -31,6 +31,7 @@
 		CAE3E0C66C8D9501F1359F68 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE157FA9FF3866D3328F2B0 /* AppDelegate.m */; };
 		CAE785C832E9A3CD63E26D7C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE51D023F458C3ABA8A862A /* main.m */; };
 		CAEA7C6C3528F9761A955C4A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CAE6F979ECF497D1170AFF12 /* Foundation.framework */; };
+		CAEBFAB1A30644CB62E4644B /* LMInitializerCache.mm in Sources */ = {isa = PBXBuildFile; fileRef = CAE967F0EAF36BF7D1D49B72 /* LMInitializerCache.mm */; };
 		CAEDFC5A5F2DC72EF13BBC13 /* LMCacheTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = CAEB2C5D6C9AAD1398A90F7A /* LMCacheTests.mm */; };
 		CAEE8E33460AF494A492D9B4 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CAE6D7451DAFED11149BE96E /* UIKit.framework */; };
 /* End PBXBuildFile section */
@@ -94,7 +95,9 @@
 		CAE7121D23B3EF5F58030D9B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		CAE80A3278804FACB65A114B /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		CAE81C65FD40A7DF7723ABC7 /* Test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Test.h; sourceTree = "<group>"; };
+		CAE967F0EAF36BF7D1D49B72 /* LMInitializerCache.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LMInitializerCache.mm; sourceTree = "<group>"; };
 		CAE9954E6DD9C1626896F552 /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CAEA8EF5F995EEB815AFBE9D /* LMInitializerCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMInitializerCache.h; sourceTree = "<group>"; };
 		CAEB27FFB154093F20D32A50 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.info; path = Info.plist; sourceTree = "<group>"; };
 		CAEB2C5D6C9AAD1398A90F7A /* LMCacheTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LMCacheTests.mm; sourceTree = "<group>"; };
 		CAEBF08A822831747B09DE66 /* LMCollector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LMCollector.m; sourceTree = "<group>"; };
@@ -208,6 +211,8 @@
 				CAE4582E6BE4470CA991FAE6 /* LMCache.h */,
 				CAE6451B959913FF11A2302C /* LMTemplateClass.mm */,
 				CAE546667346E8BC2294B541 /* LMTemplateClass.h */,
+				CAE967F0EAF36BF7D1D49B72 /* LMInitializerCache.mm */,
+				CAEA8EF5F995EEB815AFBE9D /* LMInitializerCache.h */,
 			);
 			path = LightMagic;
 			sourceTree = "<group>";
@@ -430,6 +435,7 @@
 				46D863171872310400172036 /* LMTemplateClass.mm in Sources */,
 				46D863111872310400172036 /* LMClass.mm in Sources */,
 				46D863151872310400172036 /* LMDynamicClass.mm in Sources */,
+				CAEBFAB1A30644CB62E4644B /* LMInitializerCache.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
