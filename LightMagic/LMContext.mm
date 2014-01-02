@@ -4,11 +4,11 @@
 @implementation LMContext
 
 + (void)registerInitializer:(LMInitializer)initializer forClass:(Class)clazz {
-    LMCache::getInstance().setInitializer(clazz, initializer);
+    LMCache::getInstance().setInitializer(initializer, clazz, Nil);
 }
 
 + (void)removeInitializerForClass:(Class)clazz {
-    LMCache::getInstance().removeInitializer(clazz);
+    LMCache::getInstance().removeInitializer(clazz, Nil);
 }
 
 @end

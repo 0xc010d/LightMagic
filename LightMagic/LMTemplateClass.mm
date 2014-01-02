@@ -36,15 +36,29 @@ id static lm_dynamicGetter(LMTemplateClass *self, SEL _cmd) {
     id result = self->values[_cmd];
     if (!result) {
         const char *name = sel_getName(_cmd);
-        objc_property_t property = class_getProperty(object_getClass(self), name);
-        Class clazz = lm_property_getClass(property);
-        LMInitializer initializer = LMCache::getInstance().initializer(clazz);
-        if (initializer) {
-            id sender = LMCache::getInstance().reversedObjects[self];
-            result = objc_msgSend(initializer(sender), @selector(retain));
+        Class dynamicClass = object_getClass(self);
+        objc_property_t property = class_getProperty(dynamicClass, name);
+        Class propertyClass = lm_property_getClass(property);
+        BOOL hasDefaultInitializer;
+        BOOL hasContainerInitializer = LMCache::getInstance().hasContainerInitializer(propertyClass, &hasDefaultInitializer);
+        if (hasContainerInitializer) {
+            id container = LMCache::getInstance().reversedObjects[self];
+            Class containerClass = object_getClass(container);
+            LMInitializer initializer = LMCache::getInstance().initializer(propertyClass, containerClass);
+            if (initializer) {
+                result = objc_msgSend(initializer(container), @selector(retain));
+            }
+            else {
+                result = objc_msgSend(propertyClass, @selector(new));
+            }
+        }
+        else if (hasDefaultInitializer) {
+            LMInitializer initializer = LMCache::getInstance().defaultInitializer(propertyClass);
+            id container = LMCache::getInstance().reversedObjects[self];
+            result = objc_msgSend(initializer(container), @selector(retain));
         }
         else {
-            result = objc_msgSend(clazz, @selector(new));
+            result = objc_msgSend(propertyClass, @selector(new));
         }
         self->values[_cmd] = result;
     }

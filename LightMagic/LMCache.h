@@ -2,10 +2,18 @@
 #import <map>
 
 #import "LMDefinitions.h"
-#import "LMInitializerCache.h"
 
 #ifndef __LMCache_H_
 #define __LMCache_H_
+
+struct ClassCompare {
+    bool operator()(Class a, Class b) const;
+};
+
+struct class_initializers_node {
+    LMInitializer initializer;
+    std::map<Class, LMInitializer, ClassCompare> containers;
+};
 
 class LMCache {
 public:
@@ -15,14 +23,14 @@ public:
 
     static LMCache& getInstance();
 
-    void setInitializer(Class, LMInitializer);
-    void removeInitializer(Class);
-    LMInitializer initializer(Class);
-
-    ~LMCache();
+    void setInitializer(LMInitializer initializer, Class propertyClass, Class containerClass);
+    void removeInitializer(Class propertyClass, Class containerClass);
+    BOOL hasContainerInitializer(Class propertyClass, BOOL *hasDefaultInitializer);
+    LMInitializer defaultInitializer(Class propertyClass);
+    LMInitializer initializer(Class propertyClass, Class containerClass);
 
 private:
-    LMInitializerCache *classInitializers = new LMInitializerCache;
+    std::map<Class, class_initializers_node *> _initializers;
 };
 
 #endif
