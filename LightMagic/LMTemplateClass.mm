@@ -40,7 +40,7 @@ id static lm_dynamicGetter(LMTemplateClass *self, SEL _cmd) {
         objc_property_t property = class_getProperty(dynamicClass, name);
         Class propertyClass = lm_property_getClass(property);
         BOOL hasDefaultInitializer;
-        BOOL hasContainerInitializer = LMCache::getInstance().hasContainerInitializer(propertyClass, &hasDefaultInitializer);
+        BOOL hasContainerInitializer = LMCache::getInstance().hasContainerInitializers(propertyClass, &hasDefaultInitializer);
         if (hasContainerInitializer) {
             id container = LMCache::getInstance().reversedObjects[self];
             Class containerClass = object_getClass(container);
@@ -53,7 +53,7 @@ id static lm_dynamicGetter(LMTemplateClass *self, SEL _cmd) {
             }
         }
         else if (hasDefaultInitializer) {
-            LMInitializer initializer = LMCache::getInstance().defaultInitializer(propertyClass);
+            LMInitializer initializer = LMCache::getInstance().initializer(propertyClass);
             id container = LMCache::getInstance().reversedObjects[self];
             result = objc_msgSend(initializer(container), @selector(retain));
         }

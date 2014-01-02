@@ -23,14 +23,18 @@ public:
 
     static LMCache& getInstance();
 
+    void setInitializer(LMInitializer initializer, Class propertyClass);
     void setInitializer(LMInitializer initializer, Class propertyClass, Class containerClass);
+    void removeInitializer(Class propertyClass);
     void removeInitializer(Class propertyClass, Class containerClass);
-    BOOL hasContainerInitializer(Class propertyClass, BOOL *hasDefaultInitializer);
-    LMInitializer defaultInitializer(Class propertyClass);
+    LMInitializer initializer(Class propertyClass);
     LMInitializer initializer(Class propertyClass, Class containerClass);
+    BOOL hasContainerInitializers(Class propertyClass, BOOL *hasDefaultInitializer);
 
 private:
     std::map<Class, class_initializers_node *> _initializers;
+    class_initializers_node *_initializersNode(Class propertyClass);
+    void _removeInitializersNodeIfNeeded(Class propertyClass);
 };
 
 #endif
