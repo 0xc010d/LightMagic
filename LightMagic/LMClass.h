@@ -4,7 +4,7 @@
 
 @property (nonatomic, readonly) BOOL shouldInjectGetters;
 
-- (instancetype)initWithClass:(Class)clazz properties:(NSSet *)properties;
+- (instancetype)initWithClass:(Class)containerClass properties:(NSSet *)properties;
 - (void)injectGetters;
 
 @end

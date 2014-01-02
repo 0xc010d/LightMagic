@@ -19,13 +19,15 @@ void static swizzledDealloc(id self, SEL __unused _cmd);
 @end
 
 @implementation LMClass {
-    Class _clazz;
+    Class _class;
+    const char *_className;
     NSSet *_injectableProperties;
 }
 
-- (instancetype)initWithClass:(Class)clazz properties:(NSSet *)properties {
+- (instancetype)initWithClass:(Class)containerClass properties:(NSSet *)properties {
     self = [super init];
-    _clazz = clazz;
+    _class = containerClass;
+    _className = class_getName(containerClass);
     _injectableProperties = [properties retain];
     return self;
 }
@@ -35,7 +37,7 @@ void static swizzledDealloc(id self, SEL __unused _cmd);
 }
 
 - (void)injectGetters {
-    LMDynamicClass *injectedClass = [[LMDynamicClass alloc] initWithBaseName:class_getName(_clazz)];
+    LMDynamicClass *injectedClass = [[LMDynamicClass alloc] initWithBaseName:_className];
     for (LMProperty *property in _injectableProperties) {
         SEL getter = property.getter;
         [injectedClass addPropertyWithClass:property.clazz getter:getter];
@@ -44,15 +46,15 @@ void static swizzledDealloc(id self, SEL __unused _cmd);
 
     [injectedClass register];
 
-    class_swizzleMethodWithImplementation(_clazz, @selector(allocWithZone:), @selector(allocWithZone_:), (IMP)swizzledAllocWithZone, YES);
-    class_swizzleMethodWithImplementation(_clazz, @selector(dealloc), @selector(dealloc_), (IMP)swizzledDealloc, NO);
+    class_swizzleMethodWithImplementation(_class, @selector(allocWithZone:), @selector(allocWithZone_:), (IMP)swizzledAllocWithZone, YES);
+    class_swizzleMethodWithImplementation(_class, @selector(dealloc), @selector(dealloc_), (IMP)swizzledDealloc, NO);
 
-    LMCache::getInstance().dynamicClasses[_clazz] = [injectedClass clazz];
+    LMCache::getInstance().dynamicClasses[_class] = [injectedClass clazz];
     [injectedClass release];
 }
 
 - (void)forwardGetter:(SEL)selector {
-    class_addMethod(_clazz, selector, (IMP)forwardingGetter, "@@:");
+    class_addMethod(_class, selector, (IMP)forwardingGetter, "@@:");
 }
 
 - (void)dealloc {
