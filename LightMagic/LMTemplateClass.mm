@@ -2,7 +2,6 @@
 #import <objc/runtime.h>
 #import <objc/message.h>
 #import "LMTemplateClass.h"
-#import "LMDefinitions.h"
 #import "LMCache.h"
 
 id static lm_dynamicGetter(LMTemplateClass *self, SEL _cmd);
@@ -22,16 +21,47 @@ Class static lm_property_getClass(objc_property_t property);
 
 @end
 
-void lm_class_addProperty(Class clazz, Class propertyClass, SEL getter) {
+#if LM_FORCED_CACHE
+void lm_class_addProperty(Class dynamicClass, Class propertyClass, SEL getter);
+void lm_class_addProperty(Class containerClass, Class dynamicClass, Class propertyClass, SEL getter) {
+    lm_class_addProperty(dynamicClass, propertyClass, getter);
+
+    LMInitializer initializer = LMCache::getInstance().initializer(propertyClass, containerClass);
+    LMCache::getInstance().forcedCache[dynamicClass][getter] = initializer;
+}
+#endif
+
+void lm_class_addProperty(Class dynamicClass, Class propertyClass, SEL getter) {
     const char *name = sel_getName(getter);
     const char *className = class_getName(propertyClass);
     objc_property_attribute_t attributes[] = {"T", className};
-    class_addProperty(clazz, name, attributes, 1);
-    class_addMethod(clazz, getter, (IMP)lm_dynamicGetter, "@@:");
+    class_addProperty(dynamicClass, name, attributes, 1);
+    class_addMethod(dynamicClass, getter, (IMP)lm_dynamicGetter, "@@:");
 }
 
 #pragma mark - Private
 
+#if LM_FORCED_CACHE
+id static lm_dynamicGetter(LMTemplateClass *self, SEL _cmd) {
+    id result = self->values[_cmd];
+    if (!result) {
+        Class dynamicClass = object_getClass(self);
+        LMInitializer initializer = LMCache::getInstance().forcedCache[dynamicClass][_cmd];
+        if (initializer) {
+            id container = LMCache::getInstance().reversedObjects[self];
+            result = objc_msgSend(initializer(container), @selector(retain));
+        }
+        else {
+            const char *name = sel_getName(_cmd);
+            objc_property_t property = class_getProperty(dynamicClass, name);
+            Class propertyClass = lm_property_getClass(property);
+            result = objc_msgSend(propertyClass, @selector(new));
+        }
+        self->values[_cmd] = result;
+    }
+    return result;
+}
+#else
 id static lm_dynamicGetter(LMTemplateClass *self, SEL _cmd) {
     id result = self->values[_cmd];
     if (!result) {
@@ -64,6 +94,7 @@ id static lm_dynamicGetter(LMTemplateClass *self, SEL _cmd) {
     }
     return result;
 }
+#endif
 
 Class static lm_property_getClass(objc_property_t property) {
     const char *className = property_getAttributes(property) + 1;

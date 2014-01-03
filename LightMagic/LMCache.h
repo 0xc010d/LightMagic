@@ -20,6 +20,9 @@ public:
     std::map<Class, Class> dynamicClasses;
     std::map<id, id> dynamicObjects;
     std::map<id, id> reversedObjects;
+#if LM_FORCED_CACHE
+    std::map<Class, std::map<SEL, LMInitializer>> forcedCache;
+#endif
 
     static LMCache& getInstance();
 

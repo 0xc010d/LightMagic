@@ -69,17 +69,15 @@ LMInitializer LMCache::initializer(Class propertyClass, Class containerClass) {
         if (!containerClass) {
             return node->initializer;
         }
-        LMInitializer initializer = node->initializer;
         std::map<Class, LMInitializer>::iterator iterator = node->containers.begin();
         std::map<Class, LMInitializer>::iterator end = node->containers.end();
         while (iterator != end) {
             if ([containerClass isSubclassOfClass:iterator->first]) {
-                initializer = iterator->second;
-                break;
+                return iterator->second;
             }
             iterator ++;
         }
-        return initializer;
+        return node->initializer;
     }
     return nil;
 }

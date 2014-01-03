@@ -1,7 +1,12 @@
 #import <Foundation/Foundation.h>
+#import "LMDefinitions.h"
 
 @interface LMTemplateClass : NSObject
 
 @end
 
-extern void lm_class_addProperty(Class clazz, Class propertyClass, SEL getter);
+#if LM_FORCED_CACHE
+extern void lm_class_addProperty(Class containerClass, Class dynamicClass, Class propertyClass, SEL getter);
+#else
+void lm_class_addProperty(Class dynamicClass, Class propertyClass, SEL getter);
+#endif

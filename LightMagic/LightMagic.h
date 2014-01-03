@@ -4,7 +4,7 @@
 #pragma ide diagnostic ignored "OCUnusedMacroInspection"
 
 #define LM_CONTEXT(group, block) \
-    __attribute__((constructor)) static void __unused group(void) { \
+    __attribute__((constructor(1000))) static void __unused group(void) { \
         @autoreleasepool { \
             block; \
         } \
