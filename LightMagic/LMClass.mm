@@ -20,18 +20,14 @@ void static swizzledDealloc(id self, SEL __unused _cmd);
 
 @implementation LMClass {
     Class _class;
-#if !LM_FORCED_CACHE
     const char *_className;
-#endif
     NSSet *_injectableProperties;
 }
 
 - (instancetype)initWithClass:(Class)containerClass properties:(NSSet *)properties {
     self = [super init];
     _class = containerClass;
-#if !LM_FORCED_CACHE
     _className = class_getName(containerClass);
-#endif
     _injectableProperties = [properties retain];
     return self;
 }
@@ -41,11 +37,7 @@ void static swizzledDealloc(id self, SEL __unused _cmd);
 }
 
 - (void)injectGetters {
-#if LM_FORCED_CACHE
-    LMDynamicClass *injectedClass = [[LMDynamicClass alloc] initWithContainerClass:_class];
-#else
     LMDynamicClass *injectedClass = [[LMDynamicClass alloc] initWithBaseName:_className];
-#endif
     for (LMProperty *property in _injectableProperties) {
         SEL getter = property.getter;
         [injectedClass addPropertyWithClass:property.clazz getter:getter];
@@ -57,7 +49,9 @@ void static swizzledDealloc(id self, SEL __unused _cmd);
     class_swizzleMethodWithImplementation(_class, @selector(allocWithZone:), @selector(allocWithZone_:), (IMP)swizzledAllocWithZone, YES);
     class_swizzleMethodWithImplementation(_class, @selector(dealloc), @selector(dealloc_), (IMP)swizzledDealloc, NO);
 
-    LMCache::getInstance().dynamicClasses[_class] = [injectedClass clazz];
+    Class dynamicClass = [injectedClass clazz];
+    LMCache::getInstance().dynamicClasses[_class] = dynamicClass;
+    LMCache::getInstance().containerClasses[dynamicClass] = _class;
     [injectedClass release];
 }
 
@@ -77,7 +71,7 @@ id static swizzledAllocWithZone(Class self, SEL __unused _cmd, NSZone *zone) {
     Class dynamicClass = LMCache::getInstance().dynamicClasses[self];
     id dynamicObject = objc_msgSend(dynamicClass, @selector(new));
     LMCache::getInstance().dynamicObjects[object] = dynamicObject;
-    LMCache::getInstance().reversedObjects[dynamicObject] = object;
+    LMCache::getInstance().containerObjects[dynamicObject] = object;
     return object;
 }
 
@@ -88,7 +82,7 @@ id static forwardingGetter(id self, SEL _cmd) {
 void static swizzledDealloc(id self, SEL __unused _cmd) {
     id dynamicObject = LMCache::getInstance().dynamicObjects[self];
     LMCache::getInstance().dynamicObjects.erase(self);
-    LMCache::getInstance().reversedObjects.erase(dynamicObject);
+    LMCache::getInstance().containerObjects.erase(dynamicObject);
     [dynamicObject release];
     objc_msgSend(self, @selector(dealloc_));
 }

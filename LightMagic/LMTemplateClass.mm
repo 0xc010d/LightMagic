@@ -21,16 +21,6 @@ Class static lm_property_getClass(objc_property_t property);
 
 @end
 
-#if LM_FORCED_CACHE
-void lm_class_addProperty(Class dynamicClass, Class propertyClass, SEL getter);
-void lm_class_addProperty(Class containerClass, Class dynamicClass, Class propertyClass, SEL getter) {
-    lm_class_addProperty(dynamicClass, propertyClass, getter);
-
-    LMInitializer initializer = LMCache::getInstance().initializer(propertyClass, containerClass);
-    LMCache::getInstance().forcedCache[dynamicClass][getter] = initializer;
-}
-#endif
-
 void lm_class_addProperty(Class dynamicClass, Class propertyClass, SEL getter) {
     const char *name = sel_getName(getter);
     const char *className = class_getName(propertyClass);
@@ -41,27 +31,6 @@ void lm_class_addProperty(Class dynamicClass, Class propertyClass, SEL getter) {
 
 #pragma mark - Private
 
-#if LM_FORCED_CACHE
-id static lm_dynamicGetter(LMTemplateClass *self, SEL _cmd) {
-    id result = self->values[_cmd];
-    if (!result) {
-        Class dynamicClass = object_getClass(self);
-        LMInitializer initializer = LMCache::getInstance().forcedCache[dynamicClass][_cmd];
-        if (initializer) {
-            id container = LMCache::getInstance().reversedObjects[self];
-            result = objc_msgSend(initializer(container), @selector(retain));
-        }
-        else {
-            const char *name = sel_getName(_cmd);
-            objc_property_t property = class_getProperty(dynamicClass, name);
-            Class propertyClass = lm_property_getClass(property);
-            result = objc_msgSend(propertyClass, @selector(new));
-        }
-        self->values[_cmd] = result;
-    }
-    return result;
-}
-#else
 id static lm_dynamicGetter(LMTemplateClass *self, SEL _cmd) {
     id result = self->values[_cmd];
     if (!result) {
@@ -72,7 +41,7 @@ id static lm_dynamicGetter(LMTemplateClass *self, SEL _cmd) {
         BOOL hasDefaultInitializer;
         BOOL hasContainerInitializer = LMCache::getInstance().hasContainerInitializers(propertyClass, &hasDefaultInitializer);
         if (hasContainerInitializer) {
-            id container = LMCache::getInstance().reversedObjects[self];
+            id container = LMCache::getInstance().containerObjects[self];
             Class containerClass = object_getClass(container);
             LMInitializer initializer = LMCache::getInstance().initializer(propertyClass, containerClass);
             if (initializer) {
@@ -84,7 +53,7 @@ id static lm_dynamicGetter(LMTemplateClass *self, SEL _cmd) {
         }
         else if (hasDefaultInitializer) {
             LMInitializer initializer = LMCache::getInstance().initializer(propertyClass);
-            id container = LMCache::getInstance().reversedObjects[self];
+            id container = LMCache::getInstance().containerObjects[self];
             result = objc_msgSend(initializer(container), @selector(retain));
         }
         else {
@@ -94,7 +63,6 @@ id static lm_dynamicGetter(LMTemplateClass *self, SEL _cmd) {
     }
     return result;
 }
-#endif
 
 Class static lm_property_getClass(objc_property_t property) {
     const char *className = property_getAttributes(property) + 1;
