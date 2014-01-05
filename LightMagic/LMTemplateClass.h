@@ -5,4 +5,4 @@
 
 @end
 
-void lm_class_addProperty(Class dynamicClass, Class propertyClass, SEL getter);
+void lm_class_addProperty(Class injectedClass, Class propertyClass, SEL getter);

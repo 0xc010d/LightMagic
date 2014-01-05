@@ -1,8 +1,12 @@
 #import <objc/runtime.h>
+#import <string>
+#import <set>
+#import <regex>
 #import "LMProperty.h"
 
 @implementation LMProperty {
     Class _clazz;
+    std::set<id> _protocols;
     SEL _getter;
     BOOL _dynamic;
     objc_property_t _property;
@@ -11,6 +15,7 @@
 - (instancetype)initWithProperty:(objc_property_t)property {
     self = [super init];
     _property = property;
+    [self parse];
     return self;
 }
 
@@ -29,6 +34,10 @@
 
 - (Class)clazz {
     return _clazz;
+}
+
+- (std::set<id>)protocols {
+    return _protocols;
 }
 
 - (SEL)getter {
@@ -50,18 +59,37 @@
             _getter = sel_getUid(attribute.value);
             break;
         case 'T': {
-            //it's something like @"NSObject" so we need to get just NSObject from it
-            //we don't support protocols. yet.
             const char *value = attribute.value;
-            size_t len = strlen(value) - 3;
-            char buffer[len + 1];
-            memcpy(buffer, value + 2, len);
-            buffer[len] = '\0';
-            _clazz = objc_getClass(buffer);
+            if (value[0] == '@' && strlen(value) > 1) {
+                [self parsePropertyType:value];
+            }
         } break;
         default:
             break;
     }
+}
+
+- (void)parsePropertyType:(const char *)typeString {
+    std::string type = std::string(typeString + 1);
+    type.erase(std::remove(type.begin(), type.end(), '"'), type.end());
+    size_t leftBracket = type.find('<');
+    if (leftBracket != std::string::npos) {
+        size_t rightBracket = type.rfind('>') + 1;
+
+        std::regex regex("<(.+?)>");
+        std::smatch match;
+        std::string protocols = type.substr(leftBracket, rightBracket - leftBracket);
+        while (std::regex_search(protocols, match, regex)) {
+            const char *name = match[1].str().c_str();
+            Protocol *protocol = objc_getProtocol(name);
+            if (protocol) {
+                _protocols.insert(protocol);
+            }
+            protocols = match.suffix().str();
+        }
+        type.erase(leftBracket, rightBracket - leftBracket);
+    }
+    _clazz = objc_getClass(type.c_str());
 }
 
 - (BOOL)isEqual:(id)object {

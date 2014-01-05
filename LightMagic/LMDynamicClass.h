@@ -1,13 +1,16 @@
 #import <Foundation/Foundation.h>
+#import <set>
 #import "LMDefinitions.h"
+
+@class LMProperty;
 
 @interface LMDynamicClass : NSObject
 
-@property (nonatomic, readonly) Class clazz;
+@property (nonatomic, readonly) Class injectedClass;
 
 - (instancetype)initWithBaseName:(const char *)baseName;
 
-- (void)addPropertyWithClass:(Class)clazz getter:(SEL)selector;
+- (void)addProperty:(LMProperty *)property;
 
 - (void)register;
 

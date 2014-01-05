@@ -37,7 +37,6 @@
 
             for (uint i = 0; i < propertiesCount; i++) {
                 LMProperty *property = [[LMProperty alloc] initWithProperty:propertyList[i]];
-                [property parse];
                 if (property.injectable) {
                     [properties addObject:property];
                 }
