@@ -1,15 +1,18 @@
 #import <objc/runtime.h>
 #import <string>
-#import <set>
 #import <regex>
 #import "LMProperty.h"
 
 @implementation LMProperty {
     Class _clazz;
-    std::set<id> _protocols;
+    LMProtocols _protocols;
     SEL _getter;
     BOOL _dynamic;
     objc_property_t _property;
+}
+
+- (void)dealloc {
+    free(_protocols.list);
 }
 
 - (instancetype)initWithProperty:(objc_property_t)property {
@@ -36,7 +39,7 @@
     return _clazz;
 }
 
-- (std::set<id>)protocols {
+- (LMProtocols)protocols {
     return _protocols;
 }
 
@@ -83,7 +86,10 @@
             const char *name = match[1].str().c_str();
             Protocol *protocol = objc_getProtocol(name);
             if (protocol) {
-                _protocols.insert(protocol);
+                size_t size = (_protocols.count + 1) * sizeof(Protocol *);
+                _protocols.list = (Protocol __unsafe_unretained**)realloc(_protocols.list, size);
+                _protocols.list[_protocols.count] = protocol;
+                _protocols.count ++;
             }
             protocols = match.suffix().str();
         }

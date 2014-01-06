@@ -1,12 +1,16 @@
 #import <Foundation/Foundation.h>
 #import <objc/runtime.h>
-#import <set>
+
+typedef struct LMProtocols {
+    uint count;
+    Protocol  __unsafe_unretained**list;
+} LMProtocols;
 
 @interface LMProperty : NSObject
 
 @property (nonatomic, readonly) Class clazz;
 @property (nonatomic, readonly) SEL getter;
-@property (nonatomic, readonly) std::set<id> protocols; // std::set<Protocol *>
+@property (nonatomic, readonly) LMProtocols protocols;
 
 @property (nonatomic, readonly, getter=isInjectable) BOOL injectable;
 
