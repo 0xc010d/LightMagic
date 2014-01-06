@@ -96,6 +96,7 @@
 		CAE6D7451DAFED11149BE96E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		CAE6F979ECF497D1170AFF12 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		CAE7121D23B3EF5F58030D9B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		CAE73716E48644A3951ECB30 /* LMProtocolsList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMProtocolsList.h; sourceTree = "<group>"; };
 		CAE80A3278804FACB65A114B /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		CAE81C65FD40A7DF7723ABC7 /* Test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Test.h; sourceTree = "<group>"; };
 		CAE9954E6DD9C1626896F552 /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -224,6 +225,7 @@
 				CAE4582E6BE4470CA991FAE6 /* LMCache.h */,
 				CAE6451B959913FF11A2302C /* LMTemplateClass.mm */,
 				CAE546667346E8BC2294B541 /* LMTemplateClass.h */,
+				CAE73716E48644A3951ECB30 /* LMProtocolsList.h */,
 			);
 			path = LightMagic;
 			sourceTree = "<group>";

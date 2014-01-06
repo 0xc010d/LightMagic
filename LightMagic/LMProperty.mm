@@ -5,14 +5,14 @@
 
 @implementation LMProperty {
     Class _clazz;
-    LMProtocols _protocols;
+    LMProtocolsList _protocols;
     SEL _getter;
     BOOL _dynamic;
     objc_property_t _property;
 }
 
 - (void)dealloc {
-    free(_protocols.list);
+    free(_protocols.protocols);
 }
 
 - (instancetype)initWithProperty:(objc_property_t)property {
@@ -39,7 +39,7 @@
     return _clazz;
 }
 
-- (LMProtocols)protocols {
+- (LMProtocolsList)protocols {
     return _protocols;
 }
 
@@ -87,8 +87,8 @@
             Protocol *protocol = objc_getProtocol(name);
             if (protocol) {
                 size_t size = (_protocols.count + 1) * sizeof(Protocol *);
-                _protocols.list = (Protocol __unsafe_unretained**)realloc(_protocols.list, size);
-                _protocols.list[_protocols.count] = protocol;
+                _protocols.protocols = (Protocol __unsafe_unretained**)realloc(_protocols.protocols, size);
+                _protocols.protocols[_protocols.count] = protocol;
                 _protocols.count ++;
             }
             protocols = match.suffix().str();

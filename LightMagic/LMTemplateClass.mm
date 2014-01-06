@@ -21,7 +21,7 @@ Class static lm_property_getClass(objc_property_t property);
 
 @end
 
-void lm_class_addProperty(Class injectedClass, Class propertyClass, SEL getter) {
+void lm_class_addProperty(Class injectedClass, Class propertyClass, LMProtocolsList propertyProtocols, SEL getter) {
     const char *name = sel_getName(getter);
     const char *className = class_getName(propertyClass);
     objc_property_attribute_t attributes[] = {"T", className};

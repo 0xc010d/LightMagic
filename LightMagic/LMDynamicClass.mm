@@ -1,5 +1,4 @@
 #import <objc/runtime.h>
-#import <set>
 #import "LMDynamicClass.h"
 #import "LMTemplateClass.h"
 #import "LMProperty.h"
@@ -38,7 +37,7 @@ static size_t kSuffixLength;
 }
 
 - (void)addProperty:(LMProperty *)property {
-    lm_class_addProperty(_injectedClass, property.clazz, property.getter);
+    lm_class_addProperty(_injectedClass, property.clazz, property.protocols, property.getter);
 }
 
 @end

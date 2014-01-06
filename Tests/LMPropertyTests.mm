@@ -51,37 +51,37 @@ SPEC_BEGIN(LMPropertyTests)
                 objc_property_t rawProperty = getPropertyByName([LMPropertiesParserTest class], "nonExistentProtocolProperty");
                 LMProperty *property = [[LMProperty alloc] initWithProperty:rawProperty];
                 [[theValue(property.protocols.count) should] equal:theValue(1)];
-                [[(id)property.protocols.list[0] should] equal:@protocol(NSObject)];
+                [[(id)property.protocols.protocols[0] should] equal:@protocol(NSObject)];
             });
             it(@"Should detect protocol if it's specified and property type is id", ^{
                 objc_property_t rawProperty = getPropertyByName([LMPropertiesParserTest class], "idProtocolProperty");
                 LMProperty *property = [[LMProperty alloc] initWithProperty:rawProperty];
                 [[[property clazz] should] beNil];
                 [[theValue(property.protocols.count) should] equal:theValue(1)];
-                [[(id)property.protocols.list[0] should] equal:@protocol(NSObject)];
+                [[(id)property.protocols.protocols[0] should] equal:@protocol(NSObject)];
             });
             it(@"Should detect multiple protocols if they're specified and property type is id", ^{
                 objc_property_t rawProperty = getPropertyByName([LMPropertiesParserTest class], "idProtocolsProperty");
                 LMProperty *property = [[LMProperty alloc] initWithProperty:rawProperty];
                 [[[property clazz] should] beNil];
                 [[theValue(property.protocols.count) should] equal:theValue(2)];
-                [[(id)property.protocols.list[0] should] equal:@protocol(UITableViewDelegate)];
-                [[(id)property.protocols.list[1] should] equal:@protocol(UITableViewDataSource)];
+                [[(id)property.protocols.protocols[0] should] equal:@protocol(UITableViewDelegate)];
+                [[(id)property.protocols.protocols[1] should] equal:@protocol(UITableViewDataSource)];
             });
             it(@"Should detect protocol and property class if they're specified", ^{
                 objc_property_t rawProperty = getPropertyByName([LMPropertiesParserTest class], "classProtocolProperty");
                 LMProperty *property = [[LMProperty alloc] initWithProperty:rawProperty];
                 [[[property clazz] shouldNot] beNil];
                 [[theValue(property.protocols.count) should] equal:theValue(1)];
-                [[(id)property.protocols.list[0] should] equal:@protocol(NSCopying)];
+                [[(id)property.protocols.protocols[0] should] equal:@protocol(NSCopying)];
             });
             it(@"Should detect multiple protocols and property class if they're specified", ^{
                 objc_property_t rawProperty = getPropertyByName([LMPropertiesParserTest class], "classProtocolsProperty");
                 LMProperty *property = [[LMProperty alloc] initWithProperty:rawProperty];
                 [[[property clazz] shouldNot] beNil];
                 [[theValue(property.protocols.count) should] equal:theValue(2)];
-                [[(id)property.protocols.list[0] should] equal:@protocol(UITableViewDelegate)];
-                [[(id)property.protocols.list[1] should] equal:@protocol(UITableViewDataSource)];
+                [[(id)property.protocols.protocols[0] should] equal:@protocol(UITableViewDelegate)];
+                [[(id)property.protocols.protocols[1] should] equal:@protocol(UITableViewDataSource)];
             });
         });
         context(@"Getter detecting", ^{
