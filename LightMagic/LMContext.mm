@@ -3,22 +3,20 @@
 
 @implementation LMContext
 
-+ (void)registerInitializer:(LMInitializer)initializer forClass:(Class)clazz {
-    LMCache::getInstance().setInitializer(initializer, clazz);
++ (void)registerInitializer:(LMInitializer)initializer forClass:(Class)propertyClass {
+    LMCache::getInstance().setInitializer(initializer, propertyClass);
 }
 
-+ (void)registerInitializer:(LMInitializer)initializer forClass:(Class)clazz containerClass:(Class)containerClass {
-    LMCache::getInstance().setInitializer(initializer, clazz, containerClass);
++ (void)registerInitializer:(LMInitializer)initializer forClass:(Class)propertyClass containerClass:(Class)containerClass {
+    LMCache::getInstance().setInitializer(initializer, propertyClass, containerClass);
 }
 
-
-+ (void)unregisterInitializerForClass:(Class)clazz {
-    LMCache::getInstance().removeInitializer(clazz);
++ (void)unregisterInitializerForClass:(Class)propertyClass {
+    LMCache::getInstance().removeInitializer(propertyClass);
 }
 
-+ (void)unregisterInitializerForClass:(Class)clazz containerClass:(Class)containerClass {
-    LMCache::getInstance().removeInitializer(clazz, containerClass);
++ (void)unregisterInitializerForClass:(Class)propertyClass containerClass:(Class)containerClass {
+    LMCache::getInstance().removeInitializer(propertyClass, containerClass);
 }
-
 
 @end

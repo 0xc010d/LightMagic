@@ -3,10 +3,10 @@
 
 @interface LMContext : NSObject
 
-+ (void)registerInitializer:(LMInitializer)initializer forClass:(Class)clazz;
-+ (void)registerInitializer:(LMInitializer)initializer forClass:(Class)clazz containerClass:(Class)containerClass;
++ (void)registerInitializer:(LMInitializer)initializer forClass:(Class)propertyClass;
++ (void)registerInitializer:(LMInitializer)initializer forClass:(Class)propertyClass containerClass:(Class)containerClass;
 
-+ (void)unregisterInitializerForClass:(Class)clazz;
-+ (void)unregisterInitializerForClass:(Class)clazz containerClass:(Class)containerClass;
++ (void)unregisterInitializerForClass:(Class)propertyClass;
++ (void)unregisterInitializerForClass:(Class)propertyClass containerClass:(Class)containerClass;
 
 @end

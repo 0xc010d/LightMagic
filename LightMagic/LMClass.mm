@@ -20,14 +20,12 @@ void static swizzledDealloc(id self, SEL __unused _cmd);
 
 @implementation LMClass {
     Class _class;
-    const char *_className;
     NSSet *_injectableProperties;
 }
 
 - (instancetype)initWithClass:(Class)containerClass properties:(NSSet *)properties {
     self = [super init];
     _class = containerClass;
-    _className = class_getName(containerClass);
     _injectableProperties = [properties retain];
     return self;
 }
@@ -37,9 +35,9 @@ void static swizzledDealloc(id self, SEL __unused _cmd);
 }
 
 - (void)injectGetters {
-    LMDynamicClass *dynamicClass = [[LMDynamicClass alloc] initWithBaseName:_className];
+    LMDynamicClass *dynamicClass = [[LMDynamicClass alloc] initWithContainerClass:_class];
     for (LMProperty *property in _injectableProperties) {
-        [dynamicClass addProperty:property];
+        [dynamicClass addPropertyWithClass:property.clazz protocols:property.protocols getter:property.getter];
         [self forwardGetter:property.getter];
     }
 

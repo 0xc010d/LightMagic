@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
-#import <set>
 #import "LMDefinitions.h"
+#import "LMProtocolsList.h"
 
 @class LMProperty;
 
@@ -8,9 +8,9 @@
 
 @property (nonatomic, readonly) Class injectedClass;
 
-- (instancetype)initWithBaseName:(const char *)baseName;
+- (instancetype)initWithContainerClass:(Class)containerClass;
 
-- (void)addProperty:(LMProperty *)property;
+- (void)addPropertyWithClass:(Class)propertyClass protocols:(LMProtocolsList)propertyProtocols getter:(SEL)getter;
 
 - (void)register;
 

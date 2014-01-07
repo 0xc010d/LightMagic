@@ -22,6 +22,7 @@ LMCache& LMCache::getInstance() {
 
 void LMCache::setInitializer(LMInitializer initializer, Class propertyClass) {
     _initializersNode(propertyClass)->initializer = [initializer copy];
+    _remapInitializersCache(propertyClass);
 }
 
 void LMCache::setInitializer(LMInitializer initializer, Class propertyClass, Class containerClass) {
@@ -32,6 +33,7 @@ void LMCache::setInitializer(LMInitializer initializer, Class propertyClass, Cla
     else {
         node->containers[containerClass] = [initializer copy];
     }
+    _remapInitializersCache(propertyClass);
 }
 
 void LMCache::removeInitializer(Class propertyClass) {
@@ -40,6 +42,7 @@ void LMCache::removeInitializer(Class propertyClass) {
         node->initializer = nil;
         _removeInitializersNodeIfNeeded(propertyClass);
     }
+    _remapInitializersCache(propertyClass);
 }
 
 void LMCache::removeInitializer(Class propertyClass, Class containerClass) {
@@ -53,6 +56,7 @@ void LMCache::removeInitializer(Class propertyClass, Class containerClass) {
         }
         _removeInitializersNodeIfNeeded(propertyClass);
     }
+    _remapInitializersCache(propertyClass);
 }
 
 LMInitializer LMCache::initializer(Class propertyClass) {
@@ -82,20 +86,6 @@ LMInitializer LMCache::initializer(Class propertyClass, Class containerClass) {
     return nil;
 }
 
-BOOL LMCache::hasContainerInitializers(Class propertyClass, BOOL *hasDefaultInitializer) {
-    class_initializers_node *node = _initializers[propertyClass];
-    if (node) {
-        *hasDefaultInitializer = node->initializer != nil;
-        if (node->containers.size() != 0) {
-            return YES;
-        }
-    }
-    else {
-        *hasDefaultInitializer = NO;
-    }
-    return NO;
-}
-
 #pragma mark - Private
 
 class_initializers_node *LMCache::_initializersNode(Class propertyClass) {
@@ -112,5 +102,22 @@ void LMCache::_removeInitializersNodeIfNeeded(Class propertyClass) {
     if (node && node->containers.size() == 0 && !node->initializer) {
         _initializers.erase(propertyClass);
         delete node;
+    }
+}
+
+void LMCache::_remapInitializersCache(Class propertyClass) {
+    std::map<Class, std::set<SEL>>::iterator containersIterator = gettersCache[propertyClass].begin();
+    std::map<Class, std::set<SEL>>::iterator containersIteratorEnd = gettersCache[propertyClass].end();
+    while (containersIterator != containersIteratorEnd) {
+        Class injectedClass = containersIterator->first;
+        Class containerClass = containerClasses[injectedClass];
+        std::set<SEL>::iterator gettersIterator = containersIterator->second.begin();
+        std::set<SEL>::iterator gettersIteratorEnd = containersIterator->second.end();
+        while (gettersIterator != gettersIteratorEnd) {
+            SEL getter = *gettersIterator;
+            initializersCache[injectedClass][getter] = initializer(propertyClass, containerClass);
+            gettersIterator ++;
+        }
+        containersIterator ++;
     }
 }

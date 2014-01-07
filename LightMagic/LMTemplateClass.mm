@@ -21,12 +21,16 @@ Class static lm_property_getClass(objc_property_t property);
 
 @end
 
-void lm_class_addProperty(Class injectedClass, Class propertyClass, LMProtocolsList propertyProtocols, SEL getter) {
+void lm_class_addProperty(Class injectedClass, Class containerClass, Class propertyClass, LMProtocolsList __unused propertyProtocols, SEL getter) {
     const char *name = sel_getName(getter);
     const char *className = class_getName(propertyClass);
     objc_property_attribute_t attributes[] = {"T", className};
     class_addProperty(injectedClass, name, attributes, 1);
     class_addMethod(injectedClass, getter, (IMP)lm_dynamicGetter, "@@:");
+    //cache initializer
+    LMInitializer initializer = LMCache::getInstance().initializer(propertyClass, containerClass);
+    LMCache::getInstance().initializersCache[injectedClass][getter] = initializer;
+    LMCache::getInstance().gettersCache[propertyClass][injectedClass].insert(getter);
 }
 
 #pragma mark - Private
@@ -34,29 +38,16 @@ void lm_class_addProperty(Class injectedClass, Class propertyClass, LMProtocolsL
 id static lm_dynamicGetter(LMTemplateClass *self, SEL _cmd) {
     id result = self->values[_cmd];
     if (!result) {
-        const char *name = sel_getName(_cmd);
         Class injectedClass = object_getClass(self);
-        objc_property_t property = class_getProperty(injectedClass, name);
-        Class propertyClass = lm_property_getClass(property);
-        BOOL hasDefaultInitializer;
-        BOOL hasContainerInitializer = LMCache::getInstance().hasContainerInitializers(propertyClass, &hasDefaultInitializer);
-        if (hasContainerInitializer) {
-            id container = LMCache::getInstance().containerObjects[self];
-            Class containerClass = object_getClass(container);
-            LMInitializer initializer = LMCache::getInstance().initializer(propertyClass, containerClass);
-            if (initializer) {
-                result = objc_msgSend(initializer(container), @selector(retain));
-            }
-            else {
-                result = objc_msgSend(propertyClass, @selector(new));
-            }
-        }
-        else if (hasDefaultInitializer) {
-            LMInitializer initializer = LMCache::getInstance().initializer(propertyClass);
+        LMInitializer initializer = LMCache::getInstance().initializersCache[injectedClass][_cmd];
+        if (initializer) {
             id container = LMCache::getInstance().containerObjects[self];
             result = objc_msgSend(initializer(container), @selector(retain));
         }
         else {
+            const char *name = sel_getName(_cmd);
+            objc_property_t property = class_getProperty(injectedClass, name);
+            Class propertyClass = lm_property_getClass(property);
             result = objc_msgSend(propertyClass, @selector(new));
         }
         self->values[_cmd] = result;

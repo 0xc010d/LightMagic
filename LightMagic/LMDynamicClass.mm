@@ -1,13 +1,13 @@
 #import <objc/runtime.h>
 #import "LMDynamicClass.h"
 #import "LMTemplateClass.h"
-#import "LMProperty.h"
 
 static Class kRootClass;
 static const char *kSuffix = "_LMDynamicClass";
 static size_t kSuffixLength;
 
 @implementation LMDynamicClass {
+    Class _containerClass;
     Class _injectedClass;
 }
 
@@ -16,14 +16,16 @@ static size_t kSuffixLength;
     kSuffixLength = strlen(kSuffix);
 }
 
-- (instancetype)initWithBaseName:(const char *)baseName {
+- (instancetype)initWithContainerClass:(Class)containerClass {
     self = [super init];
 
+    const char *baseName = class_getName(containerClass);
     size_t nameLength = strlen(baseName) + kSuffixLength;
     char name[nameLength + 1];
     sprintf(name, "%s%s", baseName, kSuffix);
-
     _injectedClass = objc_allocateClassPair(kRootClass, (const char *)name, 0);
+
+    _containerClass = containerClass;
 
     return self;
 }
@@ -32,12 +34,12 @@ static size_t kSuffixLength;
     return _injectedClass;
 }
 
-- (void)register {
-    objc_registerClassPair(_injectedClass);
+- (void)addPropertyWithClass:(Class)propertyClass protocols:(LMProtocolsList)propertyProtocols getter:(SEL)getter {
+    lm_class_addProperty(_injectedClass, _containerClass, propertyClass, propertyProtocols, getter);
 }
 
-- (void)addProperty:(LMProperty *)property {
-    lm_class_addProperty(_injectedClass, property.clazz, property.protocols, property.getter);
+- (void)register {
+    objc_registerClassPair(_injectedClass);
 }
 
 @end

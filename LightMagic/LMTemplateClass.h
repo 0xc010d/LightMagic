@@ -6,4 +6,4 @@
 
 @end
 
-void lm_class_addProperty(Class injectedClass, Class propertyClass, LMProtocolsList propertyProtocols, SEL getter);
+void lm_class_addProperty(Class injectedClass, Class containerClass, Class propertyClass, LMProtocolsList propertyProtocols, SEL getter);

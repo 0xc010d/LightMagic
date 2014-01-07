@@ -1,5 +1,6 @@
 #import <Foundation/Foundation.h>
 #import <map>
+#import <set>
 
 #import "LMDefinitions.h"
 
@@ -23,6 +24,9 @@ public:
     std::map<id, id> injectedObjects;
     std::map<id, id> containerObjects;
 
+    std::map<Class, std::map<SEL, LMInitializer>> initializersCache; // <injectedClass, <getter, initializer>>
+    std::map<Class, std::map<Class, std::set<SEL>>> gettersCache; // <propertyClass, <injectedClass, <getter>>>
+
     static LMCache& getInstance();
 
     void setInitializer(LMInitializer initializer, Class propertyClass);
@@ -31,12 +35,12 @@ public:
     void removeInitializer(Class propertyClass, Class containerClass);
     LMInitializer initializer(Class propertyClass);
     LMInitializer initializer(Class propertyClass, Class containerClass);
-    BOOL hasContainerInitializers(Class propertyClass, BOOL *hasDefaultInitializer);
 
 private:
     std::map<Class, class_initializers_node *> _initializers;
     class_initializers_node *_initializersNode(Class propertyClass);
     void _removeInitializersNodeIfNeeded(Class propertyClass);
+    void _remapInitializersCache(Class propertyClass);
 };
 
 #endif
