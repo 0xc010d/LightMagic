@@ -5,7 +5,7 @@
 
 @implementation LMProperty {
     Class _clazz;
-    LMProtocolsList _protocols;
+    LMProtocolList _protocols;
     SEL _getter;
     BOOL _dynamic;
     objc_property_t _property;
@@ -39,7 +39,7 @@
     return _clazz;
 }
 
-- (LMProtocolsList)protocols {
+- (LMProtocolList)protocols {
     return _protocols;
 }
 

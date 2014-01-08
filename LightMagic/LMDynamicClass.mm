@@ -34,7 +34,7 @@ static size_t kSuffixLength;
     return _injectedClass;
 }
 
-- (void)addPropertyWithClass:(Class)propertyClass protocols:(LMProtocolsList)propertyProtocols getter:(SEL)getter {
+- (void)addPropertyWithClass:(Class)propertyClass protocols:(LMProtocolList)propertyProtocols getter:(SEL)getter {
     lm_class_addProperty(_injectedClass, _containerClass, propertyClass, propertyProtocols, getter);
 }
 

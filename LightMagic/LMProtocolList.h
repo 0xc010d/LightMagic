@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-typedef struct LMProtocolsList {
+typedef struct LMProtocolList {
     uint count;
     Protocol  __unsafe_unretained**protocols;
-} LMProtocolsList;
+} LMProtocolList;
