@@ -1,5 +1,5 @@
 #import "LMContext.h"
-#import "LMCache.h"
+#include "LMCache.h"
 
 @implementation LMContext
 

@@ -3,7 +3,7 @@
 #import "LMClass.h"
 #import "LMProperty.h"
 #import "LMDynamicClass.h"
-#import "LMCache.h"
+#include "LMCache.h"
 
 void static class_swizzleMethodWithImplementation(Class clazz, SEL originalSelector, SEL newSelector, IMP implementation, BOOL classMethod);
 

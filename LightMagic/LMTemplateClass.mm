@@ -1,8 +1,7 @@
-#import <map>
 #import <objc/runtime.h>
 #import <objc/message.h>
 #import "LMTemplateClass.h"
-#import "LMCache.h"
+#include "LMCache.h"
 
 id static lm_dynamicGetter(LMTemplateClass *self, SEL _cmd);
 Class static lm_property_getClass(objc_property_t property);

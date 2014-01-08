@@ -99,9 +99,9 @@ SPEC_BEGIN(LMCacheTests)
             });
         });
         context(@"Container initializers comparator", ^{
-            __block ClassCompare *comparator;
+            __block ClassComparator *comparator;
             beforeEach(^{
-                comparator = new ClassCompare;
+                comparator = new ClassComparator;
             });
             afterEach(^{
                 delete comparator;
