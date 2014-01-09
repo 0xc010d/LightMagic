@@ -1,6 +1,4 @@
-#ifndef __LMBiMap_H_
-#define __LMBiMap_H_
-
+#pragma once
 #include <map>
 
 template <typename Key, typename Value>
@@ -31,5 +29,3 @@ public:
         return *_reversed;
     };
 };
-
-#endif //__LMBiMap_H_

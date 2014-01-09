@@ -1,5 +1,5 @@
 #import <Kiwi.h>
-#import "LMCache.h"
+#include "LMCache.h"
 
 SPEC_BEGIN(LMCacheTests)
         context(@"Default initializers", ^{

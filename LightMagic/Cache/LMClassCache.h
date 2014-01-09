@@ -1,9 +1,5 @@
-#ifndef __LMClassCache_H_
-#define __LMClassCache_H_
-
+#pragma once
 #include "LMBiMap.h"
 
 class LMClassCache : public LMBiMap<Class, Class> {
 };
-
-#endif //__LMClassCache_H_

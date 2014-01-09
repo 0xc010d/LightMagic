@@ -1,6 +1,4 @@
-#ifndef __LMCache_H_
-#define __LMCache_H_
-
+#pragma once
 #include <map>
 #include <set>
 
@@ -46,5 +44,3 @@ public:
     LMInitializer initializer(Class propertyClass);
     LMInitializer initializer(Class propertyClass, Class containerClass);
 };
-
-#endif
