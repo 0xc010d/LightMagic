@@ -4,6 +4,8 @@
 #include <map>
 #include <set>
 
+#include "LMClassCache.h"
+
 #import <Foundation/Foundation.h>
 #import <objc/objc.h>
 
