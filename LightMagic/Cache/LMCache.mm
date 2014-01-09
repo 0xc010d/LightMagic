@@ -73,8 +73,8 @@ LMInitializer LMCache::initializer(Class propertyClass, Class containerClass) {
         if (!containerClass) {
             return node->initializer;
         }
-        std::map<Class, LMInitializer>::iterator iterator = node->containers.begin();
-        std::map<Class, LMInitializer>::iterator end = node->containers.end();
+        auto iterator = node->containers.begin();
+        auto end = node->containers.end();
         while (iterator != end) {
             if ([containerClass isSubclassOfClass:iterator->first]) {
                 return iterator->second;
@@ -106,13 +106,13 @@ void LMCache::removeInitializersNodeIfNeeded(Class propertyClass) {
 }
 
 void LMCache::remapInitializersCache(Class propertyClass) {
-    std::map<Class, std::set<SEL>>::iterator containersIterator = gettersCache[propertyClass].begin();
-    std::map<Class, std::set<SEL>>::iterator containersIteratorEnd = gettersCache[propertyClass].end();
+    auto containersIterator = gettersCache[propertyClass].begin();
+    auto containersIteratorEnd = gettersCache[propertyClass].end();
     while (containersIterator != containersIteratorEnd) {
         Class injectedClass = containersIterator->first;
         Class containerClass = containerClasses[injectedClass];
-        std::set<SEL>::iterator gettersIterator = containersIterator->second.begin();
-        std::set<SEL>::iterator gettersIteratorEnd = containersIterator->second.end();
+        auto gettersIterator = containersIterator->second.begin();
+        auto gettersIteratorEnd = containersIterator->second.end();
         while (gettersIterator != gettersIteratorEnd) {
             SEL getter = *gettersIterator;
             initializersCache[injectedClass][getter] = initializer(propertyClass, containerClass);

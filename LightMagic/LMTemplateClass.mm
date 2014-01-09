@@ -12,7 +12,7 @@ Class static lm_property_getClass(objc_property_t property);
 }
 
 - (void)dealloc {
-    for (std::map<SEL, id>::iterator iterator = values.begin(); iterator != values.end(); iterator++) {
+    for (auto iterator = values.begin(); iterator != values.end(); iterator++) {
         [iterator->second release];
     }
     [super dealloc];
