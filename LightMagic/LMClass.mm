@@ -5,7 +5,8 @@
 #import "LMDynamicClass.h"
 #include "LMCache.h"
 
-void static class_swizzleMethodWithImplementation(Class clazz, SEL originalSelector, SEL newSelector, IMP implementation, BOOL classMethod);
+void static lm_objc_swizzleClassMethod(Class clazz, SEL selector, SEL newSelector, IMP implementation);
+void static lm_objc_swizzleInstanceMethod(Class clazz, SEL selector, SEL newSelector, IMP implementation);
 
 id static swizzledAllocWithZone(Class self, SEL __unused _cmd, NSZone *zone);
 id static forwardingGetter(id self, SEL _cmd);
@@ -43,8 +44,8 @@ void static swizzledDealloc(id self, SEL __unused _cmd);
 
     [dynamicClass register];
 
-    class_swizzleMethodWithImplementation(_class, @selector(allocWithZone:), @selector(allocWithZone_:), (IMP)swizzledAllocWithZone, YES);
-    class_swizzleMethodWithImplementation(_class, @selector(dealloc), @selector(dealloc_), (IMP)swizzledDealloc, NO);
+    lm_objc_swizzleClassMethod(_class, @selector(allocWithZone:), @selector(allocWithZone_:), (IMP)swizzledAllocWithZone);
+    lm_objc_swizzleInstanceMethod(_class, @selector(dealloc), @selector(dealloc_), (IMP)swizzledDealloc);
 
     Class injectedClass = [dynamicClass injectedClass];
     LMCache::getInstance().injectedClasses.set(_class, injectedClass);
@@ -83,27 +84,27 @@ void static swizzledDealloc(id self, SEL __unused _cmd) {
 
 #pragma mark - Helpers
 
-void static class_swizzleMethodWithImplementation(Class clazz, SEL originalSelector, SEL newSelector, IMP implementation, BOOL classMethod) {
-    Class metaClazz;
-    const char *types;
-    Method originalMethod, newMethod;
-    if (classMethod) {
-        metaClazz = object_getClass(clazz);
-        originalMethod = class_getClassMethod(clazz, originalSelector);
-        types = method_getTypeEncoding(originalMethod);
-        class_addMethod(metaClazz, newSelector, implementation, types);
-        newMethod = class_getClassMethod(clazz, newSelector);
+void static lm_objc_swizzleClassMethod(Class clazz, SEL selector, SEL newSelector, IMP implementation) {
+    Class metaClazz = object_getClass(clazz);
+    Method originalMethod = class_getClassMethod(clazz, selector);
+    const char *types = method_getTypeEncoding(originalMethod);
+    class_addMethod(metaClazz, newSelector, implementation, types);
+    Method newMethod = class_getClassMethod(clazz, newSelector);
+    if (class_addMethod(metaClazz, selector, implementation, types)) {
+        class_replaceMethod(metaClazz, newSelector, method_getImplementation(originalMethod), types);
     }
     else {
-        metaClazz = clazz;
-        originalMethod = class_getInstanceMethod(clazz, originalSelector);
-        types = method_getTypeEncoding(originalMethod);
-        class_addMethod(metaClazz, newSelector, implementation, types);
-        newMethod = class_getInstanceMethod(clazz, newSelector);
+        method_exchangeImplementations(originalMethod, newMethod);
     }
+}
 
-    if (class_addMethod(metaClazz, originalSelector, implementation, types)) {
-        class_replaceMethod(metaClazz, newSelector, method_getImplementation(originalMethod), types);
+void static lm_objc_swizzleInstanceMethod(Class clazz, SEL selector, SEL newSelector, IMP implementation) {
+    Method originalMethod = class_getInstanceMethod(clazz, selector);
+    const char *types = method_getTypeEncoding(originalMethod);
+    class_addMethod(clazz, newSelector, implementation, types);
+    Method newMethod = class_getInstanceMethod(clazz, newSelector);
+    if (class_addMethod(clazz, selector, implementation, types)) {
+        class_replaceMethod(clazz, newSelector, method_getImplementation(originalMethod), types);
     }
     else {
         method_exchangeImplementations(originalMethod, newMethod);
