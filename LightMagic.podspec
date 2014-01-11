@@ -45,6 +45,6 @@ SOFTWARE.
   end
 
   s.xcconfig = {
-    'OTHER_LDFLAGS' => '-lstdc++ -ObjC',
+    'OTHER_LDFLAGS' => '-lc++ -lstdc++ -ObjC',
   }
 end
