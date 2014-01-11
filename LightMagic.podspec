@@ -43,4 +43,8 @@ SOFTWARE.
     sna.source_files = non_arc_files
     sna.requires_arc = false
   end
+
+  s.xcconfig = {
+    'OTHER_LDFLAGS' => '-lstdc++ -ObjC',
+  }
 end
