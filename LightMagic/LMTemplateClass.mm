@@ -28,8 +28,8 @@ void lm_class_addProperty(Class injectedClass, Class containerClass, Class prope
     class_addMethod(injectedClass, getter, (IMP)lm_dynamicGetter, "@@:");
     //cache initializer
     LMInitializer initializer = LMCache::getInstance().initializer(propertyClass, containerClass);
-    LMCache::getInstance().initializersCache[injectedClass][getter] = initializer;
-    LMCache::getInstance().gettersCache[propertyClass][injectedClass].insert(getter);
+    LMCache::getInstance().initializerCache[injectedClass][getter] = initializer;
+    LMCache::getInstance().getterCache[propertyClass][injectedClass].insert(getter);
 }
 
 #pragma mark - Private
@@ -38,9 +38,9 @@ id static lm_dynamicGetter(LMTemplateClass *self, SEL _cmd) {
     id result = self->values[_cmd];
     if (!result) {
         Class injectedClass = object_getClass(self);
-        LMInitializer initializer = LMCache::getInstance().initializersCache[injectedClass][_cmd];
+        LMInitializer initializer = LMCache::getInstance().initializerCache[injectedClass][_cmd];
         if (initializer) {
-            id container = LMCache::getInstance().containerObjects[self];
+            id container = LMCache::getInstance().injectedObjects.reversed()[self];
             result = objc_msgSend(initializer(container), @selector(retain));
         }
         else {

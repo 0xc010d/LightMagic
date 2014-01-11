@@ -106,16 +106,16 @@ void LMCache::removeInitializersNodeIfNeeded(Class propertyClass) {
 }
 
 void LMCache::remapInitializersCache(Class propertyClass) {
-    auto containersIterator = gettersCache[propertyClass].begin();
-    auto containersIteratorEnd = gettersCache[propertyClass].end();
+    auto containersIterator = getterCache[propertyClass].begin();
+    auto containersIteratorEnd = getterCache[propertyClass].end();
     while (containersIterator != containersIteratorEnd) {
         Class injectedClass = containersIterator->first;
-        Class containerClass = containerClasses[injectedClass];
+        Class containerClass = injectedClasses.reversed()[injectedClass];
         auto gettersIterator = containersIterator->second.begin();
         auto gettersIteratorEnd = containersIterator->second.end();
         while (gettersIterator != gettersIteratorEnd) {
             SEL getter = *gettersIterator;
-            initializersCache[injectedClass][getter] = initializer(propertyClass, containerClass);
+            initializerCache[injectedClass][getter] = initializer(propertyClass, containerClass);
             gettersIterator ++;
         }
         containersIterator ++;

@@ -2,15 +2,18 @@
 #include <map>
 #include <set>
 
-#include "LMClassCache.h"
+#include "LMBiMap.h"
 
 #import <Foundation/Foundation.h>
 #import <objc/objc.h>
 
 #import "LMDefinitions.h"
 
+typedef std::map<Class, std::map<SEL, LMInitializer>> LMInitializerCache;
+typedef std::map<Class, std::map<Class, std::set<SEL>>> LMGetterCache;
+
 struct ClassComparator {
-    bool operator()(Class a, Class b) const;
+    bool operator() (Class a, Class b) const;
 };
 
 class LMCache {
@@ -20,22 +23,19 @@ private:
         std::map<Class, LMInitializer, ClassComparator> containers;
     };
 
-    std::map<Class, ClassInitializersNode *> _initializers;
+    std::map<Class, ClassInitializersNode*> _initializers;
 
     ClassInitializersNode *initializersNode(Class propertyClass);
     void removeInitializersNodeIfNeeded(Class propertyClass);
     void remapInitializersCache(Class propertyClass);
 public:
-    std::map<Class, Class> injectedClasses;
-    std::map<Class, Class> containerClasses;
+    static LMCache& getInstance();
 
-    std::map<id, id> injectedObjects;
-    std::map<id, id> containerObjects;
+    LMBiMap<Class, Class> injectedClasses;
+    LMBiMap<id, id> injectedObjects;
 
-    std::map<Class, std::map<SEL, LMInitializer>> initializersCache; // <injectedClass, <getter, initializer>>
-    std::map<Class, std::map<Class, std::set<SEL>>> gettersCache; // <propertyClass, <injectedClass, <getter>>>
-
-    static LMCache & getInstance();
+    LMInitializerCache initializerCache; // <injectedClass, <getter, initializer>>
+    LMGetterCache getterCache; // <propertyClass, <injectedClass, <getter>>>
 
     void setInitializer(LMInitializer initializer, Class propertyClass);
     void setInitializer(LMInitializer initializer, Class propertyClass, Class containerClass);

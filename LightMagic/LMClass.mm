@@ -47,8 +47,7 @@ void static swizzledDealloc(id self, SEL __unused _cmd);
     class_swizzleMethodWithImplementation(_class, @selector(dealloc), @selector(dealloc_), (IMP)swizzledDealloc, NO);
 
     Class injectedClass = [dynamicClass injectedClass];
-    LMCache::getInstance().injectedClasses[_class] = injectedClass;
-    LMCache::getInstance().containerClasses[injectedClass] = _class;
+    LMCache::getInstance().injectedClasses.set(_class, injectedClass);
     [dynamicClass release];
 }
 
@@ -67,8 +66,7 @@ id static swizzledAllocWithZone(Class self, SEL __unused _cmd, NSZone *zone) {
     id object = objc_msgSend(self, @selector(allocWithZone_:), zone);
     Class injectedClass = LMCache::getInstance().injectedClasses[self];
     id injectedObject = objc_msgSend(injectedClass, @selector(new));
-    LMCache::getInstance().injectedObjects[object] = injectedObject;
-    LMCache::getInstance().containerObjects[injectedObject] = object;
+    LMCache::getInstance().injectedObjects.set(object, injectedObject);
     return object;
 }
 
@@ -79,7 +77,6 @@ id static forwardingGetter(id self, SEL _cmd) {
 void static swizzledDealloc(id self, SEL __unused _cmd) {
     id injectedObject = LMCache::getInstance().injectedObjects[self];
     LMCache::getInstance().injectedObjects.erase(self);
-    LMCache::getInstance().containerObjects.erase(injectedObject);
     [injectedObject release];
     objc_msgSend(self, @selector(dealloc_));
 }
