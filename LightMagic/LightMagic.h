@@ -4,7 +4,7 @@
 #pragma ide diagnostic ignored "OCUnusedMacroInspection"
 
 #define LM_CONTEXT(group, block) \
-    __attribute__((constructor(1000))) static void __unused __used group(void) { \
+    __attribute__((constructor(1000))) static void __used group(void) { \
         @autoreleasepool { \
             block; \
         } \
@@ -22,8 +22,8 @@
 
 #define LM_SINGLETON(clazz) \
     ^id (id sender) { \
-        static id sharedInstance; \
-        static dispatch_once_t onceToken; \
+        __used static id sharedInstance; \
+        __used static dispatch_once_t onceToken; \
         dispatch_once(&onceToken, ^{ \
             sharedInstance = [clazz new]; \
         }); \
