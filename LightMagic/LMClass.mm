@@ -5,19 +5,10 @@
 #import "LMDynamicClass.h"
 #include "LMCache.h"
 
-void static lm_objc_swizzleClassMethod(Class clazz, SEL selector, SEL newSelector, IMP implementation);
 void static lm_objc_swizzleInstanceMethod(Class clazz, SEL selector, SEL newSelector, IMP implementation);
 
-id static swizzledAllocWithZone(Class self, SEL __unused _cmd, NSZone *zone);
 id static forwardingGetter(id self, SEL _cmd);
 void static swizzledDealloc(id self, SEL __unused _cmd);
-
-@interface NSObject (LMSelector)
-
-+ (instancetype)allocWithZone_:(NSZone *)zone;
-- (void)dealloc_;
-
-@end
 
 @implementation LMClass {
     Class _class;
@@ -44,8 +35,13 @@ void static swizzledDealloc(id self, SEL __unused _cmd);
 
     [dynamicClass register];
 
-    lm_objc_swizzleClassMethod(_class, @selector(allocWithZone:), @selector(allocWithZone_:), (IMP)swizzledAllocWithZone);
-    lm_objc_swizzleInstanceMethod(_class, @selector(dealloc), @selector(dealloc_), (IMP)swizzledDealloc);
+    const char *baseName = class_getName(_class);
+    const char *deallocSuffix = "_dealloc";
+    const size_t deallocNameLength = strlen(baseName) + strlen(deallocSuffix);
+    char deallocName[deallocNameLength + 1];
+    sprintf(deallocName, "%s%s", baseName, deallocSuffix);
+    SEL deallocSelector = sel_getUid(deallocName);
+    lm_objc_swizzleInstanceMethod(_class, @selector(dealloc), deallocSelector, (IMP)swizzledDealloc);
 
     Class injectedClass = [dynamicClass injectedClass];
     LMCache::getInstance().injectedClasses.set(_class, injectedClass);
@@ -63,40 +59,33 @@ void static swizzledDealloc(id self, SEL __unused _cmd);
 
 @end
 
-id static swizzledAllocWithZone(Class self, SEL __unused _cmd, NSZone *zone) {
-    id object = objc_msgSend(self, @selector(allocWithZone_:), zone);
-    Class injectedClass = LMCache::getInstance().injectedClasses[self];
-    id injectedObject = objc_msgSend(injectedClass, @selector(new));
-    LMCache::getInstance().injectedObjects.set(object, injectedObject);
-    return object;
-}
-
 id static forwardingGetter(id self, SEL _cmd) {
-    return objc_msgSend(LMCache::getInstance().injectedObjects[self], _cmd);
+    id object = LMCache::getInstance().injectedObjects[self];
+    if (!object) {
+        Class injectedClass = LMCache::getInstance().injectedClasses[[self class]];
+        object = objc_msgSend(injectedClass, @selector(new));
+        LMCache::getInstance().injectedObjects.set(self, object);
+    }
+    return objc_msgSend(object, _cmd);
 }
 
 void static swizzledDealloc(id self, SEL __unused _cmd) {
     id injectedObject = LMCache::getInstance().injectedObjects[self];
-    LMCache::getInstance().injectedObjects.erase(self);
-    [injectedObject release];
-    objc_msgSend(self, @selector(dealloc_));
+    if (injectedObject) {
+        LMCache::getInstance().injectedObjects.erase(self);
+        [injectedObject release];
+    }
+
+    static const char *suffix = "_dealloc";
+    const char *baseName = class_getName([self class]);
+    size_t nameLength = strlen(baseName) + strlen(suffix);
+    char name[nameLength + 1];
+    sprintf(name, "%s%s", baseName, suffix);
+    SEL selector = sel_getUid(name);
+    objc_msgSend(self, selector);
 }
 
 #pragma mark - Helpers
-
-void static lm_objc_swizzleClassMethod(Class clazz, SEL selector, SEL newSelector, IMP implementation) {
-    Class metaClazz = object_getClass(clazz);
-    Method originalMethod = class_getClassMethod(clazz, selector);
-    const char *types = method_getTypeEncoding(originalMethod);
-    class_addMethod(metaClazz, newSelector, implementation, types);
-    Method newMethod = class_getClassMethod(clazz, newSelector);
-    if (class_addMethod(metaClazz, selector, implementation, types)) {
-        class_replaceMethod(metaClazz, newSelector, method_getImplementation(originalMethod), types);
-    }
-    else {
-        method_exchangeImplementations(originalMethod, newMethod);
-    }
-}
 
 void static lm_objc_swizzleInstanceMethod(Class clazz, SEL selector, SEL newSelector, IMP implementation) {
     Method originalMethod = class_getInstanceMethod(clazz, selector);
