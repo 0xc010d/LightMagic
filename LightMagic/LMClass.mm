@@ -35,12 +35,7 @@ void static swizzledDealloc(id self, SEL __unused _cmd);
 
     [dynamicClass register];
 
-    const char *baseName = class_getName(_class);
-    const char *deallocSuffix = "_dealloc";
-    const size_t deallocNameLength = strlen(baseName) + strlen(deallocSuffix);
-    char deallocName[deallocNameLength + 1];
-    sprintf(deallocName, "%s%s", baseName, deallocSuffix);
-    SEL deallocSelector = sel_getUid(deallocName);
+    SEL deallocSelector = sel_getUid("dealloc_");
     lm_objc_swizzleInstanceMethod(_class, @selector(dealloc), deallocSelector, (IMP)swizzledDealloc);
 
     Class injectedClass = [dynamicClass injectedClass];
@@ -76,12 +71,7 @@ void static swizzledDealloc(id self, SEL __unused _cmd) {
         [injectedObject release];
     }
 
-    static const char *suffix = "_dealloc";
-    const char *baseName = class_getName([self class]);
-    size_t nameLength = strlen(baseName) + strlen(suffix);
-    char name[nameLength + 1];
-    sprintf(name, "%s%s", baseName, suffix);
-    SEL selector = sel_getUid(name);
+    SEL selector = sel_getUid("dealloc_");
     objc_msgSend(self, selector);
 }
 
@@ -89,13 +79,18 @@ void static swizzledDealloc(id self, SEL __unused _cmd) {
 
 void static lm_objc_swizzleInstanceMethod(Class clazz, SEL selector, SEL newSelector, IMP implementation) {
     Method originalMethod = class_getInstanceMethod(clazz, selector);
-    const char *types = method_getTypeEncoding(originalMethod);
-    class_addMethod(clazz, newSelector, implementation, types);
-    Method newMethod = class_getInstanceMethod(clazz, newSelector);
-    if (class_addMethod(clazz, selector, implementation, types)) {
-        class_replaceMethod(clazz, newSelector, method_getImplementation(originalMethod), types);
-    }
-    else {
-        method_exchangeImplementations(originalMethod, newMethod);
+    IMP originalImplementation = method_getImplementation(originalMethod);
+    // check if we haven't swizzled this method before
+    // this check requires classes to be sorted (see LMCollector)
+    if (originalImplementation != implementation) {
+        const char *types = method_getTypeEncoding(originalMethod);
+        if (class_addMethod(clazz, selector, implementation, types)) {
+            class_addMethod(clazz, newSelector, originalImplementation, types);
+        }
+        else {
+            class_addMethod(clazz, newSelector, implementation, types);
+            Method newMethod = class_getInstanceMethod(clazz, newSelector);
+            method_exchangeImplementations(originalMethod, newMethod);
+        }
     }
 }
