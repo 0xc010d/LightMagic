@@ -32,7 +32,7 @@
 		CAEA7AECBF67170D4F3CDDB9 /* LMPropertiesParserTest.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE2AD9FC25D46CB40E5EBFE /* LMPropertiesParserTest.m */; };
 		CAEA7C6C3528F9761A955C4A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CAE6F979ECF497D1170AFF12 /* Foundation.framework */; };
 		CAEA88ABA0EBB39ED0301C76 /* LMPropertyTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = CAE616156E575E7E30561A77 /* LMPropertyTests.mm */; };
-		CAEDD36E01ADD1300F7D94A1 /* LMCache.mm in Sources */ = {isa = PBXBuildFile; fileRef = CAEE69A1CF0EE78D5DCBA953 /* LMCache.mm */; };
+		CAEDD36E01ADD1300F7D94A1 /* LMCache.mm in Sources */ = {isa = PBXBuildFile; fileRef = CAEE69A1CF0EE78D5DCBA953 /* LMCache.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		CAEDFC5A5F2DC72EF13BBC13 /* LMCacheTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = CAEB2C5D6C9AAD1398A90F7A /* LMCacheTests.mm */; };
 		CAEE8E33460AF494A492D9B4 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CAE6D7451DAFED11149BE96E /* UIKit.framework */; };
 /* End PBXBuildFile section */

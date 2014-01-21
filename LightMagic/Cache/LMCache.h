@@ -9,8 +9,8 @@
 
 #import "LMDefinitions.h"
 
-typedef std::map<Class, std::map<SEL, LMInitializer>> LMInitializerCache;
-typedef std::map<Class, std::map<Class, std::set<SEL>>> LMGetterCache;
+typedef std::map<const Class, std::map<const SEL, LMInitializer>> LMInitializerCache;
+typedef std::map<const Class, std::map<const Class, std::set<const SEL>>> LMGetterCache;
 
 struct ClassComparator {
     bool operator() (Class a, Class b) const;
@@ -20,10 +20,10 @@ class LMCache {
 private:
     struct ClassInitializersNode {
         LMInitializer initializer;
-        std::map<Class, LMInitializer, ClassComparator> containers;
+        std::map<const Class, LMInitializer, ClassComparator> containers;
     };
 
-    std::map<Class, ClassInitializersNode*> _initializers;
+    std::map<const Class, ClassInitializersNode*> _initializers;
 
     ClassInitializersNode *initializersNode(Class propertyClass);
     void removeInitializersNodeIfNeeded(Class propertyClass);

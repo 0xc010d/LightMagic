@@ -27,10 +27,10 @@ void LMCache::setInitializer(LMInitializer initializer, Class propertyClass) {
 
 void LMCache::setInitializer(LMInitializer initializer, Class propertyClass, Class containerClass) {
     ClassInitializersNode *node = initializersNode(propertyClass);
-    if (!containerClass) {
+    if (!containerClass && node->initializer != initializer) {
         node->initializer = [initializer copy];
     }
-    else {
+    else if (node->containers[containerClass] != initializer) {
         node->containers[containerClass] = [initializer copy];
     }
     remapInitializersCache(propertyClass);
