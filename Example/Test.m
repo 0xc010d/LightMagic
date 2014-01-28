@@ -8,7 +8,7 @@
 
 @implementation Test
 
-@dynamic lazyObject;
+inject(lazyObject)
 
 - (NSObject *)ivarObject {
     if (!_ivarObject) {
