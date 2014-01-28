@@ -82,6 +82,7 @@ void static lm_objc_swizzleInstanceMethod(Class clazz, SEL selector, SEL newSele
     IMP originalImplementation = method_getImplementation(originalMethod);
     // check if we haven't swizzled this method before
     // this check requires classes to be sorted (see LMCollector)
+    //TODO: does it really require that?
     if (originalImplementation != implementation) {
         const char *types = method_getTypeEncoding(originalMethod);
         if (class_addMethod(clazz, selector, implementation, types)) {
