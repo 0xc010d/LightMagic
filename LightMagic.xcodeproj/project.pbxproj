@@ -24,6 +24,7 @@
 		46E8F25D186893AF00AA6EC9 /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 46E8F25C186893AF00AA6EC9 /* ViewController.xib */; };
 		46E8F261186896D500AA6EC9 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 46E8F25F1868943800AA6EC9 /* ViewController.m */; };
 		89BBF49EB8D4423AAED38EAE /* libPods-Example.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FE7D203011774F3DA6370AC9 /* libPods-Example.a */; };
+		C9BC07E9976243245ADE1B84 /* LMDefinitions.m in Sources */ = {isa = PBXBuildFile; fileRef = C9BC0216CC5F3D952FF440B6 /* LMDefinitions.m */; };
 		C9BC0BE85749B179F118C581 /* LMBiMapTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9BC06E7E51BBD234A3B5003 /* LMBiMapTests.mm */; };
 		CAE27BF307F31CF598A309BE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CAE7121D23B3EF5F58030D9B /* CoreGraphics.framework */; };
 		CAE2F9EC262F58D819101B67 /* Test.m in Sources */ = {isa = PBXBuildFile; fileRef = CAEC603ADE564F12BB787678 /* Test.m */; };
@@ -77,6 +78,7 @@
 		4B0AEC639DA549C5B18FB2D7 /* Pods-Example.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example.xcconfig"; path = "Pods/Pods-Example.xcconfig"; sourceTree = "<group>"; };
 		5121594D64434C65857A09B3 /* Pods-Tests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.xcconfig"; path = "Pods/Pods-Tests.xcconfig"; sourceTree = "<group>"; };
 		BD6E6678283747B4A42FE296 /* libPods-Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C9BC0216CC5F3D952FF440B6 /* LMDefinitions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LMDefinitions.m; sourceTree = "<group>"; };
 		C9BC023E963C340DC61CFDEB /* LMBiMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMBiMap.h; sourceTree = "<group>"; };
 		C9BC06E7E51BBD234A3B5003 /* LMBiMapTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LMBiMapTests.mm; sourceTree = "<group>"; };
 		CAE157FA9FF3866D3328F2B0 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -236,6 +238,7 @@
 				CAE546667346E8BC2294B541 /* LMTemplateClass.h */,
 				CAE73716E48644A3951ECB30 /* LMProtocolList.h */,
 				CAE881F603D493AF4BDE51D6 /* Cache */,
+				C9BC0216CC5F3D952FF440B6 /* LMDefinitions.m */,
 			);
 			path = LightMagic;
 			sourceTree = "<group>";
@@ -460,6 +463,7 @@
 				46D863111872310400172036 /* LMClass.mm in Sources */,
 				46D863151872310400172036 /* LMDynamicClass.mm in Sources */,
 				CAEDD36E01ADD1300F7D94A1 /* LMCache.mm in Sources */,
+				C9BC07E9976243245ADE1B84 /* LMDefinitions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

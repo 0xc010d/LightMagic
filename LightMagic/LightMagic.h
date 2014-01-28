@@ -4,7 +4,7 @@
 #pragma ide diagnostic ignored "OCUnusedMacroInspection"
 
 #define inject(property) @dynamic property; \
-+ (void)LM_PREFIX##property {}
+- (void)__LM_PREFIX__##property {}
 
 #define LM_CONTEXT(group, block) \
     __attribute__((constructor(1000))) static void __used group(void) { \
