@@ -8,12 +8,12 @@ Class static lm_property_getClass(objc_property_t property);
 
 @implementation LMTemplateClass {
     @public
-    std::map<SEL, id> values;
+    std::map<SEL, id> _values;
 }
 
 - (void)dealloc {
-    for (auto iterator = values.begin(); iterator != values.end(); iterator++) {
-        [iterator->second release];
+    for (auto& value : _values) {
+        [value.second release];
     }
     [super dealloc];
 }
@@ -35,7 +35,7 @@ void lm_class_addProperty(Class injectedClass, Class containerClass, Class prope
 #pragma mark - Private
 
 id static lm_dynamicGetter(LMTemplateClass *self, SEL _cmd) {
-    id result = self->values[_cmd];
+    id result = self->_values[_cmd];
     if (!result) {
         Class injectedClass = object_getClass(self);
         LMInitializer initializer = LMCache::getInstance().initializerCache[injectedClass][_cmd];
@@ -49,7 +49,7 @@ id static lm_dynamicGetter(LMTemplateClass *self, SEL _cmd) {
             Class propertyClass = lm_property_getClass(property);
             result = objc_msgSend(propertyClass, @selector(new));
         }
-        self->values[_cmd] = result;
+        self->_values[_cmd] = result;
     }
     return result;
 }

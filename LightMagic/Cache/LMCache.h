@@ -12,7 +12,8 @@
 typedef std::map<const Class, std::map<const SEL, LMInitializer>> LMInitializerCache;
 typedef std::map<const Class, std::map<const Class, std::set<const SEL>>> LMGetterCache;
 
-struct ClassComparator {
+class ClassComparator {
+public:
     bool operator() (Class a, Class b) const;
 };
 
