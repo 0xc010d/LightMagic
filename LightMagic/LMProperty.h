@@ -8,8 +8,8 @@
 @property (nonatomic, readonly) SEL getter;
 @property (nonatomic, readonly) LMProtocolList protocols;
 
-@property (nonatomic, readonly, getter=isInjectable) BOOL injectable;
-
 - (instancetype)initWithProperty:(objc_property_t)property;
+
+- (BOOL)isInjectableInClass:(Class)objcClass;
 
 @end

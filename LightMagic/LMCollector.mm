@@ -55,7 +55,7 @@
 
             for (uint i = 0; i < propertiesCount; i++) {
                 LMProperty *property = [[LMProperty alloc] initWithProperty:propertyList[i]];
-                if (property.injectable) {
+                if ([property isInjectableInClass:nextClass]) {
                     [properties addObject:property];
                 }
             }

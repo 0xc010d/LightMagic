@@ -1,4 +1,4 @@
 #import "LMDefinitions.h"
 
 #define LM_STR(arg) #arg
-const char *kLMPrefix = LM_STR($__LM_PREFIX__);
+const char *kLMInjectPrefix = LM_STR($__inject_);

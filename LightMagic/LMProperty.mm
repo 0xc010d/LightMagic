@@ -2,6 +2,7 @@
 #import <string>
 #import <regex>
 #import "LMProperty.h"
+#import "LMDefinitions.h"
 
 @implementation LMProperty {
     Class _clazz;
@@ -20,6 +21,20 @@
     _property = property;
     [self parse];
     return self;
+}
+
+- (BOOL)isInjectableInClass:(Class)objcClass {
+    if (!_dynamic) {
+        return NO;
+    }
+    const char *propertyName = property_getName(_property);
+    char *selectorName = (char *)malloc(strlen(kLMInjectPrefix) + strlen(propertyName) + 1);
+    strcpy(selectorName, kLMInjectPrefix);
+    strcat(selectorName, propertyName);
+    SEL selector = sel_getUid(selectorName);
+    free(selectorName);
+    Class metaClass = object_getClass((id)objcClass);
+    return class_respondsToSelector(metaClass, selector);
 }
 
 - (void)parse {
@@ -45,10 +60,6 @@
 
 - (SEL)getter {
     return _getter;
-}
-
-- (BOOL)isInjectable {
-    return _dynamic;
 }
 
 #pragma mark - Private
@@ -96,14 +107,6 @@
         type.erase(leftBracket, rightBracket - leftBracket);
     }
     _clazz = objc_getClass(type.c_str());
-}
-
-- (BOOL)isEqual:(id)object {
-    return [object isKindOfClass:[self class]] && [object getter] == _getter;
-}
-
-- (NSUInteger)hash {
-    return (NSUInteger)(void *)_getter;
 }
 
 @end

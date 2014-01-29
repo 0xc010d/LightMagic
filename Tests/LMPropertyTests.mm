@@ -23,12 +23,12 @@ SPEC_BEGIN(LMPropertyTests)
             it(@"Should detect synthesized property", ^{
                 objc_property_t rawProperty = getPropertyByName([LMPropertiesParserTest class], "synthesizedProperty");
                 LMProperty *property = [[LMProperty alloc] initWithProperty:rawProperty];
-                [[theValue(property.injectable) should] equal:theValue(NO)];
+                [[theValue([property isInjectableInClass:[LMPropertiesParserTest class]]) should] equal:theValue(NO)];
             });
             it(@"Should detect injectable property", ^{
                 objc_property_t rawProperty = getPropertyByName([LMPropertiesParserTest class], "dynamicProperty");
                 LMProperty *property = [[LMProperty alloc] initWithProperty:rawProperty];
-                [[theValue(property.injectable) should] equal:theValue(YES)];
+                [[theValue([property isInjectableInClass:[LMPropertiesParserTest class]]) should] equal:theValue(YES)];
             });
         });
         context(@"Type parser", ^{

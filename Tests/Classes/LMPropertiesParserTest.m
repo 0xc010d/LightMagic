@@ -1,8 +1,9 @@
 #import "LMPropertiesParserTest.h"
+#import "LightMagic.h"
 
 
 @implementation LMPropertiesParserTest
 
-@dynamic dynamicProperty;
+inject(dynamicProperty)
 
 @end

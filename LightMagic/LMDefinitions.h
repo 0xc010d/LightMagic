@@ -3,5 +3,5 @@
 typedef id (^LMInitializer)(id sender);
 @protocol LightMagic @end;
 
-#define $__LM_PREFIX__
-extern const char *kLMPrefix;
+#define $__inject_
+extern const char *kLMInjectPrefix;
