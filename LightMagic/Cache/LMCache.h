@@ -38,10 +38,7 @@ public:
     LMInitializerCache initializerCache; // <injectedClass, <getter, initializer>>
     LMGetterCache getterCache; // <propertyClass, <injectedClass, <getter>>>
 
-    void setInitializer(LMInitializer initializer, Class propertyClass);
-    void setInitializer(LMInitializer initializer, Class propertyClass, Class containerClass);
-    void removeInitializer(Class propertyClass);
-    void removeInitializer(Class propertyClass, Class containerClass);
-    LMInitializer initializer(Class propertyClass);
-    LMInitializer initializer(Class propertyClass, Class containerClass);
+    void setInitializer(LMInitializer initializer, Class propertyClass, Class containerClass = nil);
+    void removeInitializer(Class propertyClass, Class containerClass = nil);
+    LMInitializer initializer(Class propertyClass, Class containerClass = nil);
 };
