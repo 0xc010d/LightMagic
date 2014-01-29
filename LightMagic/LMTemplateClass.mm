@@ -3,8 +3,8 @@
 #import "LMTemplateClass.h"
 #include "LMCache.h"
 
-id static lm_dynamicGetter(LMTemplateClass *self, SEL _cmd);
-Class static lm_property_getClass(objc_property_t property);
+id static dynamicGetter(LMTemplateClass *self, SEL _cmd);
+Class static property_getClass(objc_property_t property);
 
 @implementation LMTemplateClass {
     @public
@@ -25,7 +25,7 @@ void lm_class_addProperty(Class injectedClass, Class containerClass, Class prope
     const char *className = class_getName(propertyClass);
     objc_property_attribute_t attributes[] = {"T", className};
     class_addProperty(injectedClass, name, attributes, 1);
-    class_addMethod(injectedClass, getter, (IMP)lm_dynamicGetter, "@@:");
+    class_addMethod(injectedClass, getter, (IMP) dynamicGetter, "@@:");
     //cache initializer
     LMInitializer initializer = LMCache::getInstance().initializer(propertyClass, containerClass);
     LMCache::getInstance().initializerCache[injectedClass][getter] = initializer;
@@ -34,7 +34,7 @@ void lm_class_addProperty(Class injectedClass, Class containerClass, Class prope
 
 #pragma mark - Private
 
-id static lm_dynamicGetter(LMTemplateClass *self, SEL _cmd) {
+id static dynamicGetter(LMTemplateClass *self, SEL _cmd) {
     id result = self->_values[_cmd];
     if (!result) {
         Class injectedClass = object_getClass(self);
@@ -46,7 +46,7 @@ id static lm_dynamicGetter(LMTemplateClass *self, SEL _cmd) {
         else {
             const char *name = sel_getName(_cmd);
             objc_property_t property = class_getProperty(injectedClass, name);
-            Class propertyClass = lm_property_getClass(property);
+            Class propertyClass = property_getClass(property);
             result = objc_msgSend(propertyClass, @selector(new));
         }
         self->_values[_cmd] = result;
@@ -54,7 +54,7 @@ id static lm_dynamicGetter(LMTemplateClass *self, SEL _cmd) {
     return result;
 }
 
-Class static lm_property_getClass(objc_property_t property) {
+Class static property_getClass(objc_property_t property) {
     const char *className = property_getAttributes(property) + 1;
     return objc_getClass(className);
 }
