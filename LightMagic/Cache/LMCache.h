@@ -26,8 +26,6 @@ private:
 
     std::map<const Class, ClassInitializersNode*> _initializers;
 
-    ClassInitializersNode *initializersNode(Class propertyClass);
-    void removeInitializersNodeIfNeeded(Class propertyClass);
     void remapInitializersCache(Class propertyClass);
 public:
     static LMCache& getInstance();
