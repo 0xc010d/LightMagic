@@ -32,7 +32,7 @@ void LMCache::setInitializer(LMInitializer initializer, Class propertyClass, Cla
     else if (node->containers[containerClass] != initializer) {
         node->containers[containerClass] = [initializer copy];
     }
-    remapInitializersCache(propertyClass);
+    remapInitializerCache(propertyClass);
 }
 
 void LMCache::removeInitializer(Class propertyClass, Class containerClass) {
@@ -49,7 +49,7 @@ void LMCache::removeInitializer(Class propertyClass, Class containerClass) {
             delete node;
         }
     }
-    remapInitializersCache(propertyClass);
+    remapInitializerCache(propertyClass);
 }
 
 LMInitializer LMCache::initializer(Class propertyClass, Class containerClass) {
@@ -73,7 +73,7 @@ LMInitializer LMCache::initializer(Class propertyClass, Class containerClass) {
 
 #pragma mark - Private
 
-void LMCache::remapInitializersCache(Class propertyClass) {
+void LMCache::remapInitializerCache(Class propertyClass) {
     auto containersIterator = getterCache[propertyClass].begin();
     auto containersIteratorEnd = getterCache[propertyClass].end();
     while (containersIterator != containersIteratorEnd) {
