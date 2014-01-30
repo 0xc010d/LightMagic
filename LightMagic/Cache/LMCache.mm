@@ -27,10 +27,12 @@ void LMCache::setInitializer(LMInitializer initializer, Class propertyClass, Cla
         _initializers[propertyClass] = node;
     }
     if (!containerClass && node->initializer != initializer) {
-        node->initializer = [initializer copy];
+        Block_release(node->initializer);
+        node->initializer = Block_copy(initializer);
     }
     else if (node->containers[containerClass] != initializer) {
-        node->containers[containerClass] = [initializer copy];
+        Block_release(node->containers[containerClass]);
+        node->containers[containerClass] = Block_copy(initializer);
     }
     remapInitializerCache(propertyClass);
 }
@@ -39,9 +41,11 @@ void LMCache::removeInitializer(Class propertyClass, Class containerClass) {
     ClassInitializerNode *node = _initializers[propertyClass];
     if (node) {
         if (!containerClass) {
+            Block_release(node->initializer);
             node->initializer = nil;
         }
         else {
+            Block_release(node->containers[containerClass]);
             node->containers.erase(containerClass);
         }
         if (node && node->containers.size() == 0 && !node->initializer) {

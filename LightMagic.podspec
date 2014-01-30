@@ -36,7 +36,7 @@ SOFTWARE.
   s.public_header_files = 'LightMagic/LightMagic.h', 'LightMagic/LMContext.h', 'LightMagic/LMDefinitions.h'
   s.framework           = 'Foundation'
 
-  non_arc_files =  'LightMagic/**/*.{h}', 'LightMagic/LMClass.mm', 'LightMagic/LMTemplateClass.mm'
+  non_arc_files =  'LightMagic/**/*.{h}', 'LightMagic/LMClass.mm', 'LightMagic/LMTemplateClass.mm', 'LightMagic/Cache/LMCache.mm'
   s.requires_arc = true
   s.exclude_files = non_arc_files
   s.subspec 'no-arc' do |sna|

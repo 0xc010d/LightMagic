@@ -19,9 +19,11 @@ public:
 
 class LMCache {
 private:
-    struct ClassInitializerNode {
+    class ClassInitializerNode {
+    public:
         LMInitializer initializer;
         std::map<const Class, LMInitializer, ClassComparator> containers;
+        ClassInitializerNode() { initializer = nil; };
     };
 
     std::map<const Class, ClassInitializerNode *> _initializers;
