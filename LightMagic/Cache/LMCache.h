@@ -14,19 +14,24 @@ typedef std::map<const Class, std::map<const Class, std::set<const SEL>>> LMGett
 
 class ClassComparator {
 public:
-    bool operator() (Class a, Class b) const;
+    bool operator() (Class a, Class b) const {
+        if (a == b) return false;
+        else if ([a isSubclassOfClass:b]) return true;
+        else if ([b isSubclassOfClass:a]) return false;
+        else return a < b;
+    }
 };
 
 class LMCache {
 private:
-    class ClassInitializerNode {
+    class InitializerNode {
     public:
         LMInitializer initializer;
         std::map<const Class, LMInitializer, ClassComparator> containers;
-        ClassInitializerNode() { initializer = nil; };
+        InitializerNode() { initializer = nil; };
     };
 
-    std::map<const Class, ClassInitializerNode *> _initializers;
+    std::map<const Class, InitializerNode *> _initializers;
 
     void remapInitializerCache(Class propertyClass);
 public:
