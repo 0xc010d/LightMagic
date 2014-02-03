@@ -31,7 +31,7 @@ private:
         InitializerNode() { initializer = nil; };
     };
 
-    std::map<const Class, InitializerNode *> _initializers;
+    std::map<const Class, InitializerNode> _initializers;
 
     void remapInitializerCache(Class propertyClass);
 public:

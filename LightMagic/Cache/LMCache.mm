@@ -6,11 +6,7 @@ LMCache &LMCache::getInstance() {
 }
 
 void LMCache::setInitializer(LMInitializer initializer, Class propertyClass, Class containerClass) {
-    InitializerNode *node = _initializers[propertyClass];
-    if (!node) {
-        node = new InitializerNode;
-        _initializers[propertyClass] = node;
-    }
+    InitializerNode *node = &_initializers[propertyClass];
     if (!containerClass && node->initializer != initializer) {
         Block_release(node->initializer);
         node->initializer = Block_copy(initializer);
@@ -23,41 +19,35 @@ void LMCache::setInitializer(LMInitializer initializer, Class propertyClass, Cla
 }
 
 void LMCache::removeInitializer(Class propertyClass, Class containerClass) {
-    InitializerNode *node = _initializers[propertyClass];
-    if (node) {
-        if (!containerClass) {
-            Block_release(node->initializer);
-            node->initializer = nil;
-        }
-        else {
-            Block_release(node->containers[containerClass]);
-            node->containers.erase(containerClass);
-        }
-        if (node && node->containers.size() == 0 && !node->initializer) {
-            _initializers.erase(propertyClass);
-            delete node;
-        }
+    InitializerNode *node = &_initializers[propertyClass];
+    if (!containerClass) {
+        Block_release(node->initializer);
+        node->initializer = nil;
+    }
+    else {
+        Block_release(node->containers[containerClass]);
+        node->containers.erase(containerClass);
+    }
+    if (node && node->containers.size() == 0 && !node->initializer) {
+        _initializers.erase(propertyClass);
     }
     remapInitializerCache(propertyClass);
 }
 
 LMInitializer LMCache::initializer(Class propertyClass, Class containerClass) {
-    InitializerNode *node = _initializers[propertyClass];
-    if (node) {
-        if (!containerClass) {
-            return node->initializer;
-        }
-        auto iterator = node->containers.begin();
-        auto end = node->containers.end();
-        while (iterator != end) {
-            if ([containerClass isSubclassOfClass:iterator->first]) {
-                return iterator->second;
-            }
-            iterator ++;
-        }
+    InitializerNode *node = &_initializers[propertyClass];
+    if (!containerClass) {
         return node->initializer;
     }
-    return nil;
+    auto iterator = node->containers.begin();
+    auto end = node->containers.end();
+    while (iterator != end) {
+        if ([containerClass isSubclassOfClass:iterator->first]) {
+            return iterator->second;
+        }
+        iterator ++;
+    }
+    return node->initializer;
 }
 
 #pragma mark - Private
