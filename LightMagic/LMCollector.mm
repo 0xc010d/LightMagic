@@ -30,8 +30,7 @@
         classes.insert(nextClass);
     }
 
-    for (auto iterator = classes.begin(); iterator != classes.end(); iterator ++) {
-        Class nextClass = *iterator;
+    for (auto& nextClass : classes) {
         if ([nextClass conformsToProtocol:protocol]) {
             NSSet *properties = [self injectablePropertiesForClass:nextClass protocol:protocol];
             LMClass *clazz = [[LMClass alloc] initWithClass:nextClass properties:properties];

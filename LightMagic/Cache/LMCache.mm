@@ -39,13 +39,10 @@ LMInitializer LMCache::initializer(Class propertyClass, Class containerClass) {
     if (!containerClass) {
         return node->initializer;
     }
-    auto iterator = node->containers.begin();
-    auto end = node->containers.end();
-    while (iterator != end) {
-        if ([containerClass isSubclassOfClass:iterator->first]) {
-            return iterator->second;
+    for (auto iterator : node->containers) {
+        if ([containerClass isSubclassOfClass:iterator.first]) {
+            return iterator.second;
         }
-        iterator ++;
     }
     return node->initializer;
 }
@@ -53,18 +50,11 @@ LMInitializer LMCache::initializer(Class propertyClass, Class containerClass) {
 #pragma mark - Private
 
 void LMCache::remapInitializerCache(Class propertyClass) {
-    auto containersIterator = getterCache[propertyClass].begin();
-    auto containersIteratorEnd = getterCache[propertyClass].end();
-    while (containersIterator != containersIteratorEnd) {
-        Class injectedClass = containersIterator->first;
+    for (auto& containerIterator : getterCache[propertyClass]) {
+        Class injectedClass = containerIterator.first;
         Class containerClass = injectedClasses.reversed()[injectedClass];
-        auto gettersIterator = containersIterator->second.begin();
-        auto gettersIteratorEnd = containersIterator->second.end();
-        while (gettersIterator != gettersIteratorEnd) {
-            SEL getter = *gettersIterator;
+        for (auto& getter : containerIterator.second) {
             initializerCache[injectedClass][getter] = initializer(propertyClass, containerClass);
-            gettersIterator ++;
         }
-        containersIterator ++;
     }
 }
