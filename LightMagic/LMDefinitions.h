@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-typedef id (^LMInitializer)(id sender);
+typedef id (^LMInitializerBlock)(id sender);
 @protocol LightMagic @end;
 
 #define $__inject_

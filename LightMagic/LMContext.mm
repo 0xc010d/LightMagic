@@ -3,11 +3,11 @@
 
 @implementation LMContext
 
-+ (void)registerInitializer:(LMInitializer)initializer forClass:(Class)propertyClass {
++ (void)registerInitializer:(LMInitializerBlock)initializer forClass:(Class)propertyClass {
     LMCache::getInstance().setInitializer(initializer, propertyClass);
 }
 
-+ (void)registerInitializer:(LMInitializer)initializer forClass:(Class)propertyClass containerClass:(Class)containerClass {
++ (void)registerInitializer:(LMInitializerBlock)initializer forClass:(Class)propertyClass containerClass:(Class)containerClass {
     LMCache::getInstance().setInitializer(initializer, propertyClass, containerClass);
 }
 

@@ -26,9 +26,11 @@
 		89BBF49EB8D4423AAED38EAE /* libPods-Example.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FE7D203011774F3DA6370AC9 /* libPods-Example.a */; };
 		C9BC07E9976243245ADE1B84 /* LMDefinitions.m in Sources */ = {isa = PBXBuildFile; fileRef = C9BC0216CC5F3D952FF440B6 /* LMDefinitions.m */; };
 		C9BC0BE85749B179F118C581 /* LMBiMapTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9BC06E7E51BBD234A3B5003 /* LMBiMapTests.mm */; };
+		CAE20F5F2E459EBFDB958E78 /* LMClassComparatorTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = CAE9159DE3601BB8183D5FF8 /* LMClassComparatorTests.mm */; };
 		CAE27BF307F31CF598A309BE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CAE7121D23B3EF5F58030D9B /* CoreGraphics.framework */; };
 		CAE2F9EC262F58D819101B67 /* Test.m in Sources */ = {isa = PBXBuildFile; fileRef = CAEC603ADE564F12BB787678 /* Test.m */; };
 		CAE3E0C66C8D9501F1359F68 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE157FA9FF3866D3328F2B0 /* AppDelegate.m */; };
+		CAE49115B4B82463BA5F3641 /* LMClassInitializerNode.mm in Sources */ = {isa = PBXBuildFile; fileRef = CAE477E4524891A839523A30 /* LMClassInitializerNode.mm */; };
 		CAE785C832E9A3CD63E26D7C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE51D023F458C3ABA8A862A /* main.m */; };
 		CAEA7AECBF67170D4F3CDDB9 /* LMPropertiesParserTest.m in Sources */ = {isa = PBXBuildFile; fileRef = CAE2AD9FC25D46CB40E5EBFE /* LMPropertiesParserTest.m */; };
 		CAEA7C6C3528F9761A955C4A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CAE6F979ECF497D1170AFF12 /* Foundation.framework */; };
@@ -86,28 +88,34 @@
 		CAE241425D1B4000DFD2C6D9 /* LMClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMClass.h; sourceTree = "<group>"; };
 		CAE2AD9FC25D46CB40E5EBFE /* LMPropertiesParserTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LMPropertiesParserTest.m; sourceTree = "<group>"; };
 		CAE3BF282954717369D7A076 /* Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Prefix.pch; sourceTree = "<group>"; };
+		CAE477E4524891A839523A30 /* LMClassInitializerNode.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LMClassInitializerNode.mm; sourceTree = "<group>"; };
 		CAE4CC28E52F4EB2B33A2634 /* LMProperty.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LMProperty.mm; sourceTree = "<group>"; };
 		CAE4D587E2B071857B89313B /* LMContext.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LMContext.mm; sourceTree = "<group>"; };
 		CAE4F2D8B61AFC41EEFCDEE6 /* LMContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMContext.h; sourceTree = "<group>"; };
+		CAE50D29645E6F5B858A0C0D /* LMClassInitializerNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMClassInitializerNode.h; sourceTree = "<group>"; };
 		CAE51D023F458C3ABA8A862A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		CAE546667346E8BC2294B541 /* LMTemplateClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMTemplateClass.h; sourceTree = "<group>"; };
 		CAE5961BA743276E1841F861 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		CAE5E5B6D847E496BD8F7DDF /* LMDynamicClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMDynamicClass.h; sourceTree = "<group>"; };
 		CAE616156E575E7E30561A77 /* LMPropertyTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LMPropertyTests.mm; sourceTree = "<group>"; };
 		CAE6451B959913FF11A2302C /* LMTemplateClass.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LMTemplateClass.mm; sourceTree = "<group>"; };
+		CAE66BED472CCE6A9D36D144 /* LMInitializerNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMInitializerNode.h; sourceTree = "<group>"; };
 		CAE6CB3CC1A32681F4EDC56A /* LMCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMCache.h; sourceTree = "<group>"; };
 		CAE6D7451DAFED11149BE96E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		CAE6F979ECF497D1170AFF12 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		CAE7121D23B3EF5F58030D9B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		CAE73716E48644A3951ECB30 /* LMProtocolList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMProtocolList.h; sourceTree = "<group>"; };
+		CAE74037D3BE4CF5CA86E3D2 /* LMInitializerMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMInitializerMap.h; sourceTree = "<group>"; };
 		CAE80A3278804FACB65A114B /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		CAE81C65FD40A7DF7723ABC7 /* Test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Test.h; sourceTree = "<group>"; };
+		CAE9159DE3601BB8183D5FF8 /* LMClassComparatorTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LMClassComparatorTests.mm; sourceTree = "<group>"; };
 		CAE9954E6DD9C1626896F552 /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CAEB27FFB154093F20D32A50 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.info; path = Info.plist; sourceTree = "<group>"; };
 		CAEB2C5D6C9AAD1398A90F7A /* LMCacheTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LMCacheTests.mm; sourceTree = "<group>"; };
 		CAEB3C9AA5DB7BD909F4224C /* LMPropertiesParserTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMPropertiesParserTest.h; sourceTree = "<group>"; };
 		CAEBF08A822831747B09DE66 /* LMCollector.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LMCollector.mm; sourceTree = "<group>"; };
 		CAEC603ADE564F12BB787678 /* Test.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Test.m; sourceTree = "<group>"; };
+		CAECE67B36D8F3A3F643DD0B /* LMClassComparator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMClassComparator.h; sourceTree = "<group>"; };
 		CAED24C0320A17C9F0399200 /* LMProperty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMProperty.h; sourceTree = "<group>"; };
 		CAED4F2F8BE264CE780E7179 /* LightMagic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LightMagic.m; sourceTree = "<group>"; };
 		CAEDB119BFBE91EDBB840B5D /* LMCollector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMCollector.h; sourceTree = "<group>"; };
@@ -194,6 +202,7 @@
 				CAE616156E575E7E30561A77 /* LMPropertyTests.mm */,
 				CAE8170EEB18B11427D4C49B /* Classes */,
 				C9BC06E7E51BBD234A3B5003 /* LMBiMapTests.mm */,
+				CAE9159DE3601BB8183D5FF8 /* LMClassComparatorTests.mm */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -213,6 +222,11 @@
 				CAEE69A1CF0EE78D5DCBA953 /* LMCache.mm */,
 				CAE6CB3CC1A32681F4EDC56A /* LMCache.h */,
 				C9BC023E963C340DC61CFDEB /* LMBiMap.h */,
+				CAE74037D3BE4CF5CA86E3D2 /* LMInitializerMap.h */,
+				CAECE67B36D8F3A3F643DD0B /* LMClassComparator.h */,
+				CAE477E4524891A839523A30 /* LMClassInitializerNode.mm */,
+				CAE50D29645E6F5B858A0C0D /* LMClassInitializerNode.h */,
+				CAE66BED472CCE6A9D36D144 /* LMInitializerNode.h */,
 			);
 			path = Cache;
 			sourceTree = "<group>";
@@ -448,6 +462,7 @@
 				CAEA88ABA0EBB39ED0301C76 /* LMPropertyTests.mm in Sources */,
 				CAEA7AECBF67170D4F3CDDB9 /* LMPropertiesParserTest.m in Sources */,
 				C9BC0BE85749B179F118C581 /* LMBiMapTests.mm in Sources */,
+				CAE20F5F2E459EBFDB958E78 /* LMClassComparatorTests.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -464,6 +479,7 @@
 				46D863151872310400172036 /* LMDynamicClass.mm in Sources */,
 				CAEDD36E01ADD1300F7D94A1 /* LMCache.mm in Sources */,
 				C9BC07E9976243245ADE1B84 /* LMDefinitions.m in Sources */,
+				CAE49115B4B82463BA5F3641 /* LMClassInitializerNode.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

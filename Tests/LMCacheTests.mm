@@ -37,11 +37,11 @@ SPEC_BEGIN(LMCacheTests)
             });
         });
         context(@"Container initializers", ^{
-            LMInitializer nilInitializer = ^id(id sender) { return nil; };
-            LMInitializer arrayInitializer = ^id(id sender) { return [NSArray array]; };
-            LMInitializer setInitializer = ^id(id sender) { return [NSMutableSet set]; };
-            LMInitializer countedSetInitializer = ^id(id sender) { return [NSCountedSet set]; };
-            LMInitializer mutableDictionaryInitializer = ^id(id sender) { return [NSMutableDictionary dictionary]; };
+            LMInitializerBlock nilInitializer = ^id(id sender) { return nil; };
+            LMInitializerBlock arrayInitializer = ^id(id sender) { return [NSArray array]; };
+            LMInitializerBlock setInitializer = ^id(id sender) { return [NSMutableSet set]; };
+            LMInitializerBlock countedSetInitializer = ^id(id sender) { return [NSCountedSet set]; };
+            LMInitializerBlock mutableDictionaryInitializer = ^id(id sender) { return [NSMutableDictionary dictionary]; };
             __block LMCache *cache;
             beforeEach(^{
                 cache = new LMCache();
@@ -96,27 +96,6 @@ SPEC_BEGIN(LMCacheTests)
                 [[cache->initializer([NSObject class], [NSMutableDictionary class]) should] equal:mutableDictionaryInitializer];
                 [[cache->initializer([NSObject class], [NSMutableSet class]) should] equal:setInitializer];
                 [[cache->initializer([NSObject class], [NSArray class]) should] equal:arrayInitializer];
-            });
-        });
-        context(@"Container initializers comparator", ^{
-            __block ClassComparator *comparator;
-            beforeEach(^{
-                comparator = new ClassComparator;
-            });
-            afterEach(^{
-                delete comparator;
-            });
-            it(@"Should properly handle equal classes", ^{
-                [[theValue(comparator->operator()([NSObject class], [NSObject class])) should] equal:theValue(false)];
-            });
-            it(@"Should properly handle subclasses", ^{
-                [[theValue(comparator->operator()([NSArray class], [NSObject class])) should] equal:theValue(true)];
-                [[theValue(comparator->operator()([NSObject class], [NSArray class])) should] equal:theValue(false)];
-            });
-            it(@"Should properly handle unconnected classes", ^{
-                bool result = [NSArray class] < [NSDictionary class];
-                [[theValue(comparator->operator()([NSArray class], [NSDictionary class])) should] equal:theValue(result)];
-                [[theValue(comparator->operator()([NSDictionary class], [NSArray class])) should] equal:theValue(!result)];
             });
         });
 SPEC_END

@@ -3,6 +3,7 @@
 #import "LMCollector.h"
 #import "LMClass.h"
 #import "LMProperty.h"
+#import "LMClassComparator.h"
 
 @implementation LMCollector
 
@@ -13,18 +14,9 @@
     char const *imageName = class_getImageName(object_getClass(self));
     const char **classNames = objc_copyClassNamesForImage(imageName, &classesCount);
 
-    struct ClassComparator {
-        bool operator() (Class a, Class b) const {
-            if (a == b) return false;
-            else if ([a isSubclassOfClass:b]) return false;
-            else if ([b isSubclassOfClass:a]) return true;
-            else return a < b;
-        }
-    };
-
     // we need to sort all classes to get easy swizzling support;
     // we'll swizzle -dealloc in LMClass
-    std::set<Class, ClassComparator> classes;
+    std::set<Class, LMClassComparator> classes;
     for (int index = 0; index < classesCount; index++) {
         Class nextClass = objc_getClass(classNames[index]);
         classes.insert(nextClass);

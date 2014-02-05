@@ -8,31 +8,15 @@
 #import <objc/objc.h>
 
 #import "LMDefinitions.h"
+#import "LMClassComparator.h"
+#import "LMInitializerMap.h"
 
-typedef std::map<const Class, std::map<const SEL, LMInitializer>> LMInitializerCache;
+typedef std::map<const Class, std::map<const SEL, LMInitializerBlock>> LMInitializerCache;
 typedef std::map<const Class, std::map<const Class, std::set<const SEL>>> LMGetterCache;
-
-class ClassComparator {
-public:
-    bool operator() (Class a, Class b) const {
-        if (a == b) return false;
-        else if ([a isSubclassOfClass:b]) return true;
-        else if ([b isSubclassOfClass:a]) return false;
-        else return a < b;
-    }
-};
 
 class LMCache {
 private:
-    class InitializerNode {
-    public:
-        LMInitializer initializer;
-        std::map<const Class, LMInitializer, ClassComparator> containers;
-        InitializerNode() { initializer = nil; };
-    };
-
-    std::map<const Class, InitializerNode> _initializers;
-
+    LMInitializerMap _initializerMap;
     void remapInitializerCache(Class propertyClass);
 public:
     static LMCache& getInstance();
@@ -43,7 +27,7 @@ public:
     LMInitializerCache initializerCache; // <injectedClass, <getter, initializer>>
     LMGetterCache getterCache; // <propertyClass, <injectedClass, <getter>>>
 
-    void setInitializer(LMInitializer initializer, Class propertyClass, Class containerClass = nil);
+    void setInitializer(LMInitializerBlock initializer, Class propertyClass, Class containerClass = nil);
     void removeInitializer(Class propertyClass, Class containerClass = nil);
-    LMInitializer initializer(Class propertyClass, Class containerClass = nil);
+    LMInitializerBlock initializer(Class propertyClass, Class containerClass = nil);
 };
