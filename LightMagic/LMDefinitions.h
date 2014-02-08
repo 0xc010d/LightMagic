@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 
 typedef id (^LMInitializerBlock)(id sender);
-@protocol LightMagic @end;
+@protocol LightMagic @end
 
-#define $__inject_
+#define __inject_
 extern const char *kLMInjectPrefix;
