@@ -23,11 +23,11 @@ LMInitializerBlock LMCache::initializer(LMPropertyDescriptor descriptor) {
 
 void LMCache::remapInitializerCache(Class propertyClass) {
     //TODO: Implement for protocols
+    LMPropertyDescriptor descriptor(propertyClass);
     for (auto& containerIterator : getterCache[propertyClass]) {
         Class injectedClass = containerIterator.first;
-        Class containerClass = injectedClasses.reversed()[injectedClass];
+        descriptor.containerClass = injectedClasses.reversed()[injectedClass];
         for (auto& getter : containerIterator.second) {
-            LMPropertyDescriptor descriptor(propertyClass, containerClass);
             initializerCache[injectedClass][getter] = initializer(descriptor);
         }
     }

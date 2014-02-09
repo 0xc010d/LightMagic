@@ -1,7 +1,8 @@
 #import <Foundation/Foundation.h>
+
 #import "LMDefinitions.h"
-#import "LMProtocolList.h"
-#import "LMPropertyDescriptor.h"
+
+#include "LMPropertyDescriptor.h"
 
 @interface LMTemplateClass : NSObject
 

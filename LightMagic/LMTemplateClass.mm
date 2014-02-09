@@ -1,6 +1,8 @@
 #import <objc/runtime.h>
 #import <objc/message.h>
+
 #import "LMTemplateClass.h"
+
 #include "LMCache.h"
 
 id static dynamicGetter(LMTemplateClass *self, SEL _cmd);

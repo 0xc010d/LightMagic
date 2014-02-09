@@ -1,16 +1,16 @@
 #pragma once
-#include <map>
-#include <set>
-
-#include "LMBiMap.h"
-
 #import <Foundation/Foundation.h>
 #import <objc/objc.h>
 
+#include <map>
+#include <set>
+
 #import "LMDefinitions.h"
-#import "LMClassComparator.h"
-#import "LMInitializerMap.h"
-#import "LMPropertyDescriptor.h"
+
+#include "LMBiMap.h"
+#include "LMClassComparator.h"
+#include "LMInitializerMap.h"
+#include "LMPropertyDescriptor.h"
 
 typedef std::map<const Class, std::map<const SEL, LMInitializerBlock>> LMInitializerCache;
 typedef std::map<const Class, std::map<const Class, std::set<const SEL>>> LMGetterCache;

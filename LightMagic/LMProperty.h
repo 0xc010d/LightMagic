@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 #import <objc/runtime.h>
-#import "LMProtocolList.h"
+
 #import "LMPropertyDescriptor.h"
 
 @interface LMProperty : NSObject

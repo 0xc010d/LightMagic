@@ -1,6 +1,7 @@
 #pragma once
 
-#import <set>
+#include <set>
+
 #include "LMClassInitializerNode.h"
 
 class LMInitializerNode : public LMClassInitializerNode {

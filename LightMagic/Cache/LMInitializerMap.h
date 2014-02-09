@@ -1,8 +1,9 @@
 #pragma once
 
-#import <map>
+#include <map>
+
 #include "LMInitializerNode.h"
-#import "LMPropertyDescriptor.h"
+#include "LMPropertyDescriptor.h"
 
 class LMInitializerMap {
 private:

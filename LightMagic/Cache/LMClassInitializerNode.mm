@@ -1,4 +1,4 @@
-#import "LMClassInitializerNode.h"
+#include "LMClassInitializerNode.h"
 
 const LMInitializerBlock LMClassInitializerNode::find(Class& container) {
     if (container) {

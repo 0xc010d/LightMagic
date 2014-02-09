@@ -1,9 +1,12 @@
 #pragma once
 
-#import <map>
 #import <objc/runtime.h>
+
+#include <map>
+
 #import "LMDefinitions.h"
-#import "LMClassComparator.h"
+
+#include "LMClassComparator.h"
 
 class LMClassInitializerNode {
 private:

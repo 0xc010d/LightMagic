@@ -1,9 +1,11 @@
 #import <objc/runtime.h>
+
 #include <set>
+
 #import "LMCollector.h"
 #import "LMClass.h"
 #import "LMProperty.h"
-#import "LMClassComparator.h"
+#include "LMClassComparator.h"
 
 @implementation LMCollector
 
