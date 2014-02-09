@@ -8,32 +8,32 @@ SPEC_BEGIN(LMCacheTests)
                 cache = new LMCache();
                 cache->setInitializer(^id(id sender) {
                     return nil;
-                }, [NSObject class]);
+                }, {[NSObject class]});
             });
             afterEach(^{
                 delete cache;
             });
             it(@"Initializer should not be retrievable after removing", ^{
-                cache->removeInitializer([NSObject class]);
-                [[cache->initializer([NSObject class]) should] beNil];
+                cache->removeInitializer({[NSObject class]});
+                [[cache->initializer({[NSObject class]}) should] beNil];
             });
             it(@"Initializer should be runnable", ^{
-                [[cache->initializer([NSObject class])(nil) should] beNil];
+                [[cache->initializer({[NSObject class]})(nil) should] beNil];
             });
             it(@"Initializer should be rewritable", ^{
-                [[cache->initializer([NSObject class])(nil) should] beNil];
+                [[cache->initializer({[NSObject class]})(nil) should] beNil];
                 cache->setInitializer(^id(id sender) {
                     return [NSArray array];
-                }, [NSObject class]);
-                [[cache->initializer([NSObject class])(nil) shouldNot] beNil];
+                }, {[NSObject class]});
+                [[cache->initializer({[NSObject class]})(nil) shouldNot] beNil];
             });
             it(@"Initializer parameter should be accessable", ^{
                 cache->setInitializer(^id(id sender) {
                     return [NSArray arrayWithObject:sender];
-                }, [NSObject class]);
+                }, {[NSObject class]});
                 NSObject *object = [NSObject new];
-                [[theValue([cache->initializer([NSObject class])(object) count]) should] equal:theValue(1)];
-                [[cache->initializer([NSObject class])(object)[0] should] equal:object];
+                [[theValue([cache->initializer({[NSObject class]})(object) count]) should] equal:theValue(1)];
+                [[cache->initializer({[NSObject class]})(object)[0] should] equal:object];
             });
         });
         context(@"Container initializers", ^{
@@ -50,52 +50,52 @@ SPEC_BEGIN(LMCacheTests)
                 delete cache;
             });
             it(@"Subclasses should take superclasses initializers", ^{
-                cache->setInitializer(nilInitializer, [NSObject class], [UIResponder class]);
-                [[cache->initializer([NSObject class], [UIButton class]) shouldNot] beNil];
+                cache->setInitializer(nilInitializer, {[NSObject class], [UIResponder class]});
+                [[cache->initializer({[NSObject class], [UIButton class]}) shouldNot] beNil];
             });
             it(@"Nil should be returned if container initializer hasn't been found", ^{
-                cache->setInitializer(nilInitializer, [NSObject class], [UIButton class]);
-                [[cache->initializer([NSObject class], [UIResponder class]) should] beNil];
+                cache->setInitializer(nilInitializer, {[NSObject class], [UIButton class]});
+                [[cache->initializer({[NSObject class], [UIResponder class]}) should] beNil];
             });
             it(@"Default initializer should be used if other hasn't been found", ^{
-                cache->setInitializer(nilInitializer, [NSObject class]);
-                [[cache->initializer([NSObject class], [UIButton class]) shouldNot] beNil];
+                cache->setInitializer(nilInitializer, {[NSObject class]});
+                [[cache->initializer({[NSObject class], [UIButton class]}) shouldNot] beNil];
             });
             it(@"Container initializers should be removable", ^{
-                cache->setInitializer(nilInitializer, [NSObject class], [UIResponder class]);
-                [[cache->initializer([NSObject class], [UIButton class]) shouldNot] beNil];
-                cache->removeInitializer([NSObject class], [UIResponder class]);
-                [[cache->initializer([NSObject class], [UIButton class]) should] beNil];
+                cache->setInitializer(nilInitializer, {[NSObject class], [UIResponder class]});
+                [[cache->initializer({[NSObject class], [UIButton class]}) shouldNot] beNil];
+                cache->removeInitializer({[NSObject class], [UIResponder class]});
+                [[cache->initializer({[NSObject class], [UIButton class]}) should] beNil];
             });
             it(@"Exact container class match should be handled", ^{
-                cache->setInitializer(nilInitializer, [NSObject class], [UIResponder class]);
-                [[cache->initializer([NSObject class], [UIResponder class]) shouldNot] beNil];
+                cache->setInitializer(nilInitializer, {[NSObject class], [UIResponder class]});
+                [[cache->initializer({[NSObject class], [UIResponder class]}) shouldNot] beNil];
             });
             it(@"Exact container class match should be handled if more then one class is defined", ^{
-                cache->setInitializer(nilInitializer, [NSObject class], [NSObject class]);
-                cache->setInitializer(arrayInitializer, [NSObject class], [UIResponder class]);
-                cache->setInitializer(nilInitializer, [NSObject class], [UIButton class]);
-                [[cache->initializer([NSObject class], [UIResponder class]) should] equal:arrayInitializer];
+                cache->setInitializer(nilInitializer, {[NSObject class], [NSObject class]});
+                cache->setInitializer(arrayInitializer, {[NSObject class], [UIResponder class]});
+                cache->setInitializer(nilInitializer, {[NSObject class], [UIButton class]});
+                [[cache->initializer({[NSObject class], [UIResponder class]}) should] equal:arrayInitializer];
             });
             it(@"Subclasses support should be handled properly", ^{
-                cache->setInitializer(arrayInitializer, [NSObject class], [UIBarItem class]);
-                cache->setInitializer(nilInitializer, [NSObject class], [NSObject class]);
-                [[cache->initializer([NSObject class], [UIBarButtonItem class]) should] equal:arrayInitializer];
-                [[cache->initializer([NSObject class], [UIView class]) should] equal:nilInitializer];
+                cache->setInitializer(arrayInitializer, {[NSObject class], [UIBarItem class]});
+                cache->setInitializer(nilInitializer, {[NSObject class], [NSObject class]});
+                [[cache->initializer({[NSObject class], [UIBarButtonItem class]}) should] equal:arrayInitializer];
+                [[cache->initializer({[NSObject class], [UIView class]}) should] equal:nilInitializer];
             });
             it(@"Complex hierarchy should be handled properly", ^{
-                cache->setInitializer(arrayInitializer, [NSObject class], [NSArray class]);
-                cache->setInitializer(setInitializer, [NSObject class], [NSSet class]);
-                cache->setInitializer(mutableDictionaryInitializer, [NSObject class], [NSMutableDictionary class]);
-                cache->setInitializer(countedSetInitializer, [NSObject class], [NSCountedSet class]);
-                cache->setInitializer(nilInitializer, [NSObject class], [NSProxy class]);
-                [[cache->initializer([NSObject class]) should] beNil];
-                [[cache->initializer([NSObject class], [NSObject class]) should] beNil];
-                [[cache->initializer([NSObject class], [NSProxy class]) should] equal:nilInitializer];
-                [[cache->initializer([NSObject class], [NSCountedSet class]) should] equal:countedSetInitializer];
-                [[cache->initializer([NSObject class], [NSMutableDictionary class]) should] equal:mutableDictionaryInitializer];
-                [[cache->initializer([NSObject class], [NSMutableSet class]) should] equal:setInitializer];
-                [[cache->initializer([NSObject class], [NSArray class]) should] equal:arrayInitializer];
+                cache->setInitializer(arrayInitializer, {[NSObject class], [NSArray class]});
+                cache->setInitializer(setInitializer, {[NSObject class], [NSSet class]});
+                cache->setInitializer(mutableDictionaryInitializer, {[NSObject class], [NSMutableDictionary class]});
+                cache->setInitializer(countedSetInitializer, {[NSObject class], [NSCountedSet class]});
+                cache->setInitializer(nilInitializer, {[NSObject class], [NSProxy class]});
+                [[cache->initializer({[NSObject class]}) should] beNil];
+                [[cache->initializer({[NSObject class], [NSObject class]}) should] beNil];
+                [[cache->initializer({[NSObject class], [NSProxy class]}) should] equal:nilInitializer];
+                [[cache->initializer({[NSObject class], [NSCountedSet class]}) should] equal:countedSetInitializer];
+                [[cache->initializer({[NSObject class], [NSMutableDictionary class]}) should] equal:mutableDictionaryInitializer];
+                [[cache->initializer({[NSObject class], [NSMutableSet class]}) should] equal:setInitializer];
+                [[cache->initializer({[NSObject class], [NSArray class]}) should] equal:arrayInitializer];
             });
         });
 SPEC_END

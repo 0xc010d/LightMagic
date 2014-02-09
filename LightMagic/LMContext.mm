@@ -4,19 +4,23 @@
 @implementation LMContext
 
 + (void)registerInitializer:(LMInitializerBlock)initializer forClass:(Class)propertyClass {
-    LMCache::getInstance().setInitializer(initializer, propertyClass);
+    LMPropertyDescriptor descriptor(propertyClass);
+    LMCache::getInstance().setInitializer(initializer, descriptor);
 }
 
 + (void)registerInitializer:(LMInitializerBlock)initializer forClass:(Class)propertyClass containerClass:(Class)containerClass {
-    LMCache::getInstance().setInitializer(initializer, propertyClass, containerClass);
+    LMPropertyDescriptor descriptor(propertyClass, containerClass);
+    LMCache::getInstance().setInitializer(initializer, descriptor);
 }
 
 + (void)unregisterInitializerForClass:(Class)propertyClass {
-    LMCache::getInstance().removeInitializer(propertyClass);
+    LMPropertyDescriptor descriptor(propertyClass);
+    LMCache::getInstance().removeInitializer(descriptor);
 }
 
 + (void)unregisterInitializerForClass:(Class)propertyClass containerClass:(Class)containerClass {
-    LMCache::getInstance().removeInitializer(propertyClass, containerClass);
+    LMPropertyDescriptor descriptor(propertyClass, containerClass);
+    LMCache::getInstance().removeInitializer(descriptor);
 }
 
 @end

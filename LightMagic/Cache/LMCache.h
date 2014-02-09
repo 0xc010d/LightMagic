@@ -10,6 +10,7 @@
 #import "LMDefinitions.h"
 #import "LMClassComparator.h"
 #import "LMInitializerMap.h"
+#import "LMPropertyDescriptor.h"
 
 typedef std::map<const Class, std::map<const SEL, LMInitializerBlock>> LMInitializerCache;
 typedef std::map<const Class, std::map<const Class, std::set<const SEL>>> LMGetterCache;
@@ -27,7 +28,7 @@ public:
     LMInitializerCache initializerCache; // <injectedClass, <getter, initializer>>
     LMGetterCache getterCache; // <propertyClass, <injectedClass, <getter>>>
 
-    void setInitializer(LMInitializerBlock initializer, Class propertyClass, Class containerClass = nil);
-    void removeInitializer(Class propertyClass, Class containerClass = nil);
-    LMInitializerBlock initializer(Class propertyClass, Class containerClass = nil);
+    void setInitializer(LMInitializerBlock initializer, LMPropertyDescriptor descriptor);
+    void removeInitializer(LMPropertyDescriptor descriptor);
+    LMInitializerBlock initializer(LMPropertyDescriptor descriptor);
 };

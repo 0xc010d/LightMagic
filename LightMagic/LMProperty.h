@@ -1,12 +1,12 @@
 #import <Foundation/Foundation.h>
 #import <objc/runtime.h>
 #import "LMProtocolList.h"
+#import "LMPropertyDescriptor.h"
 
 @interface LMProperty : NSObject
 
-@property (nonatomic, readonly) Class clazz;
 @property (nonatomic, readonly) SEL getter;
-@property (nonatomic, readonly) LMProtocolList protocols;
+@property (nonatomic, readonly) LMPropertyDescriptor descriptor;
 
 - (instancetype)initWithProperty:(objc_property_t)property;
 

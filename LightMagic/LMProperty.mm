@@ -5,15 +5,14 @@
 #import "LMDefinitions.h"
 
 @implementation LMProperty {
-    Class _clazz;
-    LMProtocolList _protocols;
     SEL _getter;
     BOOL _dynamic;
     objc_property_t _property;
+    LMPropertyDescriptor _descriptor;
 }
 
-- (void)dealloc {
-    free(_protocols.protocols);
+- (LMPropertyDescriptor)descriptor {
+    return _descriptor;
 }
 
 - (instancetype)initWithProperty:(objc_property_t)property {
@@ -51,11 +50,7 @@
 }
 
 - (Class)clazz {
-    return _clazz;
-}
-
-- (LMProtocolList)protocols {
-    return _protocols;
+    return _descriptor.propertyClass;
 }
 
 - (SEL)getter {
@@ -97,16 +92,13 @@
             const char *name = match[1].str().c_str();
             Protocol *protocol = objc_getProtocol(name);
             if (protocol) {
-                size_t size = (_protocols.count + 1) * sizeof(Protocol *);
-                _protocols.protocols = (Protocol __unsafe_unretained**)realloc(_protocols.protocols, size);
-                _protocols.protocols[_protocols.count] = protocol;
-                _protocols.count ++;
+                _descriptor.protocols.insert(protocol);
             }
             protocols = match.suffix().str();
         }
         type.erase(leftBracket, rightBracket - leftBracket);
     }
-    _clazz = objc_getClass(type.c_str());
+    _descriptor.propertyClass = objc_getClass(type.c_str());
 }
 
 @end

@@ -5,28 +5,30 @@ LMCache &LMCache::getInstance() {
     return instance;
 }
 
-void LMCache::setInitializer(LMInitializerBlock initializer, Class propertyClass, Class containerClass) {
-    _initializerMap.set(initializer, propertyClass, containerClass);
-    remapInitializerCache(propertyClass);
+void LMCache::setInitializer(LMInitializerBlock initializer, LMPropertyDescriptor descriptor) {
+    _initializerMap.set(descriptor, initializer);
+    remapInitializerCache(descriptor.propertyClass);
 }
 
-void LMCache::removeInitializer(Class propertyClass, Class containerClass) {
-    _initializerMap.erase(propertyClass, containerClass);
-    remapInitializerCache(propertyClass);
+void LMCache::removeInitializer(LMPropertyDescriptor descriptor) {
+    _initializerMap.erase(descriptor);
+    remapInitializerCache(descriptor.propertyClass);
 }
 
-LMInitializerBlock LMCache::initializer(Class propertyClass, Class containerClass) {
-    return _initializerMap.find(propertyClass, containerClass);
+LMInitializerBlock LMCache::initializer(LMPropertyDescriptor descriptor) {
+    return _initializerMap.find(descriptor);
 }
 
 #pragma mark - Private
 
 void LMCache::remapInitializerCache(Class propertyClass) {
+    //TODO: Implement for protocols
     for (auto& containerIterator : getterCache[propertyClass]) {
         Class injectedClass = containerIterator.first;
         Class containerClass = injectedClasses.reversed()[injectedClass];
         for (auto& getter : containerIterator.second) {
-            initializerCache[injectedClass][getter] = initializer(propertyClass, containerClass);
+            LMPropertyDescriptor descriptor(propertyClass, containerClass);
+            initializerCache[injectedClass][getter] = initializer(descriptor);
         }
     }
 }

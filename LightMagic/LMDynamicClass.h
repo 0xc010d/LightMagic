@@ -1,6 +1,7 @@
 #import <Foundation/Foundation.h>
 #import "LMDefinitions.h"
 #import "LMProtocolList.h"
+#import "LMPropertyDescriptor.h"
 
 @class LMProperty;
 
@@ -10,7 +11,7 @@
 
 - (instancetype)initWithContainerClass:(Class)containerClass;
 
-- (void)addPropertyWithClass:(Class)propertyClass protocols:(LMProtocolList)propertyProtocols getter:(SEL)getter;
+- (void)addPropertyWithDescriptor:(LMPropertyDescriptor)descriptor getter:(SEL)getter;
 
 - (void)register;
 

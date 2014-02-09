@@ -20,16 +20,17 @@ Class static property_getClass(objc_property_t property);
 
 @end
 
-void lm_class_addProperty(Class injectedClass, Class containerClass, Class propertyClass, LMProtocolList __unused propertyProtocols, SEL getter) {
+void lm_class_addProperty(Class objcClass, SEL getter, LMPropertyDescriptor descriptor) {
     const char *name = sel_getName(getter);
-    const char *className = class_getName(propertyClass);
+    const char *className = class_getName(descriptor.propertyClass);
     objc_property_attribute_t attributes[] = {"T", className};
-    class_addProperty(injectedClass, name, attributes, 1);
-    class_addMethod(injectedClass, getter, (IMP) dynamicGetter, "@@:");
+    class_addProperty(objcClass, name, attributes, 1);
+    class_addMethod(objcClass, getter, (IMP) dynamicGetter, "@@:");
     //cache initializer
-    LMInitializerBlock initializer = LMCache::getInstance().initializer(propertyClass, containerClass);
-    LMCache::getInstance().initializerCache[injectedClass][getter] = initializer;
-    LMCache::getInstance().getterCache[propertyClass][injectedClass].insert(getter);
+    //TODO: add protocol handling
+    LMInitializerBlock initializer = LMCache::getInstance().initializer(descriptor);
+    LMCache::getInstance().initializerCache[objcClass][getter] = initializer;
+    LMCache::getInstance().getterCache[descriptor.propertyClass][objcClass].insert(getter);
 }
 
 #pragma mark - Private

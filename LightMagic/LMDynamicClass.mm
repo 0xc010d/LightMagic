@@ -1,4 +1,6 @@
 #import <objc/runtime.h>
+#import <iterator>
+#import <set>
 #import "LMDynamicClass.h"
 #import "LMTemplateClass.h"
 
@@ -34,8 +36,9 @@ static size_t kSuffixLength;
     return _injectedClass;
 }
 
-- (void)addPropertyWithClass:(Class)propertyClass protocols:(LMProtocolList)propertyProtocols getter:(SEL)getter {
-    lm_class_addProperty(_injectedClass, _containerClass, propertyClass, propertyProtocols, getter);
+- (void)addPropertyWithDescriptor:(LMPropertyDescriptor)descriptor getter:(SEL)getter {
+    descriptor.containerClass = _containerClass;
+    lm_class_addProperty(_injectedClass, getter, descriptor);
 }
 
 - (void)register {

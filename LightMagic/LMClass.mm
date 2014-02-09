@@ -29,7 +29,7 @@ void static swizzledDealloc(id self, SEL __unused _cmd);
 - (void)injectGetters {
     LMDynamicClass *dynamicClass = [[LMDynamicClass alloc] initWithContainerClass:_class];
     for (LMProperty *property in _injectableProperties) {
-        [dynamicClass addPropertyWithClass:property.clazz protocols:property.protocols getter:property.getter];
+        [dynamicClass addPropertyWithDescriptor:property.descriptor getter:property.getter];
         [self forwardGetter:property.getter];
     }
 

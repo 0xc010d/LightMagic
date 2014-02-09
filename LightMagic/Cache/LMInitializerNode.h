@@ -18,21 +18,28 @@ private:
     }
 
 public:
+    void set(LMInitializerBlock initializer, Class& container, const std::set<id>& protocols = std::set<id>())  {
+        if (protocols.size() > 0) {
+            LMClassInitializerNode *node = initializerNode(protocols);
+            if (node != NULL) node->set(initializer, container);
+        }
+        else LMClassInitializerNode::set(initializer, container);
+    }
+
     const LMInitializerBlock find(Class& container, const std::set<id>& protocols = std::set<id>())  {
-        LMClassInitializerNode *node = initializerNode(protocols);
-        if (node != NULL) return node->find(container);
+        if (protocols.size() > 0) {
+            LMClassInitializerNode *node = initializerNode(protocols);
+            if (node != NULL) return node->find(container);
+            else return nil;
+        }
         else return LMClassInitializerNode::find(container);
     }
 
-    void set(LMInitializerBlock value, Class& container, const std::set<id>& protocols = std::set<id>())  {
-        LMClassInitializerNode *node = initializerNode(protocols);
-        if (node != NULL) node->set(value, container);
-        else LMClassInitializerNode::set(value, container);
-    }
-
     void erase(Class& container, const std::set<id>& protocols = std::set<id>())  {
-        LMClassInitializerNode *node = initializerNode(protocols);
-        if (node != NULL) node->erase(container);
-        else return LMClassInitializerNode::erase(container);
+        if (protocols.size() > 0) {
+            LMClassInitializerNode *node = initializerNode(protocols);
+            if (node != NULL) node->erase(container);
+        }
+        else LMClassInitializerNode::erase(container);
     }
 };
