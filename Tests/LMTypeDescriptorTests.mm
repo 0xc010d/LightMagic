@@ -147,4 +147,58 @@ SPEC_BEGIN(LMTypeDescriptorTests)
                 [[theValue(descriptor1 != descriptor2) should] equal:theValue(true)];
             });
         });
+        context(@"Less operator", ^{
+            it(@"Should return false if objects are equal and empty", ^{
+                LMTypeDescriptor descriptor1;
+                LMTypeDescriptor descriptor2;
+                [[theValue(descriptor1 < descriptor2) should] equal:theValue(false)];
+                [[theValue(descriptor2 < descriptor1) should] equal:theValue(false)];
+            });
+            it(@"Should return false if objects are equal and class is not empty", ^{
+                LMTypeDescriptor descriptor1([NSObject class]);
+                LMTypeDescriptor descriptor2([NSObject class]);
+                [[theValue(descriptor1 < descriptor2) should] equal:theValue(false)];
+                [[theValue(descriptor2 < descriptor1) should] equal:theValue(false)];
+            });
+            it(@"Should return false if objects are equal, class is empty and protocols are equal", ^{
+                LMTypeDescriptor descriptor1;
+                descriptor1.protocols.insert(@protocol(NSObject));
+                descriptor1.protocols.insert(@protocol(NSCopying));
+                LMTypeDescriptor descriptor2;
+                descriptor2.protocols.insert(@protocol(NSCopying));
+                descriptor2.protocols.insert(@protocol(NSObject));
+                [[theValue(descriptor1 < descriptor2) should] equal:theValue(false)];
+                [[theValue(descriptor2 < descriptor1) should] equal:theValue(false)];
+            });
+            it(@"Should behave correctly if classes are not equal", ^{
+                LMTypeDescriptor descriptor1([NSObject class]);
+                LMTypeDescriptor descriptor2([NSProxy class]);
+                [[theValue(descriptor1 < descriptor2) shouldNot] equal:theValue(descriptor2 < descriptor1)];
+            });
+            it(@"Should behave correctly if classes are not equal and protocols are equal", ^{
+                LMTypeDescriptor descriptor1([NSObject class]);
+                descriptor1.protocols.insert(@protocol(NSObject));
+                descriptor1.protocols.insert(@protocol(NSCopying));
+                LMTypeDescriptor descriptor2([NSProxy class]);
+                descriptor2.protocols.insert(@protocol(NSCopying));
+                descriptor2.protocols.insert(@protocol(NSObject));
+                [[theValue(descriptor1 < descriptor2) shouldNot] equal:theValue(descriptor2 < descriptor1)];
+            });
+            it(@"Should behave correctly if classes are equal and protocols are not equal", ^{
+                LMTypeDescriptor descriptor1([NSObject class]);
+                descriptor1.protocols.insert(@protocol(NSObject));
+                descriptor1.protocols.insert(@protocol(NSCopying));
+                LMTypeDescriptor descriptor2([NSObject class]);
+                descriptor2.protocols.insert(@protocol(NSCopying));
+                [[theValue(descriptor1 < descriptor2) shouldNot] equal:theValue(descriptor2 < descriptor1)];
+            });
+            it(@"Should behave correctly if classes and protocols are not equal", ^{
+                LMTypeDescriptor descriptor1([NSObject class]);
+                descriptor1.protocols.insert(@protocol(NSObject));
+                descriptor1.protocols.insert(@protocol(NSCopying));
+                LMTypeDescriptor descriptor2([NSProxy class]);
+                descriptor2.protocols.insert(@protocol(NSCopying));
+                [[theValue(descriptor1 < descriptor2) shouldNot] equal:theValue(descriptor2 < descriptor1)];
+            });
+        });
 SPEC_END
