@@ -22,11 +22,15 @@ LMInitializerBlock LMCache::initializer(LMInitializerDescriptor descriptor) {
 #pragma mark - Private
 
 void LMCache::remapInitializerCache(LMInitializerDescriptor descriptor) {
-    for (auto& containerIterator : getterCache[descriptor.type]) {
-        Class injectedClass = containerIterator.first;
-        descriptor.container = injectedClasses.reversed()[injectedClass];
-        for (auto& getter : containerIterator.second) {
-            initializerCache[injectedClass][getter] = initializer(descriptor);
+    //TODO: simplify caches
+    const auto& container = getterCache.find(descriptor.type);
+    if (container != getterCache.end()) {
+        for (auto& containerIterator : container->second) {
+            Class injectedClass = containerIterator.first;
+            descriptor.container = injectedClasses.reversed()[injectedClass];
+            for (auto& getter : containerIterator.second) {
+                initializerCache[injectedClass][getter] = initializer(descriptor);
+            }
         }
     }
 }
