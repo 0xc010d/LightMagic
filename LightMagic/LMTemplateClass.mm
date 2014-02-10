@@ -24,7 +24,7 @@ Class static property_getClass(objc_property_t property);
 
 void lm_class_addProperty(Class objcClass, SEL getter, LMPropertyDescriptor descriptor) {
     const char *name = sel_getName(getter);
-    const char *className = class_getName(descriptor.propertyClass);
+    const char *className = class_getName(descriptor.type.objcClass);
     objc_property_attribute_t attributes[] = {"T", className};
     class_addProperty(objcClass, name, attributes, 1);
     class_addMethod(objcClass, getter, (IMP) dynamicGetter, "@@:");
@@ -32,7 +32,7 @@ void lm_class_addProperty(Class objcClass, SEL getter, LMPropertyDescriptor desc
     //TODO: add protocol handling
     LMInitializerBlock initializer = LMCache::getInstance().initializer(descriptor);
     LMCache::getInstance().initializerCache[objcClass][getter] = initializer;
-    LMCache::getInstance().getterCache[descriptor.propertyClass][objcClass].insert(getter);
+    LMCache::getInstance().getterCache[descriptor.type.objcClass][objcClass].insert(getter);
 }
 
 #pragma mark - Private

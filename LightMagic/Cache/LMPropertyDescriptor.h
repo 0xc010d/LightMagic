@@ -1,16 +1,14 @@
 #pragma once
 
 #include <set>
+#include "LMTypeDescriptor.h"
 
 class LMPropertyDescriptor {
 public:
-    Class propertyClass;
     Class container;
-    std::set<id> protocols;
+    LMTypeDescriptor type;
 
-    LMPropertyDescriptor(Class _propertyClass = nil, Class _containerClass = nil, std::set<id> _protocols = std::set<id>()) {
-        propertyClass = _propertyClass;
-        container = _containerClass;
-        protocols = _protocols;
-    };
+    LMPropertyDescriptor(LMTypeDescriptor typeDescriptor = LMTypeDescriptor(), Class containerClass = nil) : type(typeDescriptor) {
+        container = containerClass;
+    }
 };

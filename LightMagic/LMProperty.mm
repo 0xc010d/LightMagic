@@ -13,6 +13,10 @@
     LMPropertyDescriptor _descriptor;
 }
 
+- (SEL)getter {
+    return _getter;
+}
+
 - (LMPropertyDescriptor)descriptor {
     return _descriptor;
 }
@@ -51,14 +55,6 @@
     }
 }
 
-- (Class)clazz {
-    return _descriptor.propertyClass;
-}
-
-- (SEL)getter {
-    return _getter;
-}
-
 #pragma mark - Private
 
 - (void)parsePropertyAttribute:(objc_property_attribute_t)attribute {
@@ -72,35 +68,12 @@
         case 'T': {
             const char *value = attribute.value;
             if (value[0] == '@' && strlen(value) > 1) {
-                [self parsePropertyType:value];
+                _descriptor.type.parse(value);
             }
         } break;
         default:
             break;
     }
-}
-
-- (void)parsePropertyType:(const char *)typeString {
-    std::string type = std::string(typeString + 1);
-    type.erase(std::remove(type.begin(), type.end(), '"'), type.end());
-    size_t leftBracket = type.find('<');
-    if (leftBracket != std::string::npos) {
-        size_t rightBracket = type.rfind('>') + 1;
-
-        std::regex regex("<(.+?)>");
-        std::smatch match;
-        std::string protocols = type.substr(leftBracket, rightBracket - leftBracket);
-        while (std::regex_search(protocols, match, regex)) {
-            const char *name = match[1].str().c_str();
-            Protocol *protocol = objc_getProtocol(name);
-            if (protocol) {
-                _descriptor.protocols.insert(protocol);
-            }
-            protocols = match.suffix().str();
-        }
-        type.erase(leftBracket, rightBracket - leftBracket);
-    }
-    _descriptor.propertyClass = objc_getClass(type.c_str());
 }
 
 @end

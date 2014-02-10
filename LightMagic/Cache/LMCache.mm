@@ -7,12 +7,12 @@ LMCache &LMCache::getInstance() {
 
 void LMCache::setInitializer(LMInitializerBlock initializer, LMPropertyDescriptor descriptor) {
     _initializerMap.set(descriptor, initializer);
-    remapInitializerCache(descriptor.propertyClass);
+    remapInitializerCache(descriptor.type.objcClass);
 }
 
 void LMCache::removeInitializer(LMPropertyDescriptor descriptor) {
     _initializerMap.erase(descriptor);
-    remapInitializerCache(descriptor.propertyClass);
+    remapInitializerCache(descriptor.type.objcClass);
 }
 
 LMInitializerBlock LMCache::initializer(LMPropertyDescriptor descriptor) {
