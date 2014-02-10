@@ -22,7 +22,7 @@ Class static property_getClass(objc_property_t property);
 
 @end
 
-void lm_class_addProperty(Class objcClass, SEL getter, LMPropertyDescriptor descriptor) {
+void lm_class_addProperty(Class objcClass, SEL getter, LMInitializerDescriptor descriptor) {
     const char *name = sel_getName(getter);
     const char *className = class_getName(descriptor.type.objcClass);
     objc_property_attribute_t attributes[] = {"T", className};

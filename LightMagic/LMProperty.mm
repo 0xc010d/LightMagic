@@ -10,14 +10,14 @@
     SEL _getter;
     BOOL _dynamic;
     objc_property_t _property;
-    LMPropertyDescriptor _descriptor;
+    LMInitializerDescriptor _descriptor;
 }
 
 - (SEL)getter {
     return _getter;
 }
 
-- (LMPropertyDescriptor)descriptor {
+- (LMInitializerDescriptor)descriptor {
     return _descriptor;
 }
 

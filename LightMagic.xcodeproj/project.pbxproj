@@ -120,7 +120,7 @@
 		CAEBF08A822831747B09DE66 /* LMCollector.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LMCollector.mm; sourceTree = "<group>"; };
 		CAEC603ADE564F12BB787678 /* Test.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Test.m; sourceTree = "<group>"; };
 		CAECE67B36D8F3A3F643DD0B /* LMClassComparator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMClassComparator.h; sourceTree = "<group>"; };
-		CAECF02970E7B92404A378F3 /* LMPropertyDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMPropertyDescriptor.h; sourceTree = "<group>"; };
+		CAECF02970E7B92404A378F3 /* LMInitializerDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMInitializerDescriptor.h; sourceTree = "<group>"; };
 		CAED24C0320A17C9F0399200 /* LMProperty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMProperty.h; sourceTree = "<group>"; };
 		CAED4F2F8BE264CE780E7179 /* LightMagic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LightMagic.m; sourceTree = "<group>"; };
 		CAEDB119BFBE91EDBB840B5D /* LMCollector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMCollector.h; sourceTree = "<group>"; };
@@ -233,7 +233,7 @@
 				CAE477E4524891A839523A30 /* LMClassInitializerNode.mm */,
 				CAE50D29645E6F5B858A0C0D /* LMClassInitializerNode.h */,
 				CAE66BED472CCE6A9D36D144 /* LMInitializerNode.h */,
-				CAECF02970E7B92404A378F3 /* LMPropertyDescriptor.h */,
+				CAECF02970E7B92404A378F3 /* LMInitializerDescriptor.h */,
 				C9BC0D63BA7D4E5186F825DF /* LMTypeDescriptor.mm */,
 				C9BC05C092E0F09942B557FD /* LMTypeDescriptor.h */,
 			);

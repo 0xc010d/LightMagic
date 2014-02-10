@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 #import "LMDefinitions.h"
 
-#include "LMPropertyDescriptor.h"
+#include "LMInitializerDescriptor.h"
 
 @class LMProperty;
 
@@ -11,7 +11,7 @@
 
 - (instancetype)initWithContainerClass:(Class)containerClass;
 
-- (void)addPropertyWithDescriptor:(LMPropertyDescriptor)descriptor getter:(SEL)getter;
+- (void)addPropertyWithDescriptor:(LMInitializerDescriptor)descriptor getter:(SEL)getter;
 
 - (void)register;
 

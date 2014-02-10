@@ -2,10 +2,10 @@
 
 #import "LMDefinitions.h"
 
-#include "LMPropertyDescriptor.h"
+#include "LMInitializerDescriptor.h"
 
 @interface LMTemplateClass : NSObject
 
 @end
 
-void lm_class_addProperty(Class objcClass, SEL getter, LMPropertyDescriptor descriptor);
+void lm_class_addProperty(Class objcClass, SEL getter, LMInitializerDescriptor descriptor);
