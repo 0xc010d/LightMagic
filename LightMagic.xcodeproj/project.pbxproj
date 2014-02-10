@@ -27,7 +27,7 @@
 		C9BC039A02823CC3A49B4585 /* LMTypeDescriptorTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9BC079421ADB236BBF3C3EC /* LMTypeDescriptorTests.mm */; };
 		C9BC07E9976243245ADE1B84 /* LMDefinitions.m in Sources */ = {isa = PBXBuildFile; fileRef = C9BC0216CC5F3D952FF440B6 /* LMDefinitions.m */; };
 		C9BC0BE85749B179F118C581 /* LMBiMapTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9BC06E7E51BBD234A3B5003 /* LMBiMapTests.mm */; };
-		C9BC0DC25940840F4B824F01 /* LMTypeDescriptor.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9BC0D63BA7D4E5186F825DF /* LMTypeDescriptor.mm */; };
+		C9BC0DCA4B2CC856F0C48D89 /* LMTypeDescriptor.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9BC08D2949E34F5BF467F9A /* LMTypeDescriptor.mm */; };
 		CAE20F5F2E459EBFDB958E78 /* LMClassComparatorTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = CAE9159DE3601BB8183D5FF8 /* LMClassComparatorTests.mm */; };
 		CAE27BF307F31CF598A309BE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CAE7121D23B3EF5F58030D9B /* CoreGraphics.framework */; };
 		CAE2F9EC262F58D819101B67 /* Test.m in Sources */ = {isa = PBXBuildFile; fileRef = CAEC603ADE564F12BB787678 /* Test.m */; };
@@ -82,12 +82,13 @@
 		4B0AEC639DA549C5B18FB2D7 /* Pods-Example.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example.xcconfig"; path = "Pods/Pods-Example.xcconfig"; sourceTree = "<group>"; };
 		5121594D64434C65857A09B3 /* Pods-Tests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.xcconfig"; path = "Pods/Pods-Tests.xcconfig"; sourceTree = "<group>"; };
 		BD6E6678283747B4A42FE296 /* libPods-Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C9BC0101B98E25B6389C0A77 /* LMTypeDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMTypeDescriptor.h; sourceTree = "<group>"; };
 		C9BC0216CC5F3D952FF440B6 /* LMDefinitions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LMDefinitions.m; sourceTree = "<group>"; };
 		C9BC023E963C340DC61CFDEB /* LMBiMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMBiMap.h; sourceTree = "<group>"; };
-		C9BC05C092E0F09942B557FD /* LMTypeDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMTypeDescriptor.h; sourceTree = "<group>"; };
+		C9BC043C6F10E04396CCD428 /* LMInitializerDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMInitializerDescriptor.h; sourceTree = "<group>"; };
 		C9BC06E7E51BBD234A3B5003 /* LMBiMapTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LMBiMapTests.mm; sourceTree = "<group>"; };
 		C9BC079421ADB236BBF3C3EC /* LMTypeDescriptorTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LMTypeDescriptorTests.mm; sourceTree = "<group>"; };
-		C9BC0D63BA7D4E5186F825DF /* LMTypeDescriptor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LMTypeDescriptor.mm; sourceTree = "<group>"; };
+		C9BC08D2949E34F5BF467F9A /* LMTypeDescriptor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LMTypeDescriptor.mm; sourceTree = "<group>"; };
 		CAE157FA9FF3866D3328F2B0 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		CAE1CBA502B2CAE2C1AEF7C7 /* LMDefinitions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMDefinitions.h; sourceTree = "<group>"; };
 		CAE241425D1B4000DFD2C6D9 /* LMClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMClass.h; sourceTree = "<group>"; };
@@ -120,7 +121,6 @@
 		CAEBF08A822831747B09DE66 /* LMCollector.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LMCollector.mm; sourceTree = "<group>"; };
 		CAEC603ADE564F12BB787678 /* Test.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Test.m; sourceTree = "<group>"; };
 		CAECE67B36D8F3A3F643DD0B /* LMClassComparator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMClassComparator.h; sourceTree = "<group>"; };
-		CAECF02970E7B92404A378F3 /* LMInitializerDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMInitializerDescriptor.h; sourceTree = "<group>"; };
 		CAED24C0320A17C9F0399200 /* LMProperty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMProperty.h; sourceTree = "<group>"; };
 		CAED4F2F8BE264CE780E7179 /* LightMagic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LightMagic.m; sourceTree = "<group>"; };
 		CAEDB119BFBE91EDBB840B5D /* LMCollector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMCollector.h; sourceTree = "<group>"; };
@@ -168,6 +168,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C9BC05F99F8D7AACDC781072 /* Descriptors */ = {
+			isa = PBXGroup;
+			children = (
+				C9BC08D2949E34F5BF467F9A /* LMTypeDescriptor.mm */,
+				C9BC0101B98E25B6389C0A77 /* LMTypeDescriptor.h */,
+				C9BC043C6F10E04396CCD428 /* LMInitializerDescriptor.h */,
+			);
+			path = Descriptors;
+			sourceTree = "<group>";
+		};
 		CAE0994F7F88480E67A6C2BE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -233,9 +243,6 @@
 				CAE477E4524891A839523A30 /* LMClassInitializerNode.mm */,
 				CAE50D29645E6F5B858A0C0D /* LMClassInitializerNode.h */,
 				CAE66BED472CCE6A9D36D144 /* LMInitializerNode.h */,
-				CAECF02970E7B92404A378F3 /* LMInitializerDescriptor.h */,
-				C9BC0D63BA7D4E5186F825DF /* LMTypeDescriptor.mm */,
-				C9BC05C092E0F09942B557FD /* LMTypeDescriptor.h */,
 			);
 			path = Cache;
 			sourceTree = "<group>";
@@ -261,6 +268,7 @@
 				CAE546667346E8BC2294B541 /* LMTemplateClass.h */,
 				CAE881F603D493AF4BDE51D6 /* Cache */,
 				C9BC0216CC5F3D952FF440B6 /* LMDefinitions.m */,
+				C9BC05F99F8D7AACDC781072 /* Descriptors */,
 			);
 			path = LightMagic;
 			sourceTree = "<group>";
@@ -489,7 +497,7 @@
 				CAEDD36E01ADD1300F7D94A1 /* LMCache.mm in Sources */,
 				C9BC07E9976243245ADE1B84 /* LMDefinitions.m in Sources */,
 				CAE49115B4B82463BA5F3641 /* LMClassInitializerNode.mm in Sources */,
-				C9BC0DC25940840F4B824F01 /* LMTypeDescriptor.mm in Sources */,
+				C9BC0DCA4B2CC856F0C48D89 /* LMTypeDescriptor.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
