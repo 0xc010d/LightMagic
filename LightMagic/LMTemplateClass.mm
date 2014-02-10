@@ -24,8 +24,8 @@ Class static property_getClass(objc_property_t property);
 
 void lm_class_addProperty(Class objcClass, SEL getter, LMInitializerDescriptor descriptor) {
     const char *name = sel_getName(getter);
-    const char *className = class_getName(descriptor.type.objcClass);
-    objc_property_attribute_t attributes[] = {"T", className};
+    const char *type = descriptor.type.str().c_str();
+    objc_property_attribute_t attributes[] = {"T", type};
     class_addProperty(objcClass, name, attributes, 1);
     class_addMethod(objcClass, getter, (IMP) dynamicGetter, "@@:");
     //cache initializer
@@ -58,6 +58,7 @@ id static dynamicGetter(LMTemplateClass *self, SEL _cmd) {
 }
 
 Class static property_getClass(objc_property_t property) {
-    const char *className = property_getAttributes(property) + 1;
-    return objc_getClass(className);
+    const char *type = property_getAttributes(property) + 1;
+    LMTypeDescriptor descriptor(type);
+    return descriptor.objcClass;
 }
