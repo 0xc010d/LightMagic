@@ -24,8 +24,10 @@
 		46E8F25D186893AF00AA6EC9 /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 46E8F25C186893AF00AA6EC9 /* ViewController.xib */; };
 		46E8F261186896D500AA6EC9 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 46E8F25F1868943800AA6EC9 /* ViewController.m */; };
 		89BBF49EB8D4423AAED38EAE /* libPods-Example.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FE7D203011774F3DA6370AC9 /* libPods-Example.a */; };
+		C9BC039A02823CC3A49B4585 /* LMTypeDescriptorTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9BC079421ADB236BBF3C3EC /* LMTypeDescriptorTests.mm */; };
 		C9BC07E9976243245ADE1B84 /* LMDefinitions.m in Sources */ = {isa = PBXBuildFile; fileRef = C9BC0216CC5F3D952FF440B6 /* LMDefinitions.m */; };
 		C9BC0BE85749B179F118C581 /* LMBiMapTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9BC06E7E51BBD234A3B5003 /* LMBiMapTests.mm */; };
+		C9BC0DC25940840F4B824F01 /* LMTypeDescriptor.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9BC0D63BA7D4E5186F825DF /* LMTypeDescriptor.mm */; };
 		CAE20F5F2E459EBFDB958E78 /* LMClassComparatorTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = CAE9159DE3601BB8183D5FF8 /* LMClassComparatorTests.mm */; };
 		CAE27BF307F31CF598A309BE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CAE7121D23B3EF5F58030D9B /* CoreGraphics.framework */; };
 		CAE2F9EC262F58D819101B67 /* Test.m in Sources */ = {isa = PBXBuildFile; fileRef = CAEC603ADE564F12BB787678 /* Test.m */; };
@@ -82,7 +84,10 @@
 		BD6E6678283747B4A42FE296 /* libPods-Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9BC0216CC5F3D952FF440B6 /* LMDefinitions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LMDefinitions.m; sourceTree = "<group>"; };
 		C9BC023E963C340DC61CFDEB /* LMBiMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMBiMap.h; sourceTree = "<group>"; };
+		C9BC05C092E0F09942B557FD /* LMTypeDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMTypeDescriptor.h; sourceTree = "<group>"; };
 		C9BC06E7E51BBD234A3B5003 /* LMBiMapTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LMBiMapTests.mm; sourceTree = "<group>"; };
+		C9BC079421ADB236BBF3C3EC /* LMTypeDescriptorTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LMTypeDescriptorTests.mm; sourceTree = "<group>"; };
+		C9BC0D63BA7D4E5186F825DF /* LMTypeDescriptor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LMTypeDescriptor.mm; sourceTree = "<group>"; };
 		CAE157FA9FF3866D3328F2B0 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		CAE1CBA502B2CAE2C1AEF7C7 /* LMDefinitions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMDefinitions.h; sourceTree = "<group>"; };
 		CAE241425D1B4000DFD2C6D9 /* LMClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMClass.h; sourceTree = "<group>"; };
@@ -203,6 +208,7 @@
 				CAE8170EEB18B11427D4C49B /* Classes */,
 				C9BC06E7E51BBD234A3B5003 /* LMBiMapTests.mm */,
 				CAE9159DE3601BB8183D5FF8 /* LMClassComparatorTests.mm */,
+				C9BC079421ADB236BBF3C3EC /* LMTypeDescriptorTests.mm */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -228,6 +234,8 @@
 				CAE50D29645E6F5B858A0C0D /* LMClassInitializerNode.h */,
 				CAE66BED472CCE6A9D36D144 /* LMInitializerNode.h */,
 				CAECF02970E7B92404A378F3 /* LMPropertyDescriptor.h */,
+				C9BC0D63BA7D4E5186F825DF /* LMTypeDescriptor.mm */,
+				C9BC05C092E0F09942B557FD /* LMTypeDescriptor.h */,
 			);
 			path = Cache;
 			sourceTree = "<group>";
@@ -463,6 +471,7 @@
 				CAEA7AECBF67170D4F3CDDB9 /* LMPropertiesParserTest.m in Sources */,
 				C9BC0BE85749B179F118C581 /* LMBiMapTests.mm in Sources */,
 				CAE20F5F2E459EBFDB958E78 /* LMClassComparatorTests.mm in Sources */,
+				C9BC039A02823CC3A49B4585 /* LMTypeDescriptorTests.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -480,6 +489,7 @@
 				CAEDD36E01ADD1300F7D94A1 /* LMCache.mm in Sources */,
 				C9BC07E9976243245ADE1B84 /* LMDefinitions.m in Sources */,
 				CAE49115B4B82463BA5F3641 /* LMClassInitializerNode.mm in Sources */,
+				C9BC0DC25940840F4B824F01 /* LMTypeDescriptor.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

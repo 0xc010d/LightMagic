@@ -26,7 +26,7 @@ void LMCache::remapInitializerCache(Class propertyClass) {
     LMPropertyDescriptor descriptor(propertyClass);
     for (auto& containerIterator : getterCache[propertyClass]) {
         Class injectedClass = containerIterator.first;
-        descriptor.containerClass = injectedClasses.reversed()[injectedClass];
+        descriptor.container = injectedClasses.reversed()[injectedClass];
         for (auto& getter : containerIterator.second) {
             initializerCache[injectedClass][getter] = initializer(descriptor);
         }

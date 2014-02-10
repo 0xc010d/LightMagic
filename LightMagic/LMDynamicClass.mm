@@ -35,7 +35,7 @@ static size_t kSuffixLength;
 }
 
 - (void)addPropertyWithDescriptor:(LMPropertyDescriptor)descriptor getter:(SEL)getter {
-    descriptor.containerClass = _containerClass;
+    descriptor.container = _containerClass;
     lm_class_addProperty(_injectedClass, getter, descriptor);
 }
 
