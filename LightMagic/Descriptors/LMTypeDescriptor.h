@@ -15,8 +15,9 @@ public:
 
     bool operator== (const LMTypeDescriptor& other);
     bool operator!= (const LMTypeDescriptor& other);
-    bool operator< (const LMTypeDescriptor& other);
 
     void parse(const char *str);
     std::string str();
 };
+
+bool operator< (const LMTypeDescriptor& x, const LMTypeDescriptor& y);

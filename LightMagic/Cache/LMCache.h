@@ -13,12 +13,12 @@
 #include "LMInitializerDescriptor.h"
 
 typedef std::map<const Class, std::map<const SEL, LMInitializerBlock>> LMInitializerCache;
-typedef std::map<const Class, std::map<const Class, std::set<const SEL>>> LMGetterCache;
+typedef std::map<const LMTypeDescriptor, std::map<const Class, std::set<const SEL>>> LMGetterCache;
 
 class LMCache {
 private:
     LMInitializerMap _initializerMap;
-    void remapInitializerCache(Class propertyClass);
+    void remapInitializerCache(LMInitializerDescriptor descriptor);
 public:
     static LMCache& getInstance();
 

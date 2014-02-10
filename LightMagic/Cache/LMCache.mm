@@ -7,12 +7,12 @@ LMCache &LMCache::getInstance() {
 
 void LMCache::setInitializer(LMInitializerBlock initializer, LMInitializerDescriptor descriptor) {
     _initializerMap.set(descriptor, initializer);
-    remapInitializerCache(descriptor.type.objcClass);
+    remapInitializerCache(descriptor);
 }
 
 void LMCache::removeInitializer(LMInitializerDescriptor descriptor) {
     _initializerMap.erase(descriptor);
-    remapInitializerCache(descriptor.type.objcClass);
+    remapInitializerCache(descriptor);
 }
 
 LMInitializerBlock LMCache::initializer(LMInitializerDescriptor descriptor) {
@@ -21,10 +21,8 @@ LMInitializerBlock LMCache::initializer(LMInitializerDescriptor descriptor) {
 
 #pragma mark - Private
 
-void LMCache::remapInitializerCache(Class propertyClass) {
-    //TODO: Implement for protocols
-    LMInitializerDescriptor descriptor(propertyClass);
-    for (auto& containerIterator : getterCache[propertyClass]) {
+void LMCache::remapInitializerCache(LMInitializerDescriptor descriptor) {
+    for (auto& containerIterator : getterCache[descriptor.type]) {
         Class injectedClass = containerIterator.first;
         descriptor.container = injectedClasses.reversed()[injectedClass];
         for (auto& getter : containerIterator.second) {

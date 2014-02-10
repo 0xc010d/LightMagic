@@ -29,10 +29,9 @@ void lm_class_addProperty(Class objcClass, SEL getter, LMInitializerDescriptor d
     class_addProperty(objcClass, name, attributes, 1);
     class_addMethod(objcClass, getter, (IMP) dynamicGetter, "@@:");
     //cache initializer
-    //TODO: add protocol handling
     LMInitializerBlock initializer = LMCache::getInstance().initializer(descriptor);
     LMCache::getInstance().initializerCache[objcClass][getter] = initializer;
-    LMCache::getInstance().getterCache[descriptor.type.objcClass][objcClass].insert(getter);
+    LMCache::getInstance().getterCache[descriptor.type][objcClass].insert(getter);
 }
 
 #pragma mark - Private

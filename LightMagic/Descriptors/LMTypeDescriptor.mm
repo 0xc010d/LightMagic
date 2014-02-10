@@ -11,11 +11,7 @@ bool LMTypeDescriptor::operator ==(const LMTypeDescriptor &other) {
 }
 
 bool LMTypeDescriptor::operator !=(const LMTypeDescriptor &other) {
-    return objcClass != other.objcClass || protocols != other.protocols;
-}
-
-bool LMTypeDescriptor::operator <(const LMTypeDescriptor &other) {
-    return objcClass < other.objcClass && protocols < other.protocols;
+    return objcClass != other.objcClass && protocols != other.protocols;
 }
 
 void LMTypeDescriptor::parse(const char *str) {
@@ -61,4 +57,8 @@ std::string LMTypeDescriptor::str() {
         return result;
     }
     return std::string("@");
+}
+
+bool operator <(const LMTypeDescriptor &x, const LMTypeDescriptor &y) {
+    return x.objcClass < y.objcClass && x.protocols < y.protocols;
 }
