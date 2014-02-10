@@ -7,7 +7,7 @@
 
 class LMInitializerMap {
 private:
-    std::map<const Class, LMInitializerNode> _internalMap;
+    std::map<Class, LMInitializerNode> _internalMap;
 public:
     void set(LMInitializerDescriptor &descriptor, LMInitializerBlock initializer) {
         Class propertyClass = descriptor.type.objcClass;

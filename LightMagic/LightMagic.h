@@ -9,19 +9,21 @@
 #define LM_CONTEXT(group, block) \
     __attribute__((constructor(1000))) static void __used group(void) { \
         @autoreleasepool { \
-            block; \
+            block \
         } \
     }
 
-#define LM_REGISTER_INITIALIZER(clazz, block) [LMContext registerInitializer:block forClass:[clazz class]]
+#define LM_REGISTER_INITIALIZER(propertyClass, block) \
+    [LMContext registerInitializer:block forClass:[propertyClass class]]
 
-#define LM_REGISTER_CONTAINER_INITIALIZER(property, container, block) \
-    [LMContext registerInitializer:block forClass:[property class] containerClass:[container class]]
+#define LM_REGISTER_CONTAINER_INITIALIZER(propertyClass, container, block) \
+    [LMContext registerInitializer:block in:[container class] forClass:[propertyClass class]]
 
-#define LM_UNREGISTER_INITIALIZER(clazz) [LMContext unregisterInitializerForClass:[clazz class]]
+#define LM_UNREGISTER_INITIALIZER(propertyClass) \
+    [LMContext unregisterInitializerForClass:[propertyClass class]]
 
-#define LM_UNREGISTER_CONTAINER_INITIALIZER(property, container) \
-    [LMContext unregisterInitializerForClass:[property class] containerClass:[container class]]
+#define LM_UNREGISTER_CONTAINER_INITIALIZER(propertyClass, container) \
+    [LMContext unregisterInitializerForClass:[propertyClass class] containerClass:[container class]]
 
 #define LM_SINGLETON(clazz) \
     ^id (id sender) { \
@@ -33,9 +35,10 @@
         return sharedInstance; \
     }
 
-#define LM_REGISTER_SINGLETON(clazz) LM_REGISTER_INITIALIZER(clazz, LM_SINGLETON(clazz))
+#define LM_REGISTER_SINGLETON(propertyClass) \
+    LM_REGISTER_INITIALIZER(propertyClass, LM_SINGLETON(propertyClass))
 
-#define LM_REGISTER_CONTAINER_SINGLETON(property, container) \
-    LM_REGISTER_CONTAINER_INITIALIZER(property, container, LM_SINGLETON(property))
+#define LM_REGISTER_CONTAINER_SINGLETON(propertyClass, container) \
+    LM_REGISTER_CONTAINER_INITIALIZER(propertyClass, container, LM_SINGLETON(propertyClass))
 
 #pragma clang diagnostic pop

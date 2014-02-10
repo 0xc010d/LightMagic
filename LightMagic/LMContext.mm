@@ -9,8 +9,18 @@
     LMCache::getInstance().setInitializer(initializer, descriptor);
 }
 
-+ (void)registerInitializer:(LMInitializerBlock)initializer forClass:(Class)propertyClass containerClass:(Class)containerClass {
++ (void)registerInitializer:(LMInitializerBlock)initializer in:(Class)containerClass forClass:(Class)propertyClass {
     LMTypeDescriptor type(propertyClass);
+    LMInitializerDescriptor descriptor(type, containerClass);
+    LMCache::getInstance().setInitializer(initializer, descriptor);
+}
+
++ (void)registerInitializer:(LMInitializerBlock)initializer in:(Class)containerClass forClass:(Class)propertyClass protocols:(NSArray *)protocols {
+    LMTypeDescriptor type(propertyClass);
+    for (Protocol *protocol in protocols) {
+        type.protocols.insert(protocol);
+    }
+
     LMInitializerDescriptor descriptor(type, containerClass);
     LMCache::getInstance().setInitializer(initializer, descriptor);
 }

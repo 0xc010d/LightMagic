@@ -4,6 +4,7 @@
 
 #include "LMClassInitializerNode.h"
 
+//TODO: Test it
 class LMInitializerNode : public LMClassInitializerNode {
 private:
     std::map<std::set<id>, LMClassInitializerNode> _protocolMap;
@@ -23,6 +24,7 @@ public:
         if (protocols.size() > 0) {
             LMClassInitializerNode *node = initializerNode(protocols);
             if (node != NULL) node->set(initializer, container);
+            else _protocolMap[protocols].set(initializer, container);
         }
         else LMClassInitializerNode::set(initializer, container);
     }

@@ -71,9 +71,12 @@ static inline TestResults runTest(NSInteger loop, NSInteger callLoop);
 @end
 
 LM_CONTEXT(initializers,
-LM_REGISTER_INITIALIZER(NSObject, ^id (id sender) {
-    return [NSArray array];
-});
+[LMContext registerInitializer:^id(id sender) {
+    return @"test";
+}
+                            in:nil
+                      forClass:nil
+                     protocols:@[@protocol(NSObject)]];
 )
 
 static TestResults runTest(NSInteger loop, NSInteger callLoop) {
