@@ -46,5 +46,6 @@ SOFTWARE.
 
   s.xcconfig = {
     'OTHER_LDFLAGS' => '-lc++ -lstdc++ -ObjC -all_load'
+    'GCC_OPTIMIZATION_LEVEL' => 'fast'
   }
 end
