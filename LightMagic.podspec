@@ -45,7 +45,6 @@ SOFTWARE.
   end
 
   s.xcconfig = {
-    'OTHER_LDFLAGS' => '-lc++ -lstdc++ -ObjC',
-    'GENERATE_MASTER_OBJECT_FILE' => 'YES'
+    'OTHER_LDFLAGS' => '-lc++ -lstdc++ -ObjC -all_load'
   }
 end
