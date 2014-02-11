@@ -6,12 +6,8 @@
 #define inject(property) @dynamic property; \
 + (void)__inject_##property __unavailable {}
 
-#define LM_CONTEXT(group, block) \
-    __attribute__((constructor(1000))) static void __used group(void) { \
-        @autoreleasepool { \
-            block \
-        } \
-    }
+#define LM_CONTEXT_BEGIN(group) __attribute__((constructor(1000))) static void __used group(void) { @autoreleasepool {
+#define LM_CONTEXT_END } }
 
 #define LM_REGISTER_INITIALIZER(propertyClass, block) \
     [LMContext registerInitializer:block forClass:[propertyClass class]]
