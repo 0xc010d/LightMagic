@@ -21,11 +21,7 @@ private:
 
 public:
     void set(LMInitializerBlock initializer, Class& container, const std::set<id>& protocols = std::set<id>())  {
-        if (protocols.size() > 0) {
-            LMClassInitializerNode *node = initializerNode(protocols);
-            if (node != NULL) node->set(initializer, container);
-            else _protocolMap[protocols].set(initializer, container);
-        }
+        if (protocols.size() > 0) _protocolMap[protocols].set(initializer, container);
         else LMClassInitializerNode::set(initializer, container);
     }
 
