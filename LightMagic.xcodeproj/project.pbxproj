@@ -26,6 +26,7 @@
 		89BBF49EB8D4423AAED38EAE /* libPods-Example.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FE7D203011774F3DA6370AC9 /* libPods-Example.a */; };
 		C9BC039A02823CC3A49B4585 /* LMTypeDescriptorTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9BC079421ADB236BBF3C3EC /* LMTypeDescriptorTests.mm */; };
 		C9BC07E9976243245ADE1B84 /* LMDefinitions.m in Sources */ = {isa = PBXBuildFile; fileRef = C9BC0216CC5F3D952FF440B6 /* LMDefinitions.m */; };
+		C9BC0A019037BC73736A4ACF /* XCTest+GCovFlush.m in Sources */ = {isa = PBXBuildFile; fileRef = C9BC00A2BE5A77F28684CD05 /* XCTest+GCovFlush.m */; };
 		C9BC0BE85749B179F118C581 /* LMBiMapTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9BC06E7E51BBD234A3B5003 /* LMBiMapTests.mm */; };
 		C9BC0DCA4B2CC856F0C48D89 /* LMTypeDescriptor.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9BC08D2949E34F5BF467F9A /* LMTypeDescriptor.mm */; };
 		CAE20F5F2E459EBFDB958E78 /* LMClassComparatorTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = CAE9159DE3601BB8183D5FF8 /* LMClassComparatorTests.mm */; };
@@ -82,6 +83,7 @@
 		4B0AEC639DA549C5B18FB2D7 /* Pods-Example.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example.xcconfig"; path = "Pods/Pods-Example.xcconfig"; sourceTree = "<group>"; };
 		5121594D64434C65857A09B3 /* Pods-Tests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.xcconfig"; path = "Pods/Pods-Tests.xcconfig"; sourceTree = "<group>"; };
 		BD6E6678283747B4A42FE296 /* libPods-Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C9BC00A2BE5A77F28684CD05 /* XCTest+GCovFlush.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "XCTest+GCovFlush.m"; sourceTree = "<group>"; };
 		C9BC0101B98E25B6389C0A77 /* LMTypeDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMTypeDescriptor.h; sourceTree = "<group>"; };
 		C9BC0216CC5F3D952FF440B6 /* LMDefinitions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LMDefinitions.m; sourceTree = "<group>"; };
 		C9BC023E963C340DC61CFDEB /* LMBiMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMBiMap.h; sourceTree = "<group>"; };
@@ -219,6 +221,7 @@
 				C9BC06E7E51BBD234A3B5003 /* LMBiMapTests.mm */,
 				CAE9159DE3601BB8183D5FF8 /* LMClassComparatorTests.mm */,
 				C9BC079421ADB236BBF3C3EC /* LMTypeDescriptorTests.mm */,
+				C9BC00A2BE5A77F28684CD05 /* XCTest+GCovFlush.m */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -480,6 +483,7 @@
 				C9BC0BE85749B179F118C581 /* LMBiMapTests.mm in Sources */,
 				CAE20F5F2E459EBFDB958E78 /* LMClassComparatorTests.mm in Sources */,
 				C9BC039A02823CC3A49B4585 /* LMTypeDescriptorTests.mm in Sources */,
+				C9BC0A019037BC73736A4ACF /* XCTest+GCovFlush.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -541,6 +545,12 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Tests/Prefix.pch;
 				INFOPLIST_FILE = Tests/Info.plist;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-Wall",
+					"-fprofile-arcs",
+					"-ftest-coverage",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -563,6 +573,12 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = Tests/Info.plist;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-Wall",
+					"-fprofile-arcs",
+					"-ftest-coverage",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -573,6 +589,8 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				DSTROOT = /tmp/LightMagic.dst;
+				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
+				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
 				GCC_OPTIMIZATION_LEVEL = fast;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = LightMagic/Prefix.pch;
@@ -586,6 +604,8 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				DSTROOT = /tmp/LightMagic.dst;
+				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
+				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = LightMagic/Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = (
