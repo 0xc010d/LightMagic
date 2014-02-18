@@ -24,8 +24,8 @@ Class static property_getClass(objc_property_t property);
 
 void lm_class_addProperty(Class objcClass, SEL getter, LMInitializerDescriptor descriptor) {
     const char *name = sel_getName(getter);
-    const char *typeString = descriptor.type.str().c_str();
-    objc_property_attribute_t attributes[] = {"T", typeString};
+    std::string typeString = descriptor.type.str();
+    objc_property_attribute_t attributes[] = {"T", typeString.c_str()};
     class_addProperty(objcClass, name, attributes, 1);
     class_addMethod(objcClass, getter, (IMP) dynamicGetter, "@@:");
     //cache initializer
